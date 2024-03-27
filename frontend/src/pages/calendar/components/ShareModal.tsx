@@ -57,7 +57,9 @@ const PlusButton = styled.button`
   cursor: pointer;
 `
 
-const ShareModal = () => {
+const ShareModal = (props) => {
+
+  const { diaries, diaryId } = props
 
   const [ modalContent, setModalContent ] = useState(true);
   const [ isSchedule, setIsSchedule ] = useState(true);
@@ -98,9 +100,10 @@ const ShareModal = () => {
         <HeaderBoxWrapper color= 'white' onClick={ ClickSchedule }>일정</HeaderBoxWrapper>
         <HeaderBoxWrapper color= 'trans' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
       </ModalHeaderWrapper>
-        <Todo/>
+        <Todo type='공유'/>
         </>
       }
+
       {
         !modalContent && !isSchedule &&  //일기 리스트 나열
         <>
@@ -109,7 +112,7 @@ const ShareModal = () => {
             <HeaderBoxWrapper color= 'white' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
         </ModalHeaderWrapper>
         <DateWrapper> { format(clickDate, 'yyyy-MM-dd' ) }</DateWrapper>
-        <DiaryList/>
+        <DiaryList diaries = { diaries } diaryId = { diaryId }/>
         </>
       }
     </ShareModalWrapper>

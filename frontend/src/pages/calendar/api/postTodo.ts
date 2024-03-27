@@ -15,4 +15,5 @@ interface dataType{
     content: String,
     date: String,
     color: String,
+    type: String
 }

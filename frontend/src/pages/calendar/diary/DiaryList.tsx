@@ -1,6 +1,9 @@
 import styled from "styled-components"
 import DiaryCard from "./DiaryCard"
+import { getDayDiary } from '../api'
 import useStore from "../store"
+import { format } from "date-fns"
+import { useQuery } from "react-query"
 
 const TodoListWrapper = styled.div`
   display: flex;
@@ -12,12 +15,30 @@ const TodoListWrapper = styled.div`
   padding-bottom: 12px;
 `
 
-const TodoList = () => {
+const TodoList = ( props ) => {
+
+    const { diaries, diaryId } = props
 
     const { clickDate } = useStore()
 
+    const selectedDiaries= [];
 
-    const diaries = ['1','2','3','4','5']
+
+    diaries.forEach(item => {
+      item?.diaries.forEach( diary => {
+        const date = diary.date;
+        console.log("date", date)
+        if (date.substring(0, 10) === format( clickDate, 'yyyy-MM-dd')) {
+            selectedDiaries.push(diary?.daily_diary_id);
+        }
+      })
+  })
+
+  console.log("selectedDiaries", selectedDiaries)
+
+  const { data: daily } = useQuery('daily', () => getDayDiary({diaryId: diaryId, dailyId: selectedDiaries}))
+
+  console.log(daily)
 
   return(
     <TodoListWrapper>

@@ -41,7 +41,6 @@ const EmotionIcon = styled.img`
     position: absolute;
 `
 
-
 const TodoWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -49,13 +48,15 @@ const TodoWrapper = styled.div`
     overflow: hidden;
     justify-content: end;
 `
+
 const TodoItemWrapperContainer = styled.div`
     width: 100%;
     height: 20px;
     display: flex;
     margin: 2px;
 `
-const TodoItemWrapper = styled.div<{color: string}>`
+
+const TodoItemWrapper = styled.div<{ color: string }>`
     flex: 1;
     height: 16px;
     display: flex;
@@ -64,6 +65,7 @@ const TodoItemWrapper = styled.div<{color: string}>`
     background-color: ${ ( props ) => props.color };
     text-align: center;
 `
+
 const TodoHeaderWrapper = styled.div<{color: string}>`
     width: 10px;
     background-color: ${ ( props ) => props.color };
@@ -81,30 +83,41 @@ const Day = ( props: DayProps ) =>{
     const emotionPositions = [
         { top: '0', left: '20%' }, // 첫 번째 이모티콘 위치
         { top: '10%', left: '30%' }, // 두 번째 이모티콘 위치
+        { top: '20%', left: '40%' }
     ]
     
 
 
-    let diaries = null;
-    let todos = null;
+    let diaries = null
+    let todos = null
 
-    if (type === '개인') {
-        diaries = calendars?.diaries?.filter(( diary ) => diary?.date?.substring(5, 10) === format( day, 'MM-dd'))
-        todos = calendars?.schedules?.filter(( schedule ) => schedule?.date?.substring(5, 10) === format( day, 'MM-dd'))
+    if ( type === '개인' ) {
+        diaries = calendars?.diaries?.filter(( diary ) => diary?.date?.substring( 5, 10 ) === format( day, 'MM-dd'))
+        todos = calendars?.schedules?.filter(( schedule ) => schedule?.date?.substring( 5, 10 ) === format( day, 'MM-dd'))
     } else {
-        // diaries = calendars?.members?.diaries?.filter(( diary ) => diary?.date?.substring(5, 10) === format( day, 'MM-dd'))
-        // todos = calendars?.schedules?.filter(( schedule ) => schedule?.date?.substring(5, 10) === format( day, 'MM-dd'))
         diaries = calendars?.members?.flatMap( member => member?.diaries )?.filter( diary => {
             if ( diary && diary.date ) {
-                const currentDate = format( day, 'MM-dd' );
-                const diaryDate = diary.date.substring( 5, 10 );
+                const currentDate = format( day, 'MM-dd' )
+                const diaryDate = diary.date.substring( 5, 10 )
 
-                return diaryDate === currentDate;
+                return diaryDate === currentDate
             }
-            return false;
-        });
+            return false
+        })
+
+        todos = calendars?.members?.flatMap( member => member?.schedules )?.filter( schedule => {
+            if ( schedule && schedule.date ) {
+                const currentDate = format( day, 'MM-dd' )
+                const diaryDate = schedule.date.substring( 5, 10 )
+
+                return diaryDate === currentDate
+            }
+            return false
+        })
     
     }
+
+
     const emotionImg = {
         angry: angry,
         embarrass: embarrass,
@@ -119,13 +132,13 @@ const Day = ( props: DayProps ) =>{
         updateModal()
     }
 
-    const goMyDiary = ( diary ) =>{
+    const goMyDiary = ( diary, date ) =>{
         if ( type === '개인' ) {
-            console.log("diaryId",diary.diary.daily_diary_id)
+
             navigator(`/diary/${diary.diary.daily_diary_id}`, {state : { dailyDiaryId: diary.diary.daily_diary_id, type: diary.diary.type }})
             } else {
-                // 아무것도 없음
-                // navigator(`/diary/${diary.diary.daily_diary_id}`, {state : { dailyDiaryId: diary.diary.daily_diary_id, type: diary.diary.type }})
+                updateDate( date )
+                updateModal()
             }
         }
 
@@ -133,35 +146,23 @@ const Day = ( props: DayProps ) =>{
     
     return(
         <DayWrapper>
-            
-            <DayClick onClick={ (e) => listTodo( e, day ) }>
+            <DayClick onClick={(e) => listTodo( e, day ) }>
             { format( day, 'd' ) }
             </DayClick>
             <EmotionWrapper>
-                {diaries?.map((diary, index) => (
+                { diaries?.map((diary, index) => (
                     <EmotionIcon 
                         src={emotionImg[diary?.emotion.valueOf()]} 
                         alt='' 
-                        onClick={() => goMyDiary({ diary })} 
-                        style={{ ...emotionPositions[index] }} // 이모티콘 위치를 조정합니다.
+                        onClick={(e) => goMyDiary({ diary }, day)} 
+                        style={{ ...emotionPositions[index] }} // 이모티콘 위치조정
                         key={index}
                     />
                 ))}
             </EmotionWrapper>
-            {/* <EmotionWrapper>
-                {
-                    diaries?.map(( diary, index ) => {
-                        return(
-                            <img src={ emotionImg[diary?.emotion.valueOf()] } alt=''
-                            onClick={() =>goMyDiary({ diary })}
-                            style={{ height: '100%' }} key={ index }/>
-                        )
-                    })
-                }
-            </EmotionWrapper> */}
             <TodoWrapper>
             {
-                todos?.map(( todo, index ) =>{
+                todos?.map(( todo, index ) => {
                     if(index<3)
                     return(
                         <TodoItemWrapperContainer key={ index }>

@@ -107,12 +107,12 @@ const Calendar = () =>{
 
   const navigator = useNavigate()
 
-  const { state}  = useLocation();
+  const { state }  = useLocation(); // 메인에서 넘어온 데이터 사용
   const { diaryId, type } = state;
   console.log( diaryId, type );
 
-  const [ isDiaryWrite, setIsDiaryWrite ] = useState<boolean>(false);
-  const { currentMonth, setCurrentMonth, calculateDateRange } = useDate() 
+  const [ isDiaryWrite, setIsDiaryWrite ] = useState<boolean>(false); // 일기쓰기 버튼 클릭시 개인/공유 분리
+  const { currentMonth, setCurrentMonth, calculateDateRange } = useDate() // 달력 옆 버튼
   const { startDate, endDate } = calculateDateRange()
   const { isModalOpened, updateModal} = useStore() // Day 컴포넌트에서 업데이트 된 상태 가져오기
 
@@ -189,10 +189,10 @@ const Calendar = () =>{
   const moveNextMonth = () => { setCurrentMonth( addMonths( currentMonth, 1) ) }
 
   
-  const today = format(currentMonth, 'yyyy-MM-01')
+  const today = format(currentMonth, 'yyyy-MM-01') //월 데이터 전송 고정
 
-  let queryKey = null;
-  let queryParams = null;
+  let queryKey = null; // 개인과 공유 키 분리
+  let queryParams = null; // 개인과 공유 파람 분리
 
   if (type === '개인') {
     queryKey = ['calendars', currentMonth];
@@ -222,24 +222,28 @@ const Calendar = () =>{
                 <div style={{ marginTop: '10px', borderBottom: '1px solid', paddingBottom:'2px'}}>일기 쓰기</div>
             </CalendarHeaderRightWrapper>
             </CalendarHeaderWrapper>
+            
         { 
-          isModalOpened && type=='개인'
+          isModalOpened && type==='개인'
           && 
             <ModalPortal onClose={ closeModal }>
               <Modal><MyModal schedules= { calendars?.data?.schedules }></MyModal></Modal>
             </ModalPortal>
         }
+
         { 
           isModalOpened && type==='공유'
           && 
             <ModalPortal onClose={ closeModal }>
-              <Modal><ShareModal/></Modal>
+              <Modal><ShareModal diaries= { calendars?.data?.members } diaryId = { diaryId }/></Modal>
             </ModalPortal>
         }
+
         {
           isDiaryWrite && 
           <WriteModalPortal onClose={ closeWrite } />
         }
+
             <DateList/>
             <DayList list = { days } calendars = { calendars?.data } type = { type }/>
           </CalendarWrapper>

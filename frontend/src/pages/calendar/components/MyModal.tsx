@@ -60,7 +60,7 @@ const MyModal = (props) => {
       </>
       }{
         !modalContent &&
-        <Todo/>
+        <Todo type='개인' />
       }
     </MyModalWrapper>
   )
