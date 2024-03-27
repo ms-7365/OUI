@@ -2,6 +2,7 @@ package com.emotionoui.oui.schedule.dto.req;
 
 import com.emotionoui.oui.member.entity.Member;
 import com.emotionoui.oui.schedule.entity.Schedule;
+import com.emotionoui.oui.schedule.entity.ScheduleType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,13 +26,16 @@ public class ScheduleReq {
 
     private  String color;
 
-    public Schedule toEntity(Member member, String title, String content, Date date, String color) {
+    private ScheduleType type;
+
+    public Schedule toEntity(Member member, String title, String content, Date date, String color, ScheduleType type) {
         return Schedule.builder()
                 .member(member)
                 .title(title)
                 .content(content)
                 .date(date)
                 .color(color)
+                .type(type)
                 .isDeleted(0)
                 .createdAt(LocalDateTime.now())
                 .build();

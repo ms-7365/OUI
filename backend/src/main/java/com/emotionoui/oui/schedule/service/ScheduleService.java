@@ -27,7 +27,7 @@ public class ScheduleService {
 
         scheduleRepository.save(scheduleReq.toEntity(
                                 member, scheduleReq.getTitle(), scheduleReq.getContent(),
-                                scheduleReq.getDate(), scheduleReq.getColor()));
+                                scheduleReq.getDate(), scheduleReq.getColor(), scheduleReq.getType()));
         return member.getMemberId();
     }
 
@@ -35,9 +35,6 @@ public class ScheduleService {
     @Transactional
     public void updateSchedules(Integer scheduleId ,@RequestBody ScheduleReq scheduleReq) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(IllegalArgumentException::new);
-
-//        scheduleRepository.deleteByScheduleId(scheduleId);
-//        scheduleRepository.flush();
 
         if(scheduleReq.getTitle() !=null){
             schedule.changeTitle(scheduleReq.getTitle());
@@ -55,9 +52,6 @@ public class ScheduleService {
     @Transactional
     public void deleteSchedules(Integer scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(ScheduleNotFoundException::new);
-
-//        scheduleRepository.deleteByScheduleId(scheduleId);
-//        scheduleRepository.flush();
 
         schedule.changeIsDelete();
 

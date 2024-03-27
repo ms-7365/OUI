@@ -2,6 +2,7 @@ package com.emotionoui.oui.schedule.dto.res;
 
 
 import com.emotionoui.oui.schedule.entity.Schedule;
+import com.emotionoui.oui.schedule.entity.ScheduleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
@@ -22,6 +23,9 @@ public class ScheduleRes {
     @JsonProperty("date")
     private Date date;
 
+    @JsonProperty("type")
+    private ScheduleType type;
+
     public ScheduleRes of(Schedule schedule){
 
         return  ScheduleRes.builder()
@@ -29,6 +33,7 @@ public class ScheduleRes {
                 .title(schedule.getTitle())
                 .content(schedule.getContent())
                 .date(schedule.getDate())
+                .type(schedule.getType())
                 .build();
     }
 }

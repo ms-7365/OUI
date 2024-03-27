@@ -38,6 +38,8 @@ public class QSchedule extends EntityPathBase<Schedule> {
 
     public final StringPath title = createString("title");
 
+    public final EnumPath<ScheduleType> type = createEnum("type", ScheduleType.class);
+
     public QSchedule(String variable) {
         this(Schedule.class, forVariable(variable), INITS);
     }

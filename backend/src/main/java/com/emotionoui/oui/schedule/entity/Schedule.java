@@ -38,6 +38,10 @@ public class Schedule {
 
     private String color;
 
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private ScheduleType  type = ScheduleType.공유;
+
 
     @CreatedDate
     @LastModifiedDate
@@ -61,7 +65,7 @@ public class Schedule {
     }
 
     @Builder
-    public Schedule(Integer scheduleId, Member member, String title, String content, Date date, String color, Integer isDeleted, LocalDateTime createdAt) {
+    public Schedule(Integer scheduleId, Member member, String title, String content, Date date, String color, Integer isDeleted, LocalDateTime createdAt, ScheduleType type) {
         this.scheduleId = scheduleId;
         this.member = member;
         this.title = title;
@@ -70,6 +74,6 @@ public class Schedule {
         this.color = color;
         this.createdAt = createdAt;
         this.isDeleted = isDeleted;
-
+        this.type = type;
     }
 }

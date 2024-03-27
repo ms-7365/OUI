@@ -29,7 +29,7 @@ public class CalendarService {
     private final DailyDiaryRepository dailyDiaryRepository;
     private final DailyDiaryMongoRepository dailyDiaryMongoRepository;
 
-    // 캘린더에서 한달간 내 일기와 일정 조회 - 개인
+    // 캘린더에서 한달간 일기 조회 - 개인
     @Transactional(readOnly = true)
     public List<CalendarDiaryDto> findCalendarbyDate(Integer memberId, Integer year, Integer month){
 
@@ -41,7 +41,7 @@ public class CalendarService {
                 .collect(Collectors.toList());
     }
 
-    // 캘린더에서 한달간 내 일기와 일정 조회 - 공유
+    // 캘린더에서 한달간 일기 조회 - 공유
     @Transactional(readOnly = true)
     public List<CalendarDiaryDto> findShareDiarybyDate(Integer memberId, Integer year, Integer month, Integer diaryId){
 
@@ -53,12 +53,21 @@ public class CalendarService {
                 .collect(Collectors.toList());
     }
 
-    // 공유일기에서 한달간 모든 인원의 일기와 일정 조회
+    // 일정 조회 - 개인
     @Transactional(readOnly = true)
     public List<CalendarScheduleDto> findMySchedulebyDate(Integer memberId, Integer year, Integer month){
 
-
         List<Schedule> scheduleList = calendarRepository.findMySchedulebyDate(memberId, year, month+1);
+
+        return scheduleList.stream()
+                .map(CalendarScheduleDto::of)
+                .collect(Collectors.toList());
+    }
+    // 일정 조회 - 공유
+    @Transactional(readOnly = true)
+    public List<CalendarScheduleDto> findShareSchedulebyDate(Integer memberId, Integer year, Integer month){
+
+        List<Schedule> scheduleList = calendarRepository.findShareSchedulebyDate(memberId, year, month+1);
 
         return scheduleList.stream()
                 .map(CalendarScheduleDto::of)
