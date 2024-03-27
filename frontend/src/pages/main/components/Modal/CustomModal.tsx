@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
+import { getFIndMember } from "../../api";
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -90,11 +91,10 @@ const ImageContainer = styled.div`
 const CustomModal = ( props:ModalProps ) => {
 
   const { isOpen, closeModal, isFinish } = props
-
   const [ keyImage, setSelectedImage ] = useState( -1 );
   const [ searchName, setSearchName ] = useState( '' );
   const [ title, setTitle ] = useState( '' );
-
+  const [ memberList, setMemberList ] = useState([ ]);
 
   const handleInputChange = ( event ) => {  // 친구 이름 칸
     setSearchName( event.target.value ); 
@@ -113,19 +113,38 @@ const CustomModal = ( props:ModalProps ) => {
   };
 
   const handleSearch = () => {  //친구 검색 함수 필요
-    if( searchName === '' ) {
-      console.log( '공백이야' );
-    } else {
-      console.log( searchName );
-    }
+    if( searchName !== '' ) {
+      const input = { memberEmail: searchName };
+      getFIndMember(searchName)
+      .then(( res ) => {
+        console.log( res )
+          if( res !== undefined ){
+            if (!memberList.includes( searchName )) {
+              setMemberList([
+                ...memberList,
+                searchName
+              ]);
+            }
+          }
+          else{
+            alert("검색 결과 없음")
+          }
+          setSearchName('')
+      })  
+      .catch(( err ) => {
+        console.error( 'Error:', err );
+      });
+    } 
   };
 
 
   useEffect(() => {
+    console.log(memberList);
     if ( isOpen ) {
       setSelectedImage( -1 );
       setSearchName( '' );
       setTitle( '' );
+      setMemberList([ ]);
     }
   }, [ isOpen ]); 
 
@@ -179,11 +198,24 @@ const CustomModal = ( props:ModalProps ) => {
                   ),
               }}
               />
-            </div>
+              {
+                  memberList.length !== 0 ? 
+                  memberList.map(( member, index ) => (
+                    <div key={ index }>
+                      {member}
+                      <button onClick={() => setMemberList( memberList.filter( e => e !== member ))}>
+                        빼기
+                      </button>
+                    </div>
+                  )) 
+                  : 
+                  <div>ho</div>
+              }
+              </div>
             <button 
               onClick={() => {
                 if ( title !== '' && keyImage !== -1 ) {
-                  isFinish({ title:title, key: keyImage, members: [] });
+                  isFinish({ title:title, key: keyImage, members: memberList });
                 } else {
                   if( title === '' ){
                     alert( "제목" );

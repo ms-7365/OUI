@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Doughnut } from "react-chartjs-2";
 import { getMonthly, getMember } from '../../api';
 import { LeftIcon, RightIcon } from 'src/components'
-import { addDays, addMonths, format, subMonths } from 'date-fns'
+import { addMonths, format, subMonths } from 'date-fns'
 import useDate from 'src/util/date'
 import { useQuery } from 'react-query'
 import angry from 'src/asset/images/emotion/angry.png';
@@ -151,7 +151,6 @@ const Monthly = () => {
   const [ userName, setUserName ] = useState( "" );
   const { currentMonth, setCurrentMonth } = useDate() 
   const today = format(currentMonth, 'yyyy-MM-01')
-  const imageArray = Object.values( images );
 
   const movePrevMonth = () =>{ setCurrentMonth( subMonths( currentMonth, 1) ) }
   const moveNextMonth = () => { setCurrentMonth( addMonths( currentMonth, 1) ) }

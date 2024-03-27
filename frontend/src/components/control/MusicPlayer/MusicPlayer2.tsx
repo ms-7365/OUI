@@ -103,6 +103,7 @@ const playlist = [
     'https://www.youtube.com/watch?v=xzsRBKZh1No',
     'https://www.youtube.com/watch?v=yL6P7OR5WOM',
     'https://www.youtube.com/watch?v=Hfep-HihqZo',
+    'https://www.youtube.com/watch?v=k3-BDy55tq4'
   ];
 
 const getThumbnailUrl = ( url:string ) => {

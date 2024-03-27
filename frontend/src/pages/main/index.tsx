@@ -135,13 +135,6 @@ const Main = () => {
     setIsModalOpen( false );
   }
 
-  const openAlarm = () => setAlarmModalOpen( true );
-  const closeAlarm = () => {
-    console.log( '모달 닫기!!!!!!' );
-    setIsModalOpen( false );
-  }
-
-
   const addCard = ( props: { title: string; key: number; members: String[]; } ) => {
     const { title, key, members } = props;
     const templateId = key; 
