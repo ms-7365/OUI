@@ -28,7 +28,9 @@ public class AlarmController {
     private final AlarmService alarmService;
 
     // 전체 알림리스트 가져오기
+    @GetMapping
     public ResponseEntity<?> searchAlarms(@AuthenticationPrincipal Member member){
+        System.out.println(" = " + "들오몸!!!!!!!!!!!!!!!!!!!");
         int memberId = member.getMemberId();
         List<SearchAlarmsRes> alarms = alarmService.searchAlarmList(memberId);
 
