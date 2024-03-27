@@ -23,6 +23,10 @@ public interface AlarmService {
 //    public Boolean sendBiasMessage(List<String> ids, Long articleId);
 
     public List<SearchAlarmsRes> searchAlarmList(Integer memberId);
+
+    public void acceptInvite(Member member, Integer diaryId);
+
+    public void refuseInvite(Member member, Integer diaryId);
 //
 //    public String readMessage(Long notificationId);
 //

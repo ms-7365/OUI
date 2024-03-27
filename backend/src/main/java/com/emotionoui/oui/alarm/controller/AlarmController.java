@@ -6,16 +6,14 @@ import com.emotionoui.oui.alarm.dto.req.AlarmTestReq;
 import com.emotionoui.oui.alarm.dto.res.SearchAlarmsRes;
 import com.emotionoui.oui.alarm.service.AlarmService;
 import com.emotionoui.oui.member.entity.Member;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,6 +59,23 @@ public class AlarmController {
         alarmService.createDeviceToken(member, deviceToken.get("deviceToken"));
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    // 초대 요청 수락
+    @Transactional
+    @PostMapping("/accept/{diaryId}")
+    public ResponseEntity<?> acceptInvite(@AuthenticationPrincipal Member member, @PathVariable Integer diaryId){
+        alarmService.acceptInvite(member, diaryId);
+        return ResponseEntity.ok().build();
+    }
+
+    // 초대 요청 거절
+    @Transactional
+    @PostMapping("/refuse/{diaryId}")
+    public ResponseEntity<?> refuseInvite(@AuthenticationPrincipal Member member, @PathVariable Integer diaryId){
+        alarmService.refuseInvite(member, diaryId);
+        return ResponseEntity.ok().build();
+    }
+
 
     // 실험용
     @GetMapping("/mainPage")

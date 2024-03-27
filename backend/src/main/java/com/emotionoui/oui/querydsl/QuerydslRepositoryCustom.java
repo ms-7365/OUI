@@ -1,6 +1,7 @@
 package com.emotionoui.oui.querydsl;
 
 import com.emotionoui.oui.main.dto.res.SearchDiaryListRes;
+import com.emotionoui.oui.member.entity.Member;
 
 import java.util.List;
 
@@ -24,4 +25,9 @@ public interface QuerydslRepositoryCustom {
 
     Integer searchDailyDiaryId(Integer memberId, Integer diaryId);
 
+    Long findDiaryOrder(Member member);
+
+    Integer checkDiary(Member member, Integer diaryId);
+
+    void deleteAlarmByMemberIdAndDiaryId(Member member, Integer diaryId);
 }
