@@ -113,14 +113,14 @@ public class QuerydslRepositoryImpl implements QuerydslRepositoryCustom {
                 .update(diary)
                 .set(diary.isDeleted,1)
                 .where(diary.id.in(
-                        JPAExpressions.select(memberDiary.diary.id)
-                                .from(memberDiary)
-                                .join(memberDiary.diary, diary)
-                                .where(memberDiary.member.memberId.eq(memberId)
-                                        .and(diary.isDeleted.eq(0))
-                                        .and(diary.type.eq(DiaryType.valueOf("개인"))) // 개인다이어리만 탈퇴 처리
-                                )
-                )
+                                JPAExpressions.select(memberDiary.diary.id)
+                                        .from(memberDiary)
+                                        .join(memberDiary.diary, diary)
+                                        .where(memberDiary.member.memberId.eq(memberId)
+                                                .and(diary.isDeleted.eq(0))
+                                                .and(diary.type.eq(DiaryType.valueOf("개인"))) // 개인다이어리만 탈퇴 처리
+                                        )
+                        )
                 )
                 .execute();
 

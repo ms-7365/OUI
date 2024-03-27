@@ -4,6 +4,8 @@ package com.emotionoui.oui.calendar.controller;
 import com.emotionoui.oui.alarm.service.AlarmService;
 import com.emotionoui.oui.calendar.dto.res.*;
 import com.emotionoui.oui.calendar.service.CalendarService;
+import com.emotionoui.oui.diary.dto.res.SearchDailyDiaryRes;
+import com.emotionoui.oui.diary.service.DiaryService;
 import com.emotionoui.oui.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -28,6 +27,7 @@ public class CalendarController {
 
     private final CalendarService calendarService;
     private final AlarmService alarmService;
+    private final DiaryService diaryService;
 
     // 캘린더에서 한달간 내 일기와 일정 조회
     @GetMapping("/my")
@@ -97,27 +97,16 @@ public class CalendarController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping("{diaryId}/day")
-//    public ResponseEntity<?> searchDailyDiary(@PathVariable(value= "diaryId") Integer diaryId,
-//                                              @RequestParam(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
-//
-//        ArrayList<MyCalendarRes> dailyDiaries = new ArrayList<>();
-//
-//        // findmemberbyId 로 멤버 다 찾고 for문 돌리면서 shareCalendarRes의 calendarResList에 넣기
-//        List<Integer> tmpMember = new ArrayList<>();
-//        tmpMember.add(1);
-//        tmpMember.add(2);
-//
-//        for(Integer i : tmpMember){
-//            List<CalendarDailyDiaryRes> dailyDiaries = calendarService.find(i, date);
-//
-//
-//        }
-//
-//
-//        CalendarDailyDiaryRes calendarDailyDiaryRes = CalendarDailyDiaryRes.builder()
-//                .build();
-//
-//        return new ResponseEntity<>(calendarDailyDiaryRes, HttpStatus.OK);
-//    }
+    @GetMapping("/{diaryId}/day")
+    public ResponseEntity<?> searchDailyDiary(@RequestParam(name="dailyId") List<Integer> dailyIdList){
+
+        ArrayList<ShareDailyDiaryRes> dailyDiaryList = new ArrayList<>();
+
+        for(Integer dailyId: dailyIdList){
+            ShareDailyDiaryRes dailyDiary = calendarService.searchDailyDiary(dailyId);
+            dailyDiaryList.add(dailyDiary);
+        }
+
+        return new ResponseEntity<>(dailyDiaryList, HttpStatus.OK);
+    }
 }
