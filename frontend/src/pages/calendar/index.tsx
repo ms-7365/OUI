@@ -145,7 +145,7 @@ const Calendar = () =>{
   }
 
   const goWrite = () => {
-    navigator(`/diary/write/${diaryId}`, { state: { diaryId:  diaryId }})
+    navigator(`/diary/write/${diaryId}`, { state: { diaryId:  diaryId, type: type }})
   }
 
   const WriteModalPortal = ({ onClose  }) => { 

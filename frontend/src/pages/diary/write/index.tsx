@@ -69,6 +69,7 @@ const DiaryWrite = () => {
     const writeDiary = useMutation( postDiary );
     
     const goCalendar = () => {
+        console.log(type)
         if(type === '개인') {
             navigator(`/calendar`, {state: {diaryId: diaryId, type: type}});
         } else {

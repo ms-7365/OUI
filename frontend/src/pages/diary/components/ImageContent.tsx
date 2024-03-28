@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { fabric } from 'fabric';
 import { FileUploadOutlined } from '@mui/icons-material';
-import JoyIcon from 'src/asset/images/joyIcon.png';
-import ComfortIcon from 'src/asset/images/comfortIcon.png';
-import PanicIcon from 'src/asset/images/panicIcon.png';
-import AngryIcon from 'src/asset/images/angryIcon.png';
-import UnrestIcon from 'src/asset/images/unrestIcon.png';
-import SadIcon from 'src/asset/images/sadnessIcon.png';
+import JoyIcon from 'src/asset/images/emotion-icon/joyIcon.png';
+import ComfortIcon from 'src/asset/images/emotion-icon/comfortIcon.png';
+import PanicIcon from 'src/asset/images/emotion-icon/panicIcon.png';
+import AngryIcon from 'src/asset/images/emotion-icon/angryIcon.png';
+import UnrestIcon from 'src/asset/images/emotion-icon/unrestIcon.png';
+import SadIcon from 'src/asset/images/emotion-icon/sadnessIcon.png';
 import styled from 'styled-components';
 
 const ContentWrapper = styled.div`

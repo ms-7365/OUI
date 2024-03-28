@@ -213,7 +213,7 @@ const Main = () => {
       <Button btType='bell' onButtonClick={() => setAlarmModalOpen(true)} />
     </Header>
     <YellowBox>
-        {userName && <UserRecord style={{ fontFamily: 'IMHyeMin', fontWeight: 'bold' }}>{ userName }님의 감정기록 :)</UserRecord>}
+        {userName && <UserRecord style={{ fontWeight: 'bold' }}>{ userName }님의 감정기록 :)</UserRecord>}
     </YellowBox>
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <div className="slider-container" style={{ minHeight: '100%', minWidth: '100%' }}>      
