@@ -1,5 +1,5 @@
-import edit from 'src/asset/images/edit.png'
-import trash from 'src/asset/images/trash.png'
+import edit from 'src/asset/images/calendar/edit.png'
+import trash from 'src/asset/images/calendar/trash.png'
 import useStore from '../store'
 import { putTodo, updateTodo } from '../api'
 import styled from 'styled-components'
@@ -41,8 +41,6 @@ const TodoCard = ( props: TodoCardProps ) =>{
 
     const { schedule } = props
 
-    console.log( 'schedule', schedule?.schedule_id)
-
     const deleteMutation = useMutation( putTodo, {
         onSuccess: () => {
         }
@@ -54,7 +52,7 @@ const TodoCard = ( props: TodoCardProps ) =>{
     }
     
     const deleteTodo = () =>{
-        // axios로 delete하기
+
         deleteMutation.mutateAsync( schedule?.schedule_id )
         window.location.reload();
     }
@@ -71,7 +69,7 @@ const TodoCard = ( props: TodoCardProps ) =>{
                 </div>
             </TodoCardHeader>
             <TodoBody>
-                    { schedule?.content}
+                    { schedule?.content }
             </TodoBody>
         </TodoWrapper>
     )

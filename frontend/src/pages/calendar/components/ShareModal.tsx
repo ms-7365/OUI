@@ -17,7 +17,7 @@ const ShareModalWrapper = styled.div`
 `
 const ModalHeaderWrapper = styled.div`
   display: flex;
-  height: 100%;
+  height: 10%;
   align-items: flex-end;
   background-color: #F8E0C5;
 `
@@ -44,12 +44,13 @@ const DateWrapper = styled.div`
     display: flex;
     justify-content: flex-end;
     font-size: 12px;
-    margin: 1% 2%;
+    margin: 2% 2%;
+    font-weight: bold;
 `
 
 const PlusButton = styled.button`
   border: 1px solid;
-  height: 10%;
+  height: 60px;
   width: 100%;
   background-color: white;
   border-radius: 6px;
@@ -59,7 +60,7 @@ const PlusButton = styled.button`
 
 const ShareModal = (props) => {
 
-  const { diaries, diaryId } = props
+  const { diaries, diaryId, members } = props
 
   const [ modalContent, setModalContent ] = useState(true);
   const [ isSchedule, setIsSchedule ] = useState(true);
@@ -67,7 +68,7 @@ const ShareModal = (props) => {
   const { clickDate } = useStore()
 
   const createTodo = () =>{
-    setModalContent(!modalContent)
+    setModalContent( !modalContent )
   }
 
   const ClickSchedule = () =>{
@@ -80,6 +81,17 @@ const ShareModal = (props) => {
     setModalContent(false);
   }
 
+  const todos = members?.flatMap( member => member?.schedules )?.filter( schedule => {
+    if ( schedule && schedule.date ) {
+        const currentDate = format( clickDate, 'MM-dd' )
+        const diaryDate = schedule.date.substring( 5, 10 )
+
+        return diaryDate === currentDate
+    }
+    return false
+})
+
+
   return(
     <ShareModalWrapper>
       { modalContent && isSchedule &&  // 일정 리스트 나열
@@ -88,11 +100,14 @@ const ShareModal = (props) => {
         <HeaderBoxWrapper color= '#FFFEFC' onClick={ ClickSchedule }>일정</HeaderBoxWrapper>
         <HeaderBoxWrapper color= 'trans' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
       </ModalHeaderWrapper>
-      <DateWrapper> { format(clickDate, 'yyyy-MM-dd' ) }</DateWrapper>
-        <PlusButton onClick={ createTodo }>+</PlusButton>
-        <TodoList/>
+      <div style={{ width: '80%', marginLeft: '10%' }}>
+        <DateWrapper>{ format( clickDate, 'yyyy-MM-dd' ) }</DateWrapper>
+          <PlusButton onClick={ createTodo }>+</PlusButton>
+          <TodoList schedules = { todos }/>
+      </div>
       </>
       }
+      
       {
         !modalContent && isSchedule &&  // 일정 작성
         <>
@@ -100,7 +115,9 @@ const ShareModal = (props) => {
         <HeaderBoxWrapper color= '#FFFEFC' onClick={ ClickSchedule }>일정</HeaderBoxWrapper>
         <HeaderBoxWrapper color= 'trans' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
       </ModalHeaderWrapper>
-        <Todo type='공유'/>
+        <div  style={{ width: '80%', marginLeft: '10%' }}>
+          <Todo type='공유'/>
+        </div>
         </>
       }
 
@@ -111,8 +128,10 @@ const ShareModal = (props) => {
             <HeaderBoxWrapper color= 'trans' onClick={ ClickSchedule }>일정</HeaderBoxWrapper>
             <HeaderBoxWrapper color= '#FFFEFC' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
         </ModalHeaderWrapper>
-        <DateWrapper> { format(clickDate, 'yyyy-MM-dd' ) }</DateWrapper>
-        <DiaryList diaries = { diaries } diaryId = { diaryId }/>
+        <div style={{ width: '80%', marginLeft: '10%' }}>
+          <DateWrapper> { format( clickDate, 'yyyy-MM-dd' ) }</DateWrapper>
+          <DiaryList diaries = { diaries } diaryId = { diaryId }/>
+        </div>
         </>
       }
     </ShareModalWrapper>

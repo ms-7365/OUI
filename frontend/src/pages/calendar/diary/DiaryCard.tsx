@@ -1,13 +1,15 @@
 import { format } from 'date-fns'
-import edit from 'src/asset/images/edit.png'
-import trash from 'src/asset/images/trash.png'
-import useStore from '../store'
 import joy from 'src/asset/images/emotion/joy.png'
+import urge from 'src/asset/images/calendar/urge.png'
+import useStore from '../store'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 
 const CardWrapper = styled.img`
   display: flex;
-  height: 100%;
+  height: 100px;
+  width: 120px;
+  margin: auto 20px;
 `
 
 const TodoInside = styled.div`
@@ -15,16 +17,15 @@ const TodoInside = styled.div`
   height: 100%;
 `
 
-const TodoWrapper = styled.div`
+const TodoWrapper = styled.div<{color: string}>`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 20%;
   font-size: 20px;
   border-radius: 10px;
-  border: 0.4px solid #000;
-  margin-bottom: 4px;
-  background-color: ${ ( props ) => props.color };
+  border: 0.4px solid ${ ( props ) => props.color };
+  margin-bottom: 10px;
 `
 
 const TodoCardHeader = styled.div`
@@ -33,47 +34,86 @@ const TodoCardHeader = styled.div`
     justify-content: space-between;
 `
 
-const TodoTitle = styled.div`
-    font-size: 24px;
+const TodoTitle = styled.div<{color: string}>`
+    font-size: 30px;
+    font-weight: bold;
+    color: ${ ( props ) => props.color };
+    margin:20px;
 `
 
 const TodoBody = styled.div`
+    display: flex;
+    justify-content: flex-end;
     font-size: 16px;
-    margin: 2% 2%;
+    margin: 2% 4%;
+    overflow: hidden;
+    color: #C62222;
 `
 
 
-const DiaryCard = ( props: TodoCardProps ) =>{
+const DiaryCard = ( props ) =>{
 
+    const navigator = useNavigate()
 
-    const { diary } = props
+    const { clickDate } = useStore();
 
+    const { diary, member } = props
+
+    const isExist = diary?.filter(( diary ) => diary?.dailyDate?.substring( 5, 10 ) === format( clickDate, 'MM-dd'))
+
+    console.log("IS EXIST", isExist)
+
+    const moveDailyDiary = () =>{
+        navigator(`/diary/${isExist.dailyDiaryId}`)
+    }
 
     return(
-        <TodoWrapper>
-            <TodoInside>
-            <CardWrapper src={ joy } />
-            <div>
-                <TodoCardHeader>
-                    <TodoTitle>
-                        'OOO'의 일기
-                    </TodoTitle>
-                    <div style={{ display:'flex', marginTop:'1%', gap: '2%'}}>
+        <div>
+            {
+                isExist && 
+                <>
+                    <TodoWrapper onClick={ moveDailyDiary } color='black'>
+                    <TodoInside>
+                    <CardWrapper src={ joy } />
+                    <div style={{width:'100%', height: '100%'}}>
+                        <TodoCardHeader>
+                            <TodoTitle color='black'>
+                                '{ member?.nickname }'의 일기
+                            </TodoTitle>
+                            <div style={{ display:'flex', marginTop:'1%', gap: '2%'}}/>
+                        </TodoCardHeader>
+                        <TodoBody>
+                                { isExist?.dailyContent }
+                        </TodoBody>
                     </div>
-                </TodoCardHeader>
-                <TodoBody>
-                        Diary Contents Diary Contents Diary Contents Diary Content....
-                </TodoBody>
+                    </TodoInside>
+                    </TodoWrapper>
+                </>
+                }
+
+                {
+                !isExist && 
+                <>
+                    <TodoWrapper color='gray'>
+                    <TodoInside>
+                    <CardWrapper/>
+                    <div style={{width:'100%', height: '100%'}}>
+                        <TodoCardHeader>
+                            <TodoTitle color='gray'>
+                                '{ member?.nickname }'의 일기
+                            </TodoTitle>
+                            <div style={{ display:'flex', marginTop:'1%', gap: '2%'}}/>
+                        </TodoCardHeader>
+                        <TodoBody>
+                               <img src={ urge } alt = '' style={{ height: '20px'}}/> 재촉하기!
+                        </TodoBody>
+                    </div>
+                    </TodoInside>
+                    </TodoWrapper>
+                </>
+                }
             </div>
-            </TodoInside>
-        </TodoWrapper>
     )
 }
 
 export default DiaryCard;
-
-
-type TodoCardProps = {
-    children?: React.ReactNode
-    diary?: string
-}

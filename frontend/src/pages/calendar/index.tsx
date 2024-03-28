@@ -4,11 +4,11 @@ import { DateList, DayList, MyModal, ShareModal }  from './components'
 import writeDiary from 'src/asset/images/image-icon/write-btn.png'
 import { LeftIcon, RightIcon } from 'src/components'
 import { useQuery } from 'react-query'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import useStore from './store';
 import staticStore from 'src/store'
-import loadMyDiary from 'src/asset/images/loadMyDiary.png'
-import goToWriteDiary from 'src/asset/images/goToWriteDiary.png'
+import loadMyDiary from 'src/asset/images/calendar/loadMyDiary.png'
+import goToWriteDiary from 'src/asset/images/calendar/goToWriteDiary.png'
 import { createPortal } from 'react-dom'
 import useDate from 'src/util/date'
 import styled from 'styled-components'
@@ -238,7 +238,7 @@ const Calendar = () =>{
           isModalOpened && type==='공유'
           && 
             <ModalPortal onClose={ closeModal }>
-              <Modal><ShareModal diaries= { calendars?.data?.members } diaryId = { diaryId }/></Modal>
+              <Modal><ShareModal diaries= { calendars?.data?.members } diaryId = { diaryId } members= { calendars?.data?.members } /></Modal>
             </ModalPortal>
         }
 

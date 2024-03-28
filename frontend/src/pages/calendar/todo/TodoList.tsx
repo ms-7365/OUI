@@ -11,9 +11,11 @@ const TodoListWrapper = styled.div`
   padding-bottom: 12px;
 `
 
-const TodoList = (props) => {
+const TodoList = ( props ) => {
 
   const { schedules } = props
+
+  console.log( 'schedule', schedules)
 
   return(
     <TodoListWrapper>

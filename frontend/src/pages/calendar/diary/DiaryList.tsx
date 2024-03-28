@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import DiaryCard from "./DiaryCard"
-import { getDayDiary } from '../api'
+import { getDayDiary, getDiaryMember } from '../api'
 import useStore from "../store"
 import { format } from "date-fns"
 import { useQuery } from "react-query"
@@ -15,7 +15,7 @@ const TodoListWrapper = styled.div`
   padding-bottom: 12px;
 `
 
-const TodoList = ( props ) => {
+const DiaryList = ( props ) => {
 
     const { diaries, diaryId } = props
 
@@ -24,7 +24,7 @@ const TodoList = ( props ) => {
     const selectedDiaries= [];
 
 
-    diaries.forEach(item => {
+    diaries.forEach( item => {
       item?.diaries.forEach( diary => {
         const date = diary.date;
         console.log("date", date)
@@ -34,20 +34,16 @@ const TodoList = ( props ) => {
       })
   })
 
-  console.log("selectedDiaries", selectedDiaries)
+  const { data: members } = useQuery( 'members', () => getDiaryMember( diaryId ))
 
-  const { data: daily } = useQuery('daily', () => getDayDiary({diaryId: diaryId, dailyId: selectedDiaries}))
-
-  console.log(daily)
+  const { data: daily } = useQuery( 'daily', () => getDayDiary({ diaryId: diaryId, dailyId: selectedDiaries }))
 
   return(
     <TodoListWrapper>
       {
-        diaries?.map( ( diary, index ) => {
+        members?.data?.map( ( member: DiaryMemberType, index ) => {
           return(
-            <DiaryCard key={ index } diary = { diary }>
-              !!
-            </DiaryCard>
+            <DiaryCard key={ index } member = { member } diary = { daily?.data }/>
           )
         })
       }
@@ -55,4 +51,10 @@ const TodoList = ( props ) => {
   )
 }
 
-export default TodoList
+export default DiaryList
+
+
+type DiaryMemberType = {
+  memberid?: number,
+  nickname?: string
+}
