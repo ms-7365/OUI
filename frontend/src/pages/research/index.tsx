@@ -1,29 +1,8 @@
-import { Box } from "@mui/material";
 import music from 'src/asset/images/research/research.png';
-import happy from 'src/asset/images/research/happyIcon.png';
-import sad from 'src/asset/images/research/sadIcon.png';
-import happyText from 'src/asset/images/research/searchHappy.png';
-import sadText from 'src/asset/images/research/searchSad.png';
-import question from 'src/asset/images/research/searchQuestion.png';
 import styled from "styled-components";
+import research1 from 'src/asset/images/image-icon/research1.png';
+import research2 from 'src/asset/images/image-icon/research2.png';
 
-
-
-
-
-const BoxWrapper = styled(Box)`
-  border: 1px solid black;
-  width: 70%;
-  margin: auto; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  margin: 2vh;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
 
 const QuestionWrapper = styled.div`
   display: flex;
@@ -31,6 +10,9 @@ const QuestionWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   width: 100%; // 전체 너비 사용
+  height: 500px;
+  padding-top:200px;
+  
 `;
 
 const Research = () => {
@@ -38,18 +20,13 @@ const Research = () => {
   return (
     <>
       <QuestionWrapper>
-        <img src={ music } alt="music" style={{ maxWidth: "100%", height: "auto", margin: '10vh' }} />
-        <BoxWrapper>
-          <img src={ sad } alt="Sad" style={{ maxWidth: "45%", height: "auto", margin: "10px" }} />
-          <img src={ sadText } alt="sadText" style={{ maxWidth: "45%", height: "auto", margin: "10px" }} />
-        </BoxWrapper>
-        <BoxWrapper>
-          <img src={ happy } alt="happy" style={{ maxWidth: "45%", height: "auto", margin: "10px" }} />
-          <img src={ happyText } alt="happyText" style={{ maxWidth: "45%", height: "auto", margin: "10px" }} />
-        </BoxWrapper>   
+        <img src={music} style={{marginBottom:'80px', marginTop:'15%'}}/>
+        <div style={{fontSize:'31px', marginBottom:'10px'}}>
+        비도 오고 유독 기분이 우중충한 하루.. 어떤 음악을 듣고 싶나요?
+        </div>
+          <img src={research1} style={{width:'78%', marginBottom:'-40px'}}/>
+          <img src={research2} style={{width:'78%'}}/>
       </QuestionWrapper>
-
-      <img src={ question } alt="question" style={{ maxWidth: "40%", height: "auto" }} />
     </>
   );
 }
