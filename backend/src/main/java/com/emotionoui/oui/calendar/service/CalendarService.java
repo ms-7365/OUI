@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,10 +81,13 @@ public class CalendarService {
 
         List<Member> memberList = memberDiaryRepository.findMemberByDiaryId(diaryId);
 
+
         return memberList;
     }
+
+    // 오늘 일기 찾기 - 공유
     @Transactional(readOnly = true)
-    public ShareDailyDiaryRes searchDailyDiary(Integer dailyId){
+    public ShareDailyDiaryRes searchDailyDiary(Integer dailyId) {
         DailyDiary dailyDiary = dailyDiaryRepository.findById(dailyId)
                 .orElseThrow(IllegalArgumentException::new);
 
@@ -91,6 +96,4 @@ public class CalendarService {
         return ShareDailyDiaryRes.of(dailyDiaryCollection, dailyDiary);
 
     }
-
-
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -27,7 +28,6 @@ public class CalendarController {
 
     private final CalendarService calendarService;
     private final AlarmService alarmService;
-    private final DiaryService diaryService;
 
     // 캘린더에서 한달간 내 일기와 일정 조회
     @GetMapping("/my")
@@ -39,8 +39,10 @@ public class CalendarController {
         Integer year = calendar.get(Calendar.YEAR);
         Integer month = calendar.get(Calendar.MONTH);
 
-        List<CalendarDiaryDto> myDiaries = calendarService.findCalendarbyDate(member.getMemberId(), year, month);
-        List<CalendarScheduleDto> myScehdule = calendarService.findMySchedulebyDate(member.getMemberId(), year, month);
+        List<CalendarDiaryDto> myDiaries =
+                calendarService.findCalendarbyDate(member.getMemberId(), year, month);
+        List<CalendarScheduleDto> myScehdule =
+                calendarService.findMySchedulebyDate(member.getMemberId(), year, month);
 
         MyCalendarRes myCalendarRes = MyCalendarRes.builder()
                 .diaries(myDiaries)
@@ -64,13 +66,13 @@ public class CalendarController {
         ArrayList<MyCalendarRes> calendars = new ArrayList<>();
 
         // findMemberByDiaryId 로 멤버 다 찾고 for문 돌리면서 shareCalendarRes의 calendarResList에 넣기
-        List<Member> memberList = new ArrayList<>();
-        List<Member> tmpMember = calendarService.findMemberByDiaryId(diaryId);
-        for(Member m: tmpMember) memberList.add(m);
+        List<Member> memberList = calendarService.findMemberByDiaryId(diaryId);
 
         for(Member m : memberList){
-            List<CalendarDiaryDto> myDiaries = calendarService.findShareDiarybyDate(m.getMemberId(), year, month, diaryId);
-            List<CalendarScheduleDto> myScehdule = calendarService.findShareSchedulebyDate(m.getMemberId(), year, month);
+            List<CalendarDiaryDto> myDiaries =
+                    calendarService.findShareDiarybyDate(m.getMemberId(), year, month, diaryId);
+            List<CalendarScheduleDto> myScehdule =
+                    calendarService.findShareSchedulebyDate(m.getMemberId(), year, month);
 
             MyCalendarRes myCalendarRes = MyCalendarRes.builder()
                     .diaries(myDiaries)
@@ -97,6 +99,8 @@ public class CalendarController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
+    // 공유일기 오늘 일기 리스트 보기
     @GetMapping("/{diaryId}/day")
     public ResponseEntity<?> searchDailyDiary(@RequestParam(name="dailyId") List<Integer> dailyIdList){
 
@@ -108,5 +112,17 @@ public class CalendarController {
         }
 
         return new ResponseEntity<>(dailyDiaryList, HttpStatus.OK);
+    }
+
+
+    // 공유 일기 멤버 리스트
+    @GetMapping("/{diaryId}/members")
+    public ResponseEntity<?>findMemberByDiaryId(@PathVariable("diaryId") Integer diaryId){
+
+        List<Member> memberList = calendarService.findMemberByDiaryId(diaryId);
+
+        List<DiaryMemberDto> memberIdList = memberList.stream().map(DiaryMemberDto::of).collect(Collectors.toList());
+
+        return  new ResponseEntity<>(memberIdList, HttpStatus.OK);
     }
 }

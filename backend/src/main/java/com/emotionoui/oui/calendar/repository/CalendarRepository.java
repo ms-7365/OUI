@@ -19,7 +19,7 @@ public interface CalendarRepository extends JpaRepository<Emotion, Integer> {
 
 
     // 공유 일기 찾기
-    @Query("SELECT e FROM Emotion e WHERE e.member.memberId = :memberId AND YEAR(e.date) = :year AND MONTH(e.date) =:month AND e.dailyDiary.diary.id =:diaryId AND e.dailyDiary.diary.isDeleted = 0 ORDER BY e.date  ")
+    @Query("SELECT e FROM Emotion e WHERE e.member.memberId = :memberId AND YEAR(e.date) = :year AND MONTH(e.date) =:month AND e.dailyDiary.diary.type =com.emotionoui.oui.diary.entity.DiaryType.공유 AND e.dailyDiary.diary.id =:diaryId AND e.dailyDiary.diary.isDeleted = 0 ORDER BY e.date  ")
     List<Emotion> findShareDiarybyDate(Integer memberId, Integer year, Integer month, Integer diaryId);
 
 
