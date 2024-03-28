@@ -77,7 +77,7 @@ const Day = ( props: DayProps ) =>{
 
     const navigator = useNavigate()
 
-    const { day, calendars, type } = props
+    const { day, calendars, type, diaryId } = props
     const { updateDate, updateModal } = useStore()
 
     const emotionPositions = [
@@ -186,5 +186,6 @@ type DayProps = {
     index?: number,
     day?: string,
     type?: string,
-    calendars: any
+    calendars: any,
+    diaryId?: number
 }

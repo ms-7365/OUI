@@ -4,24 +4,18 @@ import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'; 
-import styled from "styled-components";
+import { postAccept, postRefuse } from '../api/'
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import styled from "styled-components";
+
 
 
 const IconType = {
-    0: MailOutlineIcon,
-    1: CampaignOutlinedIcon,
-    2: ColorLensOutlinedIcon,
-    3: ModeEditOutlinedIcon,
-}
-
-//테스트용
-const TitleType = {
-    0: '공유 다이어리 초대',
-    1: '너 오늘 일기 안 써?!',
-    2: '일기 작성',
-    3: '0000 다이어리',
+    'Invite': MailOutlineIcon,
+    'SystemForcing': CampaignOutlinedIcon,
+    'FriendForcing': ColorLensOutlinedIcon,
+    'FriendDiary': ModeEditOutlinedIcon,
 }
 
 const AlarmWrapper = styled.div`
@@ -87,51 +81,50 @@ const RejectButton = styled(Button)`
     padding: 6px 12px; 
   }
 `;
+    // const Accept = () => {
+    //     postAccept
+    // }
 
-
-    const AlarmMessage = ( { alarmType, onClick }: AlarmProps  ) => {
+    const AlarmMessage = ( { Type, Title, Content ,onClick }: AlarmProps  ) => {
     
+    const SelectedIcon = IconType[ Type ];
 
-    const [ alarmTitle, setAlarmtitle ] = useState( '' );
-    const [ alarmContent, setAlarmContent ] = useState( 'gggg' );
-
-    const SelectedIcon = IconType[ alarmType ];
-    const Title = TitleType[ alarmType ]
-
-    return(
-        <>
-            <AlarmWrapper>
-                <div style={{ display:'flex', flexDirection: 'row', marginLeft: '2%' }}>
-                    <IconWrapper>
-                        <SelectedIcon />
-                    </IconWrapper>
-                    <StringWrapper>
-                        <div>{Title}</div>
-                        <div>{alarmContent}</div>
-                    </StringWrapper>
-                </div>
-                <ActionsWrapper>
-                    {alarmType === 0 ? (
-                        <>
-                            <AcceptButton variant="contained" onClick={() => console.log('수락')}>수락</AcceptButton>
-                            <RejectButton variant="outlined" onClick={() => console.log('거절')}>거절</RejectButton>
-                        </>
-                    ) : (
-                        <IconButton onClick={onClick}>
-                            <ArrowForwardIosIcon />
-                        </IconButton>
-                    )}
-                </ActionsWrapper>
-            </AlarmWrapper>
-            <hr></hr>
-        </>
-    );
+        return(
+            <>
+                <AlarmWrapper>
+                    <div style={{ display:'flex', flexDirection: 'row', marginLeft: '2%' }}>
+                        <IconWrapper>
+                            <SelectedIcon />
+                        </IconWrapper>
+                        <StringWrapper>
+                            <div>{ Title }</div>
+                            <div>{ Content }</div>
+                        </StringWrapper>
+                    </div>
+                    <ActionsWrapper>
+                        { Type === "Invite" ? (
+                            <>
+                                <AcceptButton variant="contained" onClick={() => console.log('수락')}>수락</AcceptButton>
+                                <RejectButton variant="outlined" onClick={() => console.log('거절')}>거절</RejectButton>
+                            </>
+                        ) : (
+                            <IconButton onClick={onClick}>
+                                <ArrowForwardIosIcon />
+                            </IconButton>
+                        )}
+                    </ActionsWrapper>
+                </AlarmWrapper>
+                <hr></hr>
+            </>
+        );
 
     }
 
 
 type AlarmProps = {
-    alarmType: number,
+    Type: string,
+    Title?: string,
+    Content?: string,
     onClick?: () => void,
 }
 

@@ -11,7 +11,13 @@ const useStore = create(
       setAccessToken: ( accessToken ) => set( { accessToken } ),
 
       isLogin: false,
-      setIsLogin: ( isLogin ) => set( { isLogin } )
+      setIsLogin: ( isLogin ) => set( { isLogin } ),
+
+      diaryId: null,
+      setDiaryId: ( diaryId ) => set( { diaryId } ),
+
+      dailyDiaryId: null,
+      setDailyDiaryId: ( dailyDiaryId ) => set( { dailyDiaryId } ),
 
     }),
     {
@@ -30,5 +36,11 @@ type MainStore = {
 
   isLogin: boolean
   setIsLogin: ( isLogin: boolean ) => void
+
+  diaryId: number
+  setDiaryId: ( diaryId: number ) => void
+
+  dailyDiaryId: number
+  setDailyDiaryId: ( dailyDiaryId: number ) => void
 
 }

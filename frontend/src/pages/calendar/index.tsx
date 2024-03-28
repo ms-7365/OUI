@@ -23,7 +23,7 @@ const CalendarWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   align-items: center;
   flex-direction: column
 `
@@ -167,7 +167,7 @@ const Calendar = () =>{
 
   const goDiaryWrite = () =>{
     if(type==='개인'){
-      navigator(`/diary/write/${diaryId}`, {state: {diaryId:  diaryId}})
+      navigator(`/diary/write/${diaryId}`, {state: {diaryId:  diaryId ,type: type}})
 
     }else{ //공유일 때
       setIsDiaryWrite(true)      
@@ -245,7 +245,7 @@ const Calendar = () =>{
         }
 
             <DateList/>
-            <DayList list = { days } calendars = { calendars?.data } type = { type }/>
+            <DayList list = { days } calendars = { calendars?.data } type = { type } diaryId = { diaryId }/>
           </CalendarWrapper>
   )
 }

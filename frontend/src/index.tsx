@@ -10,15 +10,15 @@ import { CookiesProvider } from 'react-cookie';
 axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.withCredentials = true;
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.tsx') // serviceWorker 파일 경로
-          .then((reg) => {
-              console.log('Service worker registered.', reg);
-          })
-          .catch(e => console.log(e));
-  });
-}
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//       navigator.serviceWorker.register('service-worker.ts') // serviceWorker 파일 경로
+//           .then((reg) => {
+//               console.log('Service worker registered.', reg);
+//           })
+//           .catch(e => console.log(e));
+//   });
+// }
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

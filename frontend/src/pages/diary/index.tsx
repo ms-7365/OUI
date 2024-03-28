@@ -1,5 +1,5 @@
 import { fabric } from 'fabric';
-import { Drawer, MusicPlayer2, Button, EditIcon, DecoIcon, DeleteIcon } from 'src/components';
+import { Drawer, MusicPlayer2, Button, EditIcon, DecoIcon, DeleteIcon, BackIcon } from 'src/components';
 import { Canvas } from './components';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import { useState, useEffect, useRef } from 'react';
@@ -77,7 +77,7 @@ const Diary = () => {
     const navigator = useNavigate();
 
     const { state } = useLocation();
-    const { dailyDiaryId, type } = state;
+    const { dailyDiaryId, type, diaryId } = state;
     
     const canvasRef = useRef(null);
     const [ canvas, setCanvas ] = useState<fabric.Canvas>(null);
@@ -90,7 +90,6 @@ const Diary = () => {
 
     useEffect(() => {
         if(!canvas) return;
-
         console.log(dailyDiary)
 
         canvas.loadFromJSON(dailyDiary?.data?.dailyContent, () => {
@@ -120,12 +119,12 @@ const Diary = () => {
         navigator(`/main`);
         // navigator(`/calendar/${diaryId}`, {state: {diaryId: diaryId}});
     }
-
     return (
         <Container>
             <Header>
-                <Drawer />
+                <BackIcon size={ 40 } onClick={() => { navigator(`/calendar`, {state: { diaryId: diaryId , type: type}}) }} />
                 {/* <Button btType='back'/> */}
+                {/* <Drawer/> */}
                 <div style={{ display: "flex", alignItems: "center" }}>
                     {(type === '공유' && isDeco) && (
                         <DecoIcon size={ 55 } onClick={() => navigator(`/diary/deco/${ dailyDiaryId }`, {state: {dailyDiaryId: dailyDiaryId, type: type}})} />

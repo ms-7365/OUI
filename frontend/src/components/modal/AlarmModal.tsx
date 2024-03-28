@@ -1,10 +1,12 @@
+import { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { AlarmMessage } from "./components";
+import { getAlarm } from "./api";
 import styled from "styled-components";
+
 
 const PaperWrapper = styled( Paper )`
   position: absolute;
@@ -57,8 +59,21 @@ const DeleteWrapper = styled.div`
 `;
 
 function AlarmModal({ isOpen, closeModal }) {
+
+  const [ alarmList, setAlarmList ] = useState([ ]);
+
+
+  useEffect(()=>{
+    getAlarm().then((res)=>{
+      setAlarmList([ ...res.data ])
+      console.log(alarmList);
+    }).catch((err)=>{
+      console.log( err )
+    })
+  }, [isOpen])
+
   return (
-    <Modal open={isOpen} onClose={closeModal}>
+    <Modal open={ isOpen } onClose={closeModal}>
       <PaperWrapper>
         <IconButton onClick={closeModal} sx={{ position: 'absolute', right: 16, top: 8, zIndex: 2 }}>
           <CloseIcon />
@@ -70,10 +85,11 @@ function AlarmModal({ isOpen, closeModal }) {
             <DeleteWrapper onClick={() => console.log('삭제삭제')}>전체삭제</DeleteWrapper>          
           </MainWrapper>
           <hr />
-          <AlarmMessage alarmType={0}></AlarmMessage>
-          <AlarmMessage alarmType={1}></AlarmMessage>
-          <AlarmMessage alarmType={2}></AlarmMessage>
-          <AlarmMessage alarmType={3}></AlarmMessage>
+          {
+            alarmList.map((alarm, index) => (
+              <AlarmMessage key={index} Type={ alarm.alarmContentType } Title={ alarm.title } Content={ alarm.content }  />
+            ))
+          }
         </StyledPaper>
       </PaperWrapper>
     </Modal>

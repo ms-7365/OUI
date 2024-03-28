@@ -13,13 +13,13 @@ importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-comp
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-apiKey: "AIzaSyD-iDPmb0MyrFHqdEKVdaFs9V9vT4Rc-2w",
-authDomain: "phocaforme.firebaseapp.com",
-projectId: "phocaforme",
-storageBucket: "phocaforme.appspot.com",
-messagingSenderId: "250202437051",
-appId: "1:250202437051:web:14ab6bb0445aad9b08009e",
-measurementId: "G-9EZG3PJXLT"
+    apiKey: "AIzaSyC4rZM4zSMnMeEfwTQtwBcLMjRgkAegLqc",
+    authDomain: "project-oui.firebaseapp.com",
+    projectId: "project-oui",
+    storageBucket: "project-oui.appspot.com",
+    messagingSenderId: "564919296989",
+    appId: "1:564919296989:web:6a19bdce8eda1836af0c34",
+    measurementId: "G-QZPB4ZZJVX"
 };
 
 // Initialize Firebase
