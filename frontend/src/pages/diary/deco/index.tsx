@@ -36,10 +36,6 @@ const DiaryDeco = () => {
     const [ canvas, setCanvas ] = useState(null);
     const [ isFontLoaded, setIsFontLoaded ] = useState(false);
     const [ activeTool, setActiveTool ] = useState("image");
-
-    const [isInitialLoading,setIsInitialLoading] = useState(false);
-
-
     
     // const storedDataString = localStorage.getItem('userStorage');
     // const storedData = JSON.parse(storedDataString);

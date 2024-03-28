@@ -49,8 +49,8 @@ const BottomSheet = ( props: BottomSheetProps ) => {
 
   useEffect(() => {
     if(!canvas) return;
-    
-    if(textboxRef.current) {
+
+    if(activeTool === 'textbox' && textboxRef && textboxRef.current) {
       setTextboxProps({
         selectedFont: String(textboxRef.current.fontFamily),
         fontWeight: String(textboxRef.current.fontWeight),
@@ -59,7 +59,7 @@ const BottomSheet = ( props: BottomSheetProps ) => {
       });
     }
 
-    if(canvas.isDrawingMode) {
+    if(activeTool === 'drawing' && canvas.isDrawingMode) {
       canvas.freeDrawingBrush.width = penWidth;
       canvas.freeDrawingBrush.color = penColor;
     }

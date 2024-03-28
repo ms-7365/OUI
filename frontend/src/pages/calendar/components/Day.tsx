@@ -136,9 +136,10 @@ const Day = ( props: DayProps ) =>{
         if ( type === '개인' ) {
 
             navigator(`/diary/${diary.diary.daily_diary_id}`, {state : { dailyDiaryId: diary.diary.daily_diary_id, type: diary.diary.type }})
-            } else {
-                updateDate( date )
-                updateModal()
+        } else {
+                navigator(`/diary/${diary.diary.daily_diary_id}`, {state : { dailyDiaryId: diary.diary.daily_diary_id, type: diary.diary.type }})
+                // updateDate( date )
+                // updateModal()
             }
         }
 
