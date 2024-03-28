@@ -64,8 +64,10 @@ public class AuthController {
             Map<String, String> tokenMap = new HashMap<>();
             tokenMap.put("accessToken", accessToken);
 
+            String signupMSG = kakaoMemberCheckAndRegister(kakaoLoginRes);
             // 가입된 유저 확인 & 회원가입
-            kakaoMemberCheckAndRegister(kakaoLoginRes);
+
+            tokenMap.put("signupMSG", signupMSG);
 
             return ResponseEntity.ok().body(tokenMap);
 
@@ -95,7 +97,7 @@ public class AuthController {
      * @param kakaoLoginRes
      * @return
      */
-    private void kakaoMemberCheckAndRegister(KakaoLoginRes kakaoLoginRes) {
+    private String kakaoMemberCheckAndRegister(KakaoLoginRes kakaoLoginRes) {
 
         String email = kakaoLoginRes.getEmail();
 
@@ -108,10 +110,9 @@ public class AuthController {
             }
         }
         String memberNickname = email.substring(0,stop);
-//        LocalDateTime regdate = LocalDateTime.now();
 
         Member kakaoMember = memberRepository.findByEmail(email).orElse(null);
-
+        String signupMSG = null;
         // 가입되지 않은 회원이라면 회원가입
         if (kakaoMember == null) {
             kakaoMember = new Member(email, memberNickname);
@@ -120,6 +121,8 @@ public class AuthController {
 
             // 개인 다이어리 생성
             authServiceImpl.createPrivateDiary(kakaoMember);
+
+            signupMSG = "회원가입한 사용자입니다. 설문조사 페이지로 이동해주세요.";
         }
 
         // 탈퇴한 회원이라면 가입처리 후 개인 다이어리 생성
@@ -129,7 +132,10 @@ public class AuthController {
 
             // 개인 다이어리 생성
             authServiceImpl.createPrivateDiary(kakaoMember);
+
+            signupMSG = "회원가입한 사용자입니다. 설문조사 페이지로 이동해주세요.";
         }
+        return signupMSG;
     }
 
     /**
