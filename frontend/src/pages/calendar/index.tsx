@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { addDays, addMonths, format, subMonths } from 'date-fns'
 import { DateList, DayList, MyModal, ShareModal }  from './components'
-import writeDiary from 'src/asset/images/writeDiary.png'
+import writeDiary from 'src/asset/images/image-icon/write-btn.png'
 import { LeftIcon, RightIcon } from 'src/components'
 import { useMutation, useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -14,24 +14,25 @@ import styled from 'styled-components'
 import { getCalendar, getShareCalendar } from './api';
 
 const Title = styled.div`
-    font-size: 20px;
+    font-size: 35px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 `
 
 const CalendarWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   align-items: center;
-  flex-direction: column
+  flex-direction: column;
 `
 
 const CalendarHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-top:8%;
 `
 
 const CalendarHeaderRightWrapper =styled.button `
@@ -50,7 +51,7 @@ const CalendarHeaderMiddleWrapper = styled.div`
   justify-content: center;
   gap: 30px; 
   margin-top: 10px;
-  margin-left: 100px;
+  margin-left: 18%;
   flex: 1;
 `
 
@@ -76,7 +77,7 @@ const WriteModalBackground = styled.div`
 const Modal = styled.div`
   height: 50%;
   width: 100%;
-  background-color: #FFF;
+  background-color: #FFFEFC;
   position: fixed;
   bottom: 0;
   box-shadow: 0px -3px 0px 0px rgba(211, 211, 211, 0.2);
@@ -167,7 +168,7 @@ const Calendar = () =>{
 
   const goDiaryWrite = () =>{
     if(type==='개인'){
-      navigator(`/diary/write/${diaryId}`, {state: {diaryId:  diaryId ,type: type}})
+      navigator(`/diary/write/${diaryId}`, {state: {diaryId:  diaryId}})
 
     }else{ //공유일 때
       setIsDiaryWrite(true)      
@@ -212,15 +213,15 @@ const Calendar = () =>{
   return(
           <CalendarWrapper>
             <CalendarHeaderWrapper>
+              <></>
             <CalendarHeaderMiddleWrapper>
-              <LeftIcon size= { 20 } onClick={ movePrevMonth }/>
+              <LeftIcon size= { 31 } onClick={ movePrevMonth }/>
               <Title>{ format( currentMonth, 'yyyy' )}년 { format( currentMonth, 'M' )}월</Title>
-              <RightIcon size= { 20 } onClick={ moveNextMonth }/>
-            </CalendarHeaderMiddleWrapper>
+              <RightIcon size= { 31 } onClick={ moveNextMonth }/>
             <CalendarHeaderRightWrapper onClick={ goDiaryWrite }>
-                <img src={ writeDiary } alt='' style={{ height: '40px'}}/>
-                <div style={{ marginTop: '10px', borderBottom: '1px solid', paddingBottom:'2px'}}>일기 쓰기</div>
+                <img src={ writeDiary } alt='' style={{ height: '50px'}}/>
             </CalendarHeaderRightWrapper>
+            </CalendarHeaderMiddleWrapper>
             </CalendarHeaderWrapper>
             
         { 
@@ -245,7 +246,7 @@ const Calendar = () =>{
         }
 
             <DateList/>
-            <DayList list = { days } calendars = { calendars?.data } type = { type } diaryId = { diaryId }/>
+            <DayList list = { days } calendars = { calendars?.data } type = { type }/>
           </CalendarWrapper>
   )
 }

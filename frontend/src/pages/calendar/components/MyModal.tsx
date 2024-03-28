@@ -12,6 +12,7 @@ const MyModalWrapper = styled.div`
   height: 100%;
   margin-left: 10%;
   overflow: auto;
+  background-color: #FFFEFC;
 `
 const ModalHeaderWrapper = styled.div`
   display: flex;
@@ -25,7 +26,7 @@ const PlusButton = styled.button`
   border: 1px solid;
   height: 10%;
   width: 100%;
-  background-color: #fff;
+  background-color: white;
   border-radius: 10px;
   font-size: 1.5rem;
   cursor: pointer;

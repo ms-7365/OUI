@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import rightButton from 'src/asset/images/image-icon/right-btn.png'
 
 const ButttonWrapper = styled.button<{ size : number }>`
     box-sizing: border-box;
@@ -17,7 +18,7 @@ const RightIcon = ( props: IconProps ) => {
 
     return(
         <ButttonWrapper size={ size } onClick={ onClick }>
-          <img width={ size } height={ size } src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/external-right-arrows-those-icons-lineal-those-icons-1.png" alt="external-right-arrows-those-icons-lineal-those-icons-1"/>
+          <img width={ size } height={ size } src={rightButton} alt="rightButton"/>
         </ButttonWrapper>
     )
 }

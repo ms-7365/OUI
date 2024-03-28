@@ -10,8 +10,8 @@ const DayListWrapper = styled.div`
   box-sizing: border-box;
   flex-direction: column;
   width: 100%;
+  align-items: center;
   justify-content: space-around;
-  margin-top: 10px;
   padding-bottom: 50px;
 `
 
@@ -19,6 +19,7 @@ const WeekWrapper = styled.div`
   display: flex;
   box-sizing: border-box;
   flex-direction: row;
+  width: 85%
 `
 
 const DayList = ( props ) => {

@@ -14,10 +14,11 @@ const DayWrapper = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
-  height: 200px;
+  height: 140px;
   border-bottom: 2px solid #000;
   padding: 10px 5px;
   font-size: 20px;
+  background-color:white
 `
 
 const DayClick = styled.button`

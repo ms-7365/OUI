@@ -51,7 +51,7 @@ const PlusButton = styled.button`
   border: 1px solid;
   height: 10%;
   width: 100%;
-  background-color: #fff;
+  background-color: white;
   border-radius: 6px;
   font-size: 1.5rem;
   cursor: pointer;
@@ -85,7 +85,7 @@ const ShareModal = (props) => {
       { modalContent && isSchedule &&  // 일정 리스트 나열
       <>
       <ModalHeaderWrapper>
-        <HeaderBoxWrapper color= 'white' onClick={ ClickSchedule }>일정</HeaderBoxWrapper>
+        <HeaderBoxWrapper color= '#FFFEFC' onClick={ ClickSchedule }>일정</HeaderBoxWrapper>
         <HeaderBoxWrapper color= 'trans' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
       </ModalHeaderWrapper>
       <DateWrapper> { format(clickDate, 'yyyy-MM-dd' ) }</DateWrapper>
@@ -97,7 +97,7 @@ const ShareModal = (props) => {
         !modalContent && isSchedule &&  // 일정 작성
         <>
         <ModalHeaderWrapper>
-        <HeaderBoxWrapper color= 'white' onClick={ ClickSchedule }>일정</HeaderBoxWrapper>
+        <HeaderBoxWrapper color= '#FFFEFC' onClick={ ClickSchedule }>일정</HeaderBoxWrapper>
         <HeaderBoxWrapper color= 'trans' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
       </ModalHeaderWrapper>
         <Todo type='공유'/>
@@ -109,7 +109,7 @@ const ShareModal = (props) => {
         <>
         <ModalHeaderWrapper>
             <HeaderBoxWrapper color= 'trans' onClick={ ClickSchedule }>일정</HeaderBoxWrapper>
-            <HeaderBoxWrapper color= 'white' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
+            <HeaderBoxWrapper color= '#FFFEFC' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
         </ModalHeaderWrapper>
         <DateWrapper> { format(clickDate, 'yyyy-MM-dd' ) }</DateWrapper>
         <DiaryList diaries = { diaries } diaryId = { diaryId }/>
