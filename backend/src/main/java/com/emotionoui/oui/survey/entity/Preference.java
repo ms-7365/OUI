@@ -23,12 +23,14 @@ public class Preference {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "preference_id")
     private Integer preferenceId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private String type;
+    private PreferenceType type;
 
     @CreatedDate
     @LastModifiedDate
@@ -44,12 +46,11 @@ public class Preference {
     }
 
     @Builder
-    public Preference(Integer preferenceId, Member member, String type, LocalDateTime createdAt, Integer isDeleted) {
+    public Preference(Integer preferenceId, Member member, PreferenceType type, LocalDateTime createdAt, Integer isDeleted) {
         this.preferenceId = preferenceId;
         this.member = member;
         this.type = type;
         this.createdAt = createdAt;
         this.isDeleted = isDeleted;
-//        member.getPreferenceList().add(this);
     }
 }

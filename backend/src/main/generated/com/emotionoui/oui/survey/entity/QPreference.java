@@ -30,7 +30,7 @@ public class QPreference extends EntityPathBase<Preference> {
 
     public final NumberPath<Integer> preferenceId = createNumber("preferenceId", Integer.class);
 
-    public final StringPath type = createString("type");
+    public final EnumPath<PreferenceType> type = createEnum("type", PreferenceType.class);
 
     public QPreference(String variable) {
         this(Preference.class, forVariable(variable), INITS);

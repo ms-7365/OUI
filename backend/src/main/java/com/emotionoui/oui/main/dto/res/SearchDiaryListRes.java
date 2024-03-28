@@ -6,13 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 @Builder
 @Getter
 @ToString
 @AllArgsConstructor
-public class SearchDiaryListRes {
+public class SearchDiaryListRes implements Comparable<SearchDiaryListRes> {
 
     private int diaryId;
 
@@ -36,5 +37,10 @@ public class SearchDiaryListRes {
         this.type = type;
         this.createdAt = createdAt;
         this.orders= orders;
+    }
+
+    @Override
+    public int compareTo(@NotNull SearchDiaryListRes o) {
+        return Integer.compare(this.orders,o.orders);
     }
 }

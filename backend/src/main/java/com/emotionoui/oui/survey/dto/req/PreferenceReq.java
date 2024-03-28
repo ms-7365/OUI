@@ -19,12 +19,4 @@ public class PreferenceReq {
 
     private String type;
 
-    public Preference toEntity(Member member, String type) {
-        return Preference.builder()
-                .member(member)
-                .type(type)
-                .createdAt(LocalDateTime.now())
-                .isDeleted(0)
-                .build();
-    }
 }

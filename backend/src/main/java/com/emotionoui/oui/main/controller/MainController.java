@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -33,6 +35,7 @@ public class MainController {
     @GetMapping
     public ResponseEntity<List<SearchDiaryListRes>> getDiaries(@AuthenticationPrincipal Member member){
         List<SearchDiaryListRes> memberDiaries = querydslRepositoryCustom.findDiariesByMemberId(member.getMemberId());
+        Collections.sort(memberDiaries);
         return ResponseEntity.ok(memberDiaries);
     }
 
