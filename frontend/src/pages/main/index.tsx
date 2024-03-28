@@ -8,6 +8,7 @@ import { getDiary, getMember, postCreateDiary, postDeviceToken } from './api';
 import ya from 'src/asset/images/ya.jpg';
 import { useQuery } from 'react-query'
 import Slider from "react-slick";
+import useStore from 'src/store'
 import { useNavigate } from 'react-router-dom'
 import { messaging } from 'src/firebase'; 
 import { getToken } from "firebase/messaging";
@@ -155,7 +156,8 @@ const Main = () => {
   };
 
   const navigator = useNavigate()
-
+  
+  const { setDiaryId, setType } = useStore()
   const [ isModalOpen, setIsModalOpen ] = useState( false );
   const [ diaryList, setDiaryList ] = useState( [] );
   const [ userName, setUserName ] = useState( "" );
@@ -206,10 +208,12 @@ const Main = () => {
   });
 
   const moveDiary = ( type: string, id: number ) => {
-    type=='개인' && 
-    navigator('/calendar', {state : {diaryId: id, type: type}})
-    type=='공유' && 
-    navigator(`/calendar/${ id }`, {state : {diaryId: id, type: type}})
+    setDiaryId( id )
+    setType( type )
+    type === '개인' &&
+      navigator('/calendar') 
+    type === '공유' && 
+    navigator(`/calendar/${ id }`)
   }
 
   const { data: diaryData, refetch: refetchDiary } = useQuery(['diaryData'], getDiary, {

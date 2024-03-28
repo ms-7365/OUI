@@ -4,6 +4,7 @@ import { DateSelect, BottomSheet, Canvas } from '../components';
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react';
 import { useMutation } from 'react-query';
+import useStore from 'src/store';
 import { postDiary } from '../api';
 import styled from 'styled-components';
 
@@ -26,9 +27,9 @@ const DiaryWrite = () => {
 
     const navigator = useNavigate();
 
-    const { state } = useLocation();
-    const { diaryId, type } = state;
-        
+    // const { state } = useLocation();
+    // const { diaryId, type } = state;
+    const { diaryId, type } = useStore()
     // const diaryId = 39;
     // const type = '공유';
 
@@ -71,9 +72,11 @@ const DiaryWrite = () => {
     const goCalendar = () => {
         console.log(type)
         if(type === '개인') {
-            navigator(`/calendar`, {state: {diaryId: diaryId, type: type}});
+            // navigator(`/calendar`, {state: {diaryId: diaryId, type: type}});
+            navigator(`/calendar`);
         } else {
-            navigator(`/calendar/${diaryId}`, {state: {diaryId: diaryId, type: type}});
+            // navigator(`/calendar/${diaryId}`, {state: {diaryId: diaryId, type: type}});
+            navigator(`/calendar/${diaryId}`);
         }
     }
 

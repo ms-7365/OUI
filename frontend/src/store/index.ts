@@ -16,6 +16,9 @@ const useStore = create(
       diaryId: null,
       setDiaryId: ( diaryId ) => set( { diaryId } ),
 
+      type: '',
+      setType: ( type ) => set( { type } ),
+
       dailyDiaryId: null,
       setDailyDiaryId: ( dailyDiaryId ) => set( { dailyDiaryId } ),
 
@@ -39,6 +42,9 @@ type MainStore = {
 
   diaryId: number
   setDiaryId: ( diaryId: number ) => void
+
+  type: string
+  setType: ( type: string ) => void
 
   dailyDiaryId: number
   setDailyDiaryId: ( dailyDiaryId: number ) => void

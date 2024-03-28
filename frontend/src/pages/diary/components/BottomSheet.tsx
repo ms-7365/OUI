@@ -32,6 +32,7 @@ const Tab = styled.button`
     cursor: pointer;
     background-color: transparent;
     font-size: 24px;
+    font-family: 
 `
 
 const Content = styled.div`

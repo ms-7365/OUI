@@ -17,10 +17,10 @@ import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Switch } from "./components/Switch";
 import { BottomNavi } from "src/components/control/BottomNavi";
+import useStore from 'src/store'
 import useDate from 'src/util/date'
 import Monthly from "./components/Monthly/Monthly";
 import styled from 'styled-components';
-
 
 ChartJS.register(
     CategoryScale,
@@ -87,7 +87,8 @@ const Analysis = () => {
         datasets: [],
     } ); 
     const [ userName, setUserName ] = useState('')
-    const { currentMonth, setCurrentMonth, calculateDateRange } = useDate() 
+    const { currentMonth } = useDate() 
+    const { diaryId } = useStore()
     const today = format(currentMonth, 'yyyy-MM-dd')
     const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -103,18 +104,22 @@ const Analysis = () => {
 
 
     useEffect(()=>{
-        getWeekly({ diaryId:19, date: today }).then(( res )=>{
+        getWeekly({ diaryId:diaryId, date: today }).then(( res )=>{
             const tempDayLabel = [];
             const tempHappyData = [];
             const tempSadData = [];
 
-            Object.keys(res.data).sort().forEach((key,value)=>{
-                tempHappyData.push( res.data[key][0] )
-                tempSadData.push( res.data[key][1] )
-                console.log( res.data[key][1] )
-                const temp = new Date(key)
-                tempDayLabel.push(daysOfWeek[temp.getDay()])
-            })
+            //데이터가 있을 때
+            if(res !== undefined ){
+                Object.keys(res.data).sort().forEach((key,value)=>{
+                    tempHappyData.push( res.data[key][0] )
+                    tempSadData.push( res.data[key][1] )
+                    console.log( res.data[key][1] )
+                    const temp = new Date(key)
+                    tempDayLabel.push(daysOfWeek[temp.getDay()])
+                })
+            }
+
 
 
             setHappyDataSet({
@@ -142,6 +147,8 @@ const Analysis = () => {
                     pointBorderColor: "#88B3E2",
                 }]
               });
+        }).catch(( err ) => {
+            console.log( err )
         })
         getMember();
 

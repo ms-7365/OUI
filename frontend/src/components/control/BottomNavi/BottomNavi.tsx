@@ -1,9 +1,10 @@
 import * as React from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import MainLogo from 'src/asset/images/image-icon/logo.png';
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 
 const BottomNaviWrapper = styled( BottomNavigation )`
@@ -21,6 +22,11 @@ const BottomNaviWrapper = styled( BottomNavigation )`
 
 export default function BottomNavi() {
   const [ value, setValue ] = React.useState(0);
+  const navigator = useNavigate()
+
+  const goMain = () => {
+    navigator('/main')
+  }
 
   return (
     <>
@@ -31,9 +37,10 @@ export default function BottomNavi() {
         setValue( newValue );
       }}
     >
-      <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-      <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-      <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+      <BottomNavigationAction  icon={<PersonOutlineOutlinedIcon />} />
+      <BottomNavigationAction icon={<img src={ MainLogo } style={{ width: 24, height: 24 }}/>} onClick={ goMain } />
+      {/*  알람 띄우는 거 집가서 */}
+      <BottomNavigationAction  icon={<NotificationsNoneOutlinedIcon />} />
     </BottomNaviWrapper>
     </>
 

@@ -4,8 +4,9 @@ import { Canvas } from './components';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation } from 'react-query';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getDiary, deleteDiary } from './api';
+import useStore from 'src/store'
 import styled from 'styled-components';
 
 const Header = styled.div`
@@ -76,9 +77,11 @@ const Comment = styled.div`
 const Diary = () => {
     const navigator = useNavigate();
 
-    const { state } = useLocation();
-    const { dailyDiaryId, type, diaryId } = state;
+    // const { state } = useLocation();
+    // const { dailyDiaryId, type, diaryId } = state;
     
+    const { diaryId, dailyDiaryId, type  } = useStore(); 
+
     const canvasRef = useRef(null);
     const [ canvas, setCanvas ] = useState<fabric.Canvas>(null);
     const [ isFontLoaded, setIsFontLoaded ] = useState<boolean>(false);
@@ -99,7 +102,7 @@ const Diary = () => {
             });
         });
 
-        if(type === '공유' && isDeco) {
+        if( type === '공유' && isDeco ) {
             // 공유일기에서 '꾸민 일기'일 경우에만 랜더링
             const decoObjects = dailyDiary ? JSON.parse(dailyDiary?.data?.decoration) : null;
             fabric.util.enlivenObjects(decoObjects, (enlivenedObjects: any) => {

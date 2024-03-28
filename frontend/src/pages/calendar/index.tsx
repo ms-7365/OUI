@@ -3,9 +3,10 @@ import { addDays, addMonths, format, subMonths } from 'date-fns'
 import { DateList, DayList, MyModal, ShareModal }  from './components'
 import writeDiary from 'src/asset/images/image-icon/write-btn.png'
 import { LeftIcon, RightIcon } from 'src/components'
-import { useMutation, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useStore from './store';
+import staticStore from 'src/store'
 import loadMyDiary from 'src/asset/images/loadMyDiary.png'
 import goToWriteDiary from 'src/asset/images/goToWriteDiary.png'
 import { createPortal } from 'react-dom'
@@ -108,15 +109,15 @@ const Calendar = () =>{
 
   const navigator = useNavigate()
 
-  const { state }  = useLocation(); // 메인에서 넘어온 데이터 사용
-  const { diaryId, type } = state;
-  console.log( diaryId, type );
+  // const { state }  = useLocation(); // 메인에서 넘어온 데이터 사용
+  // const { diaryId, type } = state;
+  // console.log( diaryId, type );
 
   const [ isDiaryWrite, setIsDiaryWrite ] = useState<boolean>(false); // 일기쓰기 버튼 클릭시 개인/공유 분리
   const { currentMonth, setCurrentMonth, calculateDateRange } = useDate() // 달력 옆 버튼
   const { startDate, endDate } = calculateDateRange()
-  const { isModalOpened, updateModal} = useStore() // Day 컴포넌트에서 업데이트 된 상태 가져오기
-
+  const { isModalOpened, updateModal } = useStore() // Day 컴포넌트에서 업데이트 된 상태 가져오기
+  const { diaryId, type } = staticStore();
   const html = document.querySelector( 'html' )
 
   const closeModal = () => { 
@@ -146,7 +147,8 @@ const Calendar = () =>{
   }
 
   const goWrite = () => {
-    navigator(`/diary/write/${diaryId}`, { state: { diaryId:  diaryId, type: type }})
+    // navigator(`/diary/write/${diaryId}`, { state: { diaryId:  diaryId, type: type }})
+    navigator(`/diary/write/${diaryId}`)
   }
 
   const WriteModalPortal = ({ onClose  }) => { 
@@ -168,8 +170,8 @@ const Calendar = () =>{
 
   const goDiaryWrite = () =>{
     if(type==='개인'){
-      navigator(`/diary/write/${diaryId}`, {state: {diaryId:  diaryId}})
-
+      // navigator(`/diary/write/${diaryId}`, {state: {diaryId:  diaryId ,type: type}})
+      navigator(`/diary/write/${diaryId}`)
     }else{ //공유일 때
       setIsDiaryWrite(true)      
     }
