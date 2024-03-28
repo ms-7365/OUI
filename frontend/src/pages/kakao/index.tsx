@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { getLogin } from './api'
+import { getLogin, getPreference } from './api'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import useStore from 'src/store'
@@ -11,6 +11,12 @@ const Kakao = () => {
   const { setAccessToken, setIsLogin } = useStore()
 
   const isPost = useRef<boolean>(false)
+
+  const isNew = () => {
+    getPreference().then((res)=>{
+      res.data ? navigator('/main') : navigator('/research')
+    })
+  }
   
   // useMutation => 비동기 작업 처리
   const kakaoMutations = useMutation( getLogin, {
@@ -18,7 +24,8 @@ const Kakao = () => {
       setAccessToken( res?.data?.accessToken ) // 어떤 속성이 null 또는 undefined일 경우 에러방지하고 그냥 undefined 반환
 
       setIsLogin( true )
-      navigator('/main')
+      isNew()
+      // navigator('/main')
 
     },
     onError: ( err ) => {

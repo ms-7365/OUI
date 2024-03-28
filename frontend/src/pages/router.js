@@ -16,6 +16,7 @@ export const routes = [
     { path: 'login' },
     { path: 'research'},
     { path: 'analysis'},
+    { path: 'shareanalysis' },
     { path: 'kakao', dynamicPath: 'auth/login/kakao'},
 ]
 
