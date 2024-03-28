@@ -1,0 +1,7 @@
+dataset/
+model/onnx/
+model/pytorch/
+model/openvino/
+
+
+__pycache__
