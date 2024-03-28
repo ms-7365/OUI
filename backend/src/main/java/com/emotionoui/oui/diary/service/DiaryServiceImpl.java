@@ -8,6 +8,7 @@ import com.emotionoui.oui.diary.dto.req.CreateDailyDiaryReq;
 import com.emotionoui.oui.diary.dto.req.DecorateDailyDiaryReq;
 import com.emotionoui.oui.diary.dto.req.UpdateDailyDiaryReq;
 import com.emotionoui.oui.diary.dto.req.UpdateDiarySettingReq;
+import com.emotionoui.oui.diary.dto.res.DecorateDailyDiaryRes;
 import com.emotionoui.oui.diary.dto.res.SearchDailyDiaryRes;
 import com.emotionoui.oui.diary.dto.res.SearchDiarySettingRes;
 import com.emotionoui.oui.diary.entity.DailyDiary;
@@ -367,21 +368,31 @@ public class DiaryServiceImpl implements DiaryService{
         }
     }
 
-
     // 일기 꾸미기
-    public String decorateDailyDiary(DecorateDailyDiaryReq req, Integer dailyId){
+    public DecorateDailyDiaryRes decorateDailyDiary(DecorateDailyDiaryReq req, Member member){
+        DecorateDailyDiaryRes res = DecorateDailyDiaryRes.builder()
+                .memberId(member.getMemberId())
+                .nickname(member.getNickname())
+                .decoration(req.getDecoration())
+                .build();
 
-        DailyDiary dailyDiary = dailyDiaryRepository.findById(dailyId)
-                .orElseThrow(IllegalArgumentException::new);
-
-        DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
-                .orElseThrow(IllegalArgumentException::new);
-
-        dailyDiaryCollection.setDecoration(req.getDecoration());
-        dailyDiaryMongoRepository.save(dailyDiaryCollection);
-
-        return dailyDiaryCollection.getId().toString();
+        return res;
     }
+
+
+//    public String decorateDailyDiary(DecorateDailyDiaryReq req, Integer dailyId){
+//
+//        DailyDiary dailyDiary = dailyDiaryRepository.findById(dailyId)
+//                .orElseThrow(IllegalArgumentException::new);
+//
+//        DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
+//                .orElseThrow(IllegalArgumentException::new);
+//
+//        dailyDiaryCollection.setDecoration(req.getDecoration());
+//        dailyDiaryMongoRepository.save(dailyDiaryCollection);
+//
+//        return dailyDiaryCollection.getId().toString();
+//    }
 
     // 다이어리 나가기
     @Override

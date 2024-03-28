@@ -5,6 +5,7 @@ import com.emotionoui.oui.diary.dto.req.CreateDailyDiaryReq;
 import com.emotionoui.oui.diary.dto.req.DecorateDailyDiaryReq;
 import com.emotionoui.oui.diary.dto.req.UpdateDailyDiaryReq;
 import com.emotionoui.oui.diary.dto.req.UpdateDiarySettingReq;
+import com.emotionoui.oui.diary.dto.res.DecorateDailyDiaryRes;
 import com.emotionoui.oui.diary.dto.res.SearchDailyDiaryRes;
 import com.emotionoui.oui.diary.dto.res.SearchDiarySettingRes;
 import com.emotionoui.oui.diary.entity.Diary;
@@ -12,15 +13,22 @@ import com.emotionoui.oui.diary.exception.NotExitPrivateDiaryException;
 import com.emotionoui.oui.diary.repository.DiaryRepository;
 import com.emotionoui.oui.diary.service.DiaryService;
 import com.emotionoui.oui.member.entity.Member;
+import com.emotionoui.oui.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -33,6 +41,7 @@ public class DiaryController {
 
     private final DiaryService diaryService;
     private final DiaryRepository diaryRepository;
+    private final MemberRepository memberRepository;
 
     // , @AuthenticationPrincipal Member member
     // 일기 게시글 작성하기
@@ -93,11 +102,29 @@ public class DiaryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+//    // 일기 꾸미기
+//    @PostMapping("/decorate/{dailyId}")
+//    public ResponseEntity<?> decorateDailyDiary(@RequestBody DecorateDailyDiaryReq req, @PathVariable("dailyId") Integer dailyId) throws IOException, ExecutionException, InterruptedException {
+//        return new ResponseEntity<String>(diaryService.decorateDailyDiary(req, dailyId), HttpStatus.OK);
+//    }
+
     // 일기 꾸미기
-    @PostMapping("/decorate/{dailyId}")
-    public ResponseEntity<?> decorateDailyDiary(@RequestBody DecorateDailyDiaryReq req, @PathVariable("dailyId") Integer dailyId) throws IOException, ExecutionException, InterruptedException {
-        return new ResponseEntity<String>(diaryService.decorateDailyDiary(req, dailyId), HttpStatus.OK);
+    // '/decorate/{dailyId}' 로 메시지를 보내면 'sub/decorate/daily{dailyId}' 로 응답이 전송됨
+    // MessageMapping로 메세지가 들어오면 SendTo로 저 url을 구독한 사람들에게 다 보내주겠다
+    @MessageMapping("/decorate/{dailyId}") // 클라이언트에서 보낸 메시지를 받을 메서드 지정
+    @SendTo("sub/decorate/{dailyId}") // 메서드가 처리한 결과를 보낼 목적지 지정
+    public ResponseEntity<?> decorateDailyDiary(@DestinationVariable Integer dailyId, Principal principal,
+                                                @Payload DecorateDailyDiaryReq req) throws IOException, ExecutionException, InterruptedException {
+        Member member = (Member)((Authentication) principal).getPrincipal();
+        System.out.println(member.getMemberId());
+        System.out.println(diaryService.decorateDailyDiary(req, member));
+        return new ResponseEntity<DecorateDailyDiaryRes>(diaryService.decorateDailyDiary(req, member), HttpStatus.OK);
     }
+
+    /* @DestinationVariable: 메시지의 목적지에서 변수를 추출
+       @Payload: 메시지 본문(body)의 내용을 메서드의 인자로 전달할 때 사용
+       (클라이언트가 JSON 형태의 메시지를 보냈다면, 이를 decorateMessage 객체로 변환하여 메서드에 전달)
+    */
 
     // 다이어리 나가기
     @Transactional
