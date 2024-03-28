@@ -42,6 +42,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -282,6 +285,26 @@ public class DiaryServiceImpl implements DiaryService{
     public SearchDailyDiaryRes searchDailyDiary(Integer dailyId, Integer memberId){
         DailyDiary dailyDiary = dailyDiaryRepository.findById(dailyId)
                 .orElseThrow(IllegalArgumentException::new);
+
+        DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
+                .orElseThrow(IllegalArgumentException::new);
+
+        return SearchDailyDiaryRes.of(dailyDiaryCollection, dailyDiary, memberId);
+    }
+
+    // 일기 날짜로 조회하기
+    public SearchDailyDiaryRes searchDailyDiaryByDate(Integer diaryId, String date, Integer memberId){
+        LocalDate localDate = LocalDate.parse(date);
+
+        // LocalTime 생성 (원하는 시간으로 설정)
+        LocalTime localTime = LocalTime.of(9, 0, 0);
+
+        // LocalDateTime 생성
+        LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
+
+        DailyDiary dailyDiary = dailyDiaryRepository.findByDiaryIdAndDate(diaryId, localDateTime);
+
+        System.out.println("dailyDiary Id : " + dailyDiary.getId());
 
         DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
                 .orElseThrow(IllegalArgumentException::new);
