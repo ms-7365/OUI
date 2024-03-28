@@ -33,6 +33,8 @@ const Canvas = ( props: CanvasProps ) => {
       borderColor: '#CDCDCD',
     });
 
+    newCanvas.freeDrawingBrush.width = 10;
+
     setCanvas(newCanvas);
   }, []);
 
@@ -121,7 +123,6 @@ const Canvas = ( props: CanvasProps ) => {
   const handlePenTool = () => {
     if(!canvas) return;
 
-    canvas.freeDrawingBrush.width = 10;
     canvas.isDrawingMode = true;
   };
 

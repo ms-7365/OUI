@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TextboxContent, ImageContent, DrawingContent } from '../components';
 import styled from 'styled-components';
 
@@ -42,8 +42,28 @@ const Content = styled.div`
 
 const BottomSheet = ( props: BottomSheetProps ) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [ penColor, setPenColor ] = useState('#262626');
+  const [ penWidth, setPenWidth ] = useState(10);
 
-  const { activeTool, setActiveTool, canvas, textboxRef, textboxProps, isDeco } = props;
+  const { activeTool, setActiveTool, canvas, textboxRef, textboxProps, isDeco, setTextboxProps } = props;
+
+  useEffect(() => {
+    if(!canvas) return;
+    
+    if(textboxRef.current) {
+      setTextboxProps({
+        selectedFont: String(textboxRef.current.fontFamily),
+        fontWeight: String(textboxRef.current.fontWeight),
+        textAlign: String(textboxRef.current.textAlign),
+        fontColor: String(textboxRef.current.fill),
+      });
+    }
+
+    if(canvas.isDrawingMode) {
+      canvas.freeDrawingBrush.width = penWidth;
+      canvas.freeDrawingBrush.color = penColor;
+    }
+  }, [activeTool]);
 
   return (
     <Container style={{ transform: isOpen ? 'translateY(0)' : 'translateY(calc(100% - 130px))' }}>
@@ -79,7 +99,7 @@ const BottomSheet = ( props: BottomSheetProps ) => {
           <ImageContent canvas={ canvas } />
         )}
         {(activeTool === "drawing" || activeTool === "eraser") && (
-          <DrawingContent canvas={ canvas } />
+          <DrawingContent canvas={ canvas } penColor={ penColor } setPenColor={ setPenColor } penWidth={ penWidth } setPenWidth={ setPenWidth }/>
         )}
       </Content>
     </Container>
@@ -100,4 +120,10 @@ type BottomSheetProps = {
     fontColor: string;
   },
   isDeco?: boolean,
+  setTextboxProps?: React.Dispatch<React.SetStateAction<{
+    selectedFont: string;
+    fontWeight: string;
+    textAlign: string;
+    fontColor: string;
+}>>,
 }

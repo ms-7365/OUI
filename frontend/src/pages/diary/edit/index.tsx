@@ -25,7 +25,7 @@ const DiaryEdit = () => {
     const navigator = useNavigate();
 
     const { state } = useLocation();
-    const { dailyDiaryId } = state;
+    const { dailyDiaryId, type } = state;
 
     const canvasRef = useRef(null);
     const textboxRef = useRef(null);
@@ -87,13 +87,13 @@ const DiaryEdit = () => {
         };
 
         await editDiary.mutateAsync(data);
-        navigator('/main');
+        navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId, type: type}});
     }
 
     return (
         <Container>
             <Header>
-                <BackIcon size={ 40 } onClick={() => { navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId}}) }} />
+                <BackIcon size={ 40 } onClick={() => { navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId, type: type}}) }} />
                 <DateSelect selectedDate={ selectedDate } setSelectedDate={ setSelectedDate }/>
                 <SaveIcon size={ 70 } onClick={ saveDiary }/>
             </Header>

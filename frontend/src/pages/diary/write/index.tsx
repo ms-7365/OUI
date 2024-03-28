@@ -27,17 +27,22 @@ const DiaryWrite = () => {
     const navigator = useNavigate();
 
     const { state } = useLocation();
-    const { diaryId } = state;
+    const { diaryId, type } = state;
         
     // const diaryId = 39;
     // const type = '공유';
 
     const canvasRef = useRef(null);
     const textboxRef = useRef<fabric.Textbox>(null);
-    
     const [ canvas, setCanvas ] = useState<fabric.Canvas>(null);
     const [ activeTool, setActiveTool ] = useState("textbox");
     const [ selectedDate, setSelectedDate ] = useState('');
+    const [ textboxProps, setTextboxProps ] = useState({
+        selectedFont: 'Dovemayo',
+        fontWeight: 'normal',
+        textAlign: 'left',
+        fontColor: '#262626',
+    });
     
     useEffect(() => {
         if(!canvas) return;
@@ -57,13 +62,18 @@ const DiaryWrite = () => {
         canvas.add(textbox);
         
         textboxRef.current = textbox; // 텍스트박스 ref 설정
+
         canvas.setActiveObject(textbox);
     }, [ canvas ]);
 
     const writeDiary = useMutation( postDiary );
     
     const goCalendar = () => {
-        navigator(`/calendar`, {state: {diaryId: diaryId}});
+        if(type === '개인') {
+            navigator(`/calendar`, {state: {diaryId: diaryId, type: type}});
+        } else {
+            navigator(`/calendar/${diaryId}`, {state: {diaryId: diaryId, type: type}});
+        }
     }
 
     // 저장
@@ -78,7 +88,7 @@ const DiaryWrite = () => {
         };
 
         await writeDiary.mutateAsync(data);
-        navigator('/main');
+        goCalendar();
     }
 
     return (
@@ -89,7 +99,7 @@ const DiaryWrite = () => {
                 <SaveIcon size={ 70 } onClick={ saveDiary }/>
             </Header>
             <Canvas canvasRef={ canvasRef } textboxRef={ textboxRef } canvas={ canvas } setCanvas={ setCanvas } activeTool={ activeTool } />
-            <BottomSheet activeTool={ activeTool } setActiveTool={ setActiveTool } canvas={ canvas } textboxRef={ textboxRef } />
+            <BottomSheet activeTool={ activeTool } setActiveTool={ setActiveTool } canvas={ canvas } textboxRef={ textboxRef } textboxProps={ textboxProps } setTextboxProps={ setTextboxProps }/>
         </Container>
     );
 };

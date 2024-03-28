@@ -99,7 +99,7 @@ const PrettoSlider = styled(Slider)({
   },
 });
 
-const ImageContent = ( props: ContentProps ) => {
+const DrawingContent = ( props: ContentProps ) => {
   const colorPalette = [
     "#262626",
     "#F09690",
@@ -110,10 +110,7 @@ const ImageContent = ( props: ContentProps ) => {
     "#BDB5FF",
   ];
   
-  const { canvas } = props;
-  
-  const [ penColor, setPenColor ] = useState('#000000');
-  const [ penWidth, setPenWidth ] = useState(10);
+  const { canvas, penColor, setPenColor, penWidth, setPenWidth } = props;
 
   // 펜 굵기
   const handlePenWidth = (event: any) => {
@@ -170,15 +167,18 @@ const ImageContent = ( props: ContentProps ) => {
           <ColorPicker type="color" id="color" value={ penColor } onChange={ handlePenColor } />
         </ColorPickerContainer>
       </ColorPalette>
-      
     </ContentWrapper>
 
     
   )
 }
 
-export default ImageContent;
+export default DrawingContent;
 
 type ContentProps = {
   canvas: fabric.Canvas,
+  penColor: string,
+  setPenColor: React.Dispatch<React.SetStateAction<string>>,
+  penWidth: number,
+  setPenWidth: React.Dispatch<React.SetStateAction<number>>,
 }

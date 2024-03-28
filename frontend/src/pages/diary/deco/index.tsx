@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { getDiary, postDiaryDeco } from '../api';
+// import { Stomp } from "@stomp/stompjs";
+// import SockJS from "sockjs-client";
 import styled from 'styled-components';
 
 const Header = styled.div`
@@ -26,17 +28,62 @@ const DiaryDeco = () => {
     const navigator = useNavigate();
     
     const { state } = useLocation();
-    const { dailyDiaryId } = state;
+    const { dailyDiaryId, type } = state;
 
     const canvasRef = useRef(null);
+    let stompClient = useRef(null);
     
     const [ canvas, setCanvas ] = useState(null);
     const [ isFontLoaded, setIsFontLoaded ] = useState(false);
     const [ activeTool, setActiveTool ] = useState("image");
 
+    const [isInitialLoading,setIsInitialLoading] = useState(false);
+
+
+    
+    // const storedDataString = localStorage.getItem('userStorage');
+    // const storedData = JSON.parse(storedDataString);
+    // const accessToken = storedData?.state?.accessToken;
+    
+    // useEffect(() => {
+    //     const socket = new SockJS(process.env.REACT_APP_BASE_URL + '/ws');
+    //     stompClient.current = Stomp.over(socket);
+        
+    //     stompClient.current.connect(
+    //         {
+    //             Authorization : `Bearer ${ accessToken }`,
+    //         }, 
+    //         (frame) => {
+    //             stompClient.current.subscribe(`/sub/decorate/${dailyDiaryId}`, (message) => {
+    //                 const { decoObject } = JSON.parse(message.body);
+    //                 console.log('decoObject', decoObject);
+    //                 canvas.add(decoObject);
+    //             });
+    //         });
+            
+    //     return () => {
+    //         stompClient.current.disconnect();
+    //     };
+    // }, [])
+        
     const { data: dailyDiary } = useQuery('dailyDiary', () => getDiary(dailyDiaryId), {
         enabled: isFontLoaded
     });
+        
+    // useEffect(() => {
+    //     if(!canvas) return;
+
+    //     canvas.on('object:added', (event) => {
+    //         const addedObject = event.target;
+    //         console.log('addedObject:', addedObject);
+
+    //         stompClient.current.send(
+    //             `/pub/decorate/${dailyDiaryId}`,
+    //             {},
+    //             JSON.stringify(addedObject),
+    //         )
+    //     })
+    // }, [canvas])
 
     useEffect(() => {
         if(!canvas) return;
@@ -79,14 +126,13 @@ const DiaryDeco = () => {
         }
 
         await decoDiary.mutateAsync(data);
-        // navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId}});
-        navigator(`/diary`);
+        navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId, type: type}});
     }
 
     return (
         <Container>
             <Header>
-                <BackIcon size={ 40 } onClick={ () => { navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId}}) }} />
+                <BackIcon size={ 40 } onClick={ () => { navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId, type: type}}) }} />
                 <SaveIcon size={ 70 } onClick={ saveDiary }/>
             </Header>
             <Canvas canvasRef={ canvasRef } canvas={ canvas } setCanvas={ setCanvas } activeTool={ activeTool } setIsFontLoaded={ setIsFontLoaded } />

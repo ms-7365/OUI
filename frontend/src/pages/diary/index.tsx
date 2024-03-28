@@ -1,5 +1,5 @@
 import { fabric } from 'fabric';
-import { Drawer, EditIcon, DecoIcon, DeleteIcon } from 'src/components';
+import { Drawer, MusicPlayer2, Button, EditIcon, DecoIcon, DeleteIcon } from 'src/components';
 import { Canvas } from './components';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import { useState, useEffect, useRef } from 'react';
@@ -7,7 +7,6 @@ import { useQuery, useMutation } from 'react-query';
 import { useNavigate, useLocation } from "react-router-dom";
 import { getDiary, deleteDiary } from './api';
 import styled from 'styled-components';
-import albumImage from '../../asset/images/album.png';
 
 const Header = styled.div`
     width: 93%;
@@ -74,17 +73,6 @@ const Comment = styled.div`
     font-size: 24px;
 `
 
-const Player = styled.div`
-    height: 300px;
-    padding: 30px;
-    margin-top: 20px;
-    margin-bottom: 60px;
-    background-color: white;
-    border-radius: 20px;
-    font-size: 24px;
-    display: flex;
-`
-
 const Diary = () => {
     const navigator = useNavigate();
 
@@ -96,17 +84,14 @@ const Diary = () => {
     const [ isFontLoaded, setIsFontLoaded ] = useState<boolean>(false);
     const [ isDeco, setIsDeco ] = useState<boolean>(true);
 
-    // 임시 dailyDiaryId ////////
-    // const dailyDiaryId = 24;
-    // let type = '공유';
-    ////////////////////////////
-
     const { data: dailyDiary } = useQuery('dailyDiary', () => getDiary(dailyDiaryId), {
         enabled: isFontLoaded
     });
 
     useEffect(() => {
         if(!canvas) return;
+
+        console.log(dailyDiary)
 
         canvas.loadFromJSON(dailyDiary?.data?.dailyContent, () => {
             canvas.renderAll();
@@ -132,6 +117,7 @@ const Diary = () => {
 
     const onClick = async () => {
         await removeDiary.mutateAsync(dailyDiaryId);
+        navigator(`/main`);
         // navigator(`/calendar/${diaryId}`, {state: {diaryId: diaryId}});
     }
 
@@ -139,15 +125,18 @@ const Diary = () => {
         <Container>
             <Header>
                 <Drawer />
+                {/* <Button btType='back'/> */}
                 <div style={{ display: "flex", alignItems: "center" }}>
                     {(type === '공유' && isDeco) && (
-                        <DecoIcon size={ 55 } onClick={() => navigator(`/diary/deco/${ dailyDiaryId }`, {state: {dailyDiaryId: dailyDiaryId}})} />
+                        <DecoIcon size={ 55 } onClick={() => navigator(`/diary/deco/${ dailyDiaryId }`, {state: {dailyDiaryId: dailyDiaryId, type: type}})} />
                     )}
                     {/* 공유일기 + 원본일기 -> 본인 일기일 때만 버튼이 나와야 함 */}
-                    {((type === '개인') || (type ==='공유' && !isDeco)) && (
-                        <EditIcon size={ 55 } onClick={() => navigator(`/diary/edit/${ dailyDiaryId }`, {state: {dailyDiaryId: dailyDiaryId}})} />
+                    {(((type === '개인') || (type ==='공유' && !isDeco) && (dailyDiary?.data.writerId === dailyDiary?.data.memberId))) && (
+                        <EditIcon size={ 55 } onClick={() => navigator(`/diary/edit/${ dailyDiaryId }`, {state: {dailyDiaryId: dailyDiaryId, type: type}})} />
                     )}
-                    <DeleteIcon size={ 55 } onClick={ onClick } />
+                    {(dailyDiary?.data.writerId === dailyDiary?.data.memberId) && (
+                        <DeleteIcon size={ 55 } onClick={ onClick } />
+                    )}
                 </div>
             </Header>
             {(type === '공유') && (
@@ -165,15 +154,16 @@ const Diary = () => {
                     <Emotion># 느긋</Emotion>
                     <Emotion># 기쁨</Emotion>
                 </div>
-                <Title>AI 코멘트</Title>
-                <Comment>
-                    코멘트 ...
-                </Comment>
+                {(type === '개인') && (
+                    <>
+                        <Title>AI 코멘트</Title>
+                        <Comment>
+                            코멘트 ...
+                        </Comment>
+                    </>
+                )}
                 <Title>추천 음악</Title>
-                <Player>
-                    <img src={ albumImage } alt="album" />
-                    
-                </Player>
+                <MusicPlayer2 />
             </ResultSection>
         </Container>
     )
