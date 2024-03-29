@@ -406,19 +406,19 @@ public class DiaryServiceImpl implements DiaryService{
     }
 
 
-//    public String decorateDailyDiary(DecorateDailyDiaryReq req, Integer dailyId){
-//
-//        DailyDiary dailyDiary = dailyDiaryRepository.findById(dailyId)
-//                .orElseThrow(IllegalArgumentException::new);
-//
-//        DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
-//                .orElseThrow(IllegalArgumentException::new);
-//
-//        dailyDiaryCollection.setDecoration(req.getDecoration());
-//        dailyDiaryMongoRepository.save(dailyDiaryCollection);
-//
-//        return dailyDiaryCollection.getId().toString();
-//    }
+    public String decorateSaveDailyDiary(DecorateDailyDiaryReq req, Integer dailyId){
+
+        DailyDiary dailyDiary = dailyDiaryRepository.findById(dailyId)
+                .orElseThrow(IllegalArgumentException::new);
+
+        DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
+                .orElseThrow(IllegalArgumentException::new);
+
+        dailyDiaryCollection.setDecoration(req.getDecoration());
+        dailyDiaryMongoRepository.save(dailyDiaryCollection);
+
+        return dailyDiaryCollection.getId().toString();
+    }
 
     // 다이어리 나가기
     @Override

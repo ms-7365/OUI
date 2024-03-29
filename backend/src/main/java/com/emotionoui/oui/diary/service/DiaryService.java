@@ -26,7 +26,7 @@ public interface DiaryService {
     String searchComment(Integer dailyId);
     SearchDiarySettingRes searchDiarySetting(Integer diaryId, Integer memberId);
     void updateDiarySetting(UpdateDiarySettingReq req, Integer diaryId, Integer memberId);
-    //    String decorateDailyDiary(DecorateDailyDiaryReq req, Integer dailyId);
+    String decorateSaveDailyDiary(DecorateDailyDiaryReq req, Integer dailyId);
     DecorateDailyDiaryRes decorateDailyDiary(DecorateDailyDiaryReq req, Member member);
     void exitShareDiary(Integer diaryId, int memberId);
 

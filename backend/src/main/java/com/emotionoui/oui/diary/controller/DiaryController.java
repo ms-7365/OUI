@@ -108,11 +108,11 @@ public class DiaryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    // 일기 꾸미기
-//    @PostMapping("/decorate/{dailyId}")
-//    public ResponseEntity<?> decorateDailyDiary(@RequestBody DecorateDailyDiaryReq req, @PathVariable("dailyId") Integer dailyId) throws IOException, ExecutionException, InterruptedException {
-//        return new ResponseEntity<String>(diaryService.decorateDailyDiary(req, dailyId), HttpStatus.OK);
-//    }
+    // 일기 꾸미기 저장
+    @PostMapping("/decorate/save/{dailyId}")
+    public ResponseEntity<?> decorateDailyDiary(@RequestBody DecorateDailyDiaryReq req, @PathVariable("dailyId") Integer dailyId) throws IOException, ExecutionException, InterruptedException {
+        return new ResponseEntity<String>(diaryService.decorateSaveDailyDiary(req, dailyId), HttpStatus.OK);
+    }
 
     // 일기 꾸미기
     // '/decorate/{dailyId}' 로 메시지를 보내면 'sub/decorate/daily{dailyId}' 로 응답이 전송됨
