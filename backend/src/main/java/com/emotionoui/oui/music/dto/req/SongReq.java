@@ -22,15 +22,15 @@ public class SongReq {
     private List<String> artistNameBasket;
     private List<String> songGnGnrBasket;
 
-    public MusicCollection toEntity(){
-        return MusicCollection.builder()
-                .musicId(this.id)
-                .songName(this.songName)
-                .albumId(this.albumId)
-                .albumName(this.albumName)
-                .artistId(this.artistIdBasket)
-                .artistName(this.artistNameBasket)
-                .songGnGnr(this.songGnGnrBasket)
-                .build();
-    }
+//    public MusicCollection toEntity(){
+//        return MusicCollection.builder()
+//                .musicId(this.id)
+//                .songName(this.songName)
+//                .albumId(this.albumId)
+//                .albumName(this.albumName)
+//                .artistId(this.artistIdBasket)
+//                .artistName(this.artistNameBasket)
+//                .songGnGnr(this.songGnGnrBasket)
+//                .build();
+//    }
 }

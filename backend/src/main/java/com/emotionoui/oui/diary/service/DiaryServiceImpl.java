@@ -144,26 +144,26 @@ public class DiaryServiceImpl implements DiaryService{
 
         List<String> list = new ArrayList<>();
 
-        // 할당받은 musicId를 기반으로 MongoDB에 있는 MUSIC document(musicInfo) 찾기
-        for(int i=0; i<musicIdList.size(); ++i){
-            int musicId = musicIdList.get(i);
-            MusicCollection musicCollection = musicMongoRepository.findByMusicId(musicId);
-            String artistName = musicCollection.getArtistName().get(0);
-            String songName = musicCollection.getSongName();
-            // spotify URI이 존재하지 않으면
-            if(musicCollection.getSpotifyUrl()==null){
-                // searchMusicURI 함수를 통해 spotify URI를 찾음
-                String uri = musicService.searchMusicURI(artistName, songName);
-                if(uri!=null) {
-                    list.add(uri);
-                    // MongoDB에 있는 기존 MUSIC Document에도 반영
-                    musicCollection.setSpotifyUrl(uri);
-                    musicMongoRepository.save(musicCollection);
-                }
-            }else{
-                list.add(musicCollection.getSpotifyUrl());
-            }
-        }
+//        // 할당받은 musicId를 기반으로 MongoDB에 있는 MUSIC document(musicInfo) 찾기
+//        for(int i=0; i<musicIdList.size(); ++i){
+//            int musicId = musicIdList.get(i);
+//            MusicCollection musicCollection = musicMongoRepository.findByMusicId(musicId);
+//            String artistName = musicCollection.getArtistName().get(0);
+//            String songName = musicCollection.getSongName();
+//            // spotify URI이 존재하지 않으면
+//            if(musicCollection.getSpotifyUrl()==null){
+//                // searchMusicURI 함수를 통해 spotify URI를 찾음
+//                String uri = musicService.searchMusicURI(artistName, songName);
+//                if(uri!=null) {
+//                    list.add(uri);
+//                    // MongoDB에 있는 기존 MUSIC Document에도 반영
+//                    musicCollection.setSpotifyUrl(uri);
+//                    musicMongoRepository.save(musicCollection);
+//                }
+//            }else{
+//                list.add(musicCollection.getSpotifyUrl());
+//            }
+//        }
         
         return list;
     }

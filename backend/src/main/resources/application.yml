@@ -69,6 +69,9 @@ spotify:
   client-id: ${SPOTIFY_CLIENT_ID}
   client-secret: ${SPOTIFY_CLIENT_SECRET}
 
+youtube:
+  key: ${YOUTUBE_API_KEY}
+
 cloud:
   aws:
     s3:
