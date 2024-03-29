@@ -55,7 +55,7 @@ const DiaryCard = ( props ) =>{
 
     const navigator = useNavigate()
 
-    const { clickDate } = useStore();
+    const { clickDate } = useStore()
 
     const { diary, member } = props
 
