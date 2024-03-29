@@ -188,14 +188,14 @@ public class AlarmServiceImpl implements AlarmService{
             Member member = memberRepository.findByEmail(email)
                     .orElseThrow(IllegalArgumentException::new);
 
-//            MemberAlarm memberAlarm = MemberAlarm.builder()
-//                    .alarm(alarm)
-//                    .member(member)
-//                    .diary(diary)
-//                    .isDeleted(0)
-//                    .build();
-//
-//            memberAlarmRepository.save(memberAlarm);
+            MemberAlarm memberAlarm = MemberAlarm.builder()
+                    .alarm(alarm)
+                    .member(member)
+                    .diary(diary)
+                    .isDeleted(0)
+                    .build();
+
+            memberAlarmRepository.save(memberAlarm);
 
             // test용
 //            deviceTokens.add("eCKbs2zkGtXCXhHZh_KGnb:APA91bF5LuFA_AumHn330BdsSMHafPz8uTWe-Ku3Jgma-VX4HWF7D0rLqIn1TlEUItbphs4wopekhFT2WtRjBfopss74rhvH2CqJbr72G3nxZerwhAc8Hu0JJUVYHdZwH6JwVknQVaTz");
