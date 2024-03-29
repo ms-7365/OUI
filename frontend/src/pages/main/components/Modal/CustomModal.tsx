@@ -5,13 +5,15 @@ import Box from "@mui/material/Box";
 import { getFIndMember } from "../../api";
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircle from 'src/asset/images/image-icon/checkCircle.png';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import diary1 from 'src/asset/images/diary1.png'
 import diary2 from 'src/asset/images/diary2.png'
 import diary3 from 'src/asset/images/diary3.png'
 import diary4 from 'src/asset/images/diary4.png'
+import diary5 from 'src/asset/images/diary5.png'
+import searchBtn from 'src/asset/images/image-icon/search.png'
 import styled from "styled-components";
 
 
@@ -22,7 +24,7 @@ const PaperWrapper = styled( Paper )`
   transform: translate(-50%, -50%);
   width: auto; 
   max-width: 90%; 
-  height: auto; 
+  height: 80%; 
   max-height: 90vh; 
   overflow-y: auto; 
   display: flex;
@@ -30,15 +32,19 @@ const PaperWrapper = styled( Paper )`
   align-items: center;
   justify-content: start;
   padding: 20px;
+  border-radius: 20px;
+  background-color: #FFFEFC;
 `;
 
 const BoxWrapper = styled( Box )`
-  width: 100%;
+  width: auto;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
+  border: 1px solid #ccc; /* 테두리 스타일과 색상을 지정합니다. */
+  padding: 10px; /* 테두리와 내용 사이의 간격을 지정합니다. */
+  border-radius: 10px
 `;
 
 const ModalContentWrapper = styled.div`
@@ -46,7 +52,7 @@ const ModalContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%; 
+  width: 95%; 
 `;
 
 const DiaryImage = styled.img`
@@ -87,6 +93,16 @@ const ImageContainer = styled.div`
   }
 `;
 
+const SearchButton = styled.button`
+  width: 35px; 
+  height: 30px;
+  background-image: url(${searchBtn});
+  background-color: white;
+  background-size: cover;
+  border: none; 
+  cursor: pointer; 
+  color: transparent; 
+`;
 
 const CustomModal = ( props:ModalProps ) => {
 
@@ -153,28 +169,35 @@ const CustomModal = ( props:ModalProps ) => {
     <Modal open={ isOpen } onClose={ closeModal }>
       <PaperWrapper>
         <ModalContentWrapper>
-        <div style={{ display: 'flex', justifyContent: 'center'}}>
-            <h2>다이어리 추가</h2>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop:'25px'}}>
+            <h1>다이어리 추가</h1>
             <IconButton onClick={ closeModal } sx={{ position: 'absolute', right: 8, top: 8, zIndex: 1 }}>
             <CloseIcon />
             </IconButton>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
-            <h3>제목</h3>
+          <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width:'100%'}}>
+            <h2 style={{marginBottom:'8px', marginTop:'30px'}}>제목</h2>
             <div>
-              <TextField id="outlined-basic" variant="outlined" value={ title } onChange={ handleTitleChange }/>
+              <TextField id="outlined-basic" variant="outlined" value={ title } onChange={ handleTitleChange } 
+              InputProps={{
+                style: { fontFamily:'Dovemayo', fontSize:'20px', borderRadius: '10px'},
+              }}style={{ width:'100%', backgroundColor:'white'}}/>
             </div>
-          </div>
-            <h3>다이어리 표지</h3>
+          </div >
+          <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width:'100%'}}>
+            <h2 style={{marginBottom:'5px', marginTop:'35px'}}>다이어리 표지</h2>
             <BoxWrapper>
-              {[diary1, diary2, diary3, diary4].map(( diaryImage, index ) => (
-                <ImageContainer key={ index } onClick={() => handleSelection( index )}>
+              {[diary1, diary2, diary3, diary4, diary5].map(( diaryImage, index ) => (
+                <ImageContainer key={ index } onClick={() => handleSelection( index )}
+                style={{
+                  border: keyImage === index ? '5px solid rgba(248, 224, 197, 0.35)' : 'none' // 선택된 이미지에만 테두리를 추가
+                }}>
                   <DiaryImage
                     src={ diaryImage }
                     alt={ `Diary ${ index + 1 }` }
                   />
                   { keyImage === index && (
-                    <CheckCircleIcon
+                    <img src={CheckCircle}
                       style={{
                         position: 'absolute',
                         color: 'green',
@@ -185,34 +208,66 @@ const CustomModal = ( props:ModalProps ) => {
                 </ImageContainer>
               ))}
             </BoxWrapper>
-            <h3>친구 추가</h3>
-            <div>
-              <TextField id="outlined-basic" variant="outlined"
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width:'100%'}}>
+            <h2 style={{marginBottom:'10px', marginTop:'35px'}}>친구 추가</h2>
+            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width:'100%'}}>
+              <TextField id="outlined-basic" variant="outlined" placeholder="이메일을 입력해주세요."
                 value={ searchName }
                 onChange={ handleInputChange }
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="end">
-                      <button onClick={ handleSearch }>검색</button>
+                    <InputAdornment position="start">
+                      <SearchButton onClick={handleSearch} />      
                     </InputAdornment>
                   ),
-              }}
-              />
-              {
-                  memberList.length !== 0 ? 
-                  memberList.map(( member, index ) => (
-                    <div key={ index }>
-                      {member}
-                      <button onClick={() => setMemberList( memberList.filter( e => e !== member ))}>
-                        빼기
-                      </button>
-                    </div>
-                  )) 
-                  : 
-                  <div>ho</div>
-              }
+                style: { borderRadius: '10px', width:'100%', backgroundColor:'white', fontFamily: 'Dovemayo', fontSize:'21.5px'},
+              }} />
+            </div>
+            <div style={{ height:'100px', marginTop:'25px', display: 'flex', flexWrap: 'wrap', alignItems: 'start', gap: '10px' }}>
+        {
+          memberList.length !== 0 ? 
+          memberList.map(( member, index ) => (
+              <div key={ index } style={{
+                border:'5px solid #F9F3EE',
+                backgroundColor:'#F9F3EE',
+                borderRadius: '6px', // 둥근 모서리
+                boxShadow: '0px 3px 4px rgba(0, 0, 0, 0.1)', // 그림자 효과
+                fontSize:'21.5px',
+                paddingTop:'8px',
+                paddingBottom:'8px',
+                paddingLeft:'7px',
+                paddingRight:'7px',
+                display: 'flex', // 가로로 나열
+                alignItems: 'center', // 중앙 정렬
+              }}>
+                {member}
+                <button onClick={() => setMemberList( memberList.filter( e => e !== member ))}
+                style={{ marginLeft: '15px', backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}>
+                    X
+                </button>
               </div>
+            )) 
+          : 
+          <div></div>
+        }
+      </div>
+
+            </div>
             <button 
+              style={{
+                width: '91%', 
+                height: '60px', 
+                backgroundColor: '#88B3E2',
+                color: 'white', // 텍스트 색상을 하얀색으로 지정
+                border: 'none', // 테두리 없음
+                borderRadius: '10px', // 둥근 모서리
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)', // 그림자 효과
+                fontSize:'22px',
+                marginTop:'100px',
+                position: 'absolute',
+                bottom: '4%',
+              }} 
               onClick={() => {
                 if ( title !== '' && keyImage !== -1 ) {
                   isFinish({ title:title, key: keyImage, members: memberList });
@@ -226,8 +281,9 @@ const CustomModal = ( props:ModalProps ) => {
                 }
               }}
             >
-              완료
+              완  료
             </button>
+
 
         </ModalContentWrapper>
       </PaperWrapper>
