@@ -196,15 +196,13 @@ public class DiaryServiceImpl implements DiaryService{
                 log.info("emotionRes 까지 왔나요?");
                 EmotionClass emotionRes = objectMapper.readValue(s, EmotionClass.class);
 
-                log.info(emotionRes.getMaxEmotion());
-
                 document.setEmotion(emotionRes);
                 dailyDiaryMongoRepository.save(document);
 
                 // MariaDB에 대표감정(Emotion) 정보 저장
                 Emotion emotion = Emotion.builder()
                         .dailyDiary(dailyDiary)
-                        .emotion(emotionRes.getMaxEmotion())
+                        .emotion(emotionRes.getEmotionList().get(0))
                         .date(dailyDate)
                         .member(member)
                         .build();
