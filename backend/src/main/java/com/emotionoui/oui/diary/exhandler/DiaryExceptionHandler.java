@@ -43,5 +43,4 @@ public class DiaryExceptionHandler {
         errorMessage.append("오늘 개인일기가 작성되지 않았습니다.");
         return ResponseEntity.badRequest().body(errorMessage.toString());
     }
-
 }

@@ -29,11 +29,9 @@ import com.emotionoui.oui.member.repository.MemberDiaryRepository;
 import com.emotionoui.oui.music.service.MusicService;
 import com.emotionoui.oui.querydsl.QuerydslRepositoryCustom;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -293,7 +291,7 @@ public class DiaryServiceImpl implements DiaryService{
     }
 
     // 일기 날짜로 조회하기
-    public SearchDailyDiaryRes searchDailyDiaryByDate(Integer diaryId, String date, Integer memberId){
+    public Boolean searchDailyDiaryByDate(Integer diaryId, String date, Integer memberId){
         LocalDate localDate = LocalDate.parse(date);
 
         // LocalTime 생성 (원하는 시간으로 설정)
@@ -302,14 +300,19 @@ public class DiaryServiceImpl implements DiaryService{
         // LocalDateTime 생성
         LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
 
-        DailyDiary dailyDiary = dailyDiaryRepository.findByDiaryIdAndDate(diaryId, localDateTime);
 
-        System.out.println("dailyDiary Id : " + dailyDiary.getId());
+            DailyDiary dailyDiary = dailyDiaryRepository.findByDiaryIdAndDate(diaryId, localDateTime);
+            if(dailyDiary==null){
+                return false;
+            }
 
-        DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
-                .orElseThrow(IllegalArgumentException::new);
+            System.out.println("dailyDiary Id : " + dailyDiary.getId());
 
-        return SearchDailyDiaryRes.of(dailyDiaryCollection, dailyDiary, memberId);
+//            DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
+//                    .orElseThrow(IllegalArgumentException::new);
+
+            return true;
+
     }
 
 

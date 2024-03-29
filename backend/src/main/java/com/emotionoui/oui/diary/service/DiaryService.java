@@ -20,7 +20,7 @@ public interface DiaryService {
     Integer updateDailyDiary(UpdateDailyDiaryReq req, Integer dailyId);
     void deleteDailyDiary(Integer dailyId);
     SearchDailyDiaryRes searchDailyDiary(Integer dailyId, Integer memberId);
-    SearchDailyDiaryRes searchDailyDiaryByDate(Integer diaryId, String date, Integer memberId);
+    Boolean searchDailyDiaryByDate(Integer diaryId, String date, Integer memberId);
     EmotionClass searchEmotion(Integer dailyId);
     List<String> searchMusic(Integer dailyId);
     String searchComment(Integer dailyId);

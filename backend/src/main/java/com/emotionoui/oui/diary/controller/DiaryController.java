@@ -72,7 +72,7 @@ public class DiaryController {
     // 일기 게시글 날짜로 조회하기
     @GetMapping("/{diaryId}/{date}")
     public ResponseEntity<?> searchDailyDiary(@PathVariable("diaryId") Integer diaryId, @PathVariable("date") String date, @AuthenticationPrincipal Member member){
-        return new ResponseEntity<SearchDailyDiaryRes>(diaryService.searchDailyDiaryByDate(diaryId, date, member.getMemberId()), HttpStatus.OK);
+        return new ResponseEntity<Boolean>(diaryService.searchDailyDiaryByDate(diaryId, date, member.getMemberId()), HttpStatus.OK);
     }
 
     // 감정분석 결과 보여주기
