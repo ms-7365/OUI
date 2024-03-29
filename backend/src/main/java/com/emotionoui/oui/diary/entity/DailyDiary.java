@@ -22,6 +22,7 @@ public class DailyDiary {
     @JoinColumn(name="diary_id")
     private Diary diary;
 
+    @Temporal(TemporalType.DATE)
     @Column(name="daily_date")
     private Date dailyDate;
 

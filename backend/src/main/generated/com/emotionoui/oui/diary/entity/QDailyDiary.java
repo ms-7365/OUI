@@ -22,7 +22,7 @@ public class QDailyDiary extends EntityPathBase<DailyDiary> {
 
     public static final QDailyDiary dailyDiary = new QDailyDiary("dailyDiary");
 
-    public final DateTimePath<java.util.Date> dailyDate = createDateTime("dailyDate", java.util.Date.class);
+    public final DatePath<java.util.Date> dailyDate = createDate("dailyDate", java.util.Date.class);
 
     public final QDiary diary;
 

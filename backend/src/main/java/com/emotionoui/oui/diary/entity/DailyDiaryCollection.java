@@ -48,6 +48,8 @@ public class DailyDiaryCollection {
     // 작성자 닉네임
     private String nickname;
 
+
+
     @Builder
     public DailyDiaryCollection(Integer diaryId, Integer memberId, String content, Integer isDeleted,String nickname){
         this.diaryId = diaryId;
