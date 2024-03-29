@@ -15,7 +15,7 @@ import os
 class OuiInference:
     def __init__(self, threshold=0.5, max_len=100, batch_size=128, device="cpu"):
         
-        os.chdir("../model")
+        os.chdir("./model")
         self.model_pytorch = torch.jit.load('./pytorch/oui_240328_torchscript.pt')
         self.model_onnx = onnxruntime.InferenceSession("./onnx/oui_240328.onnx")
 
