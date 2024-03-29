@@ -62,7 +62,7 @@ public class AlarmServiceImpl implements AlarmService{
 
     private final ObjectMapper objectMapper;
 
-    // 알림 리스트
+    // 알림 리스트 보내기
     public List<SearchAlarmsRes> searchAlarmList(Integer memberId) {
         List<MemberAlarm> memberAlarms = memberAlarmRepository.findByMemberId(memberId);
         List<SearchAlarmsRes> searchAlarmsResList = new ArrayList<>();
@@ -74,6 +74,7 @@ public class AlarmServiceImpl implements AlarmService{
                     .alarmContentType(alarm.getType())
                     .title(alarm.getTitle())
                     .content(alarm.getContent())
+                    .diaryId(memberAlarm.getDiary().getId())
                     .build();
             searchAlarmsResList.add(searchAlarmsRes);
         }
