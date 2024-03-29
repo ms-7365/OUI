@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 
 const BottomNaviWrapper = styled( BottomNavigation )`
-    background-color: transparent;
+    background-color: white;
     display: flex;
     justify-content: space-between;
     position: fixed;

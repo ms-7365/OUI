@@ -112,6 +112,10 @@ const ProfileImage = styled.img`
 `;
 
 const requestPermission = async () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
+        registration.update(); // 서비스 워커 갱신 강제 실행
+        console.log('Service Worker 등록 성공:', registration);
   Notification.requestPermission().then(permission => {
     if (permission === 'granted') {
       console.log('알림 권한 승인됨.');
@@ -123,7 +127,7 @@ const requestPermission = async () => {
         }).then((currentToken) => {
           if (currentToken) {
             console.log("디바이스 토큰:", currentToken);
-            postDeviceToken( currentToken ) 
+            postDeviceToken(currentToken) 
               .then(response => {
                 console.log('Device token posted successfully:', response);
               })
@@ -141,7 +145,7 @@ const requestPermission = async () => {
       console.log('알림 권한 거부됨.');
     }
   });
-};
+})}}
 
 
 const Main = () => {

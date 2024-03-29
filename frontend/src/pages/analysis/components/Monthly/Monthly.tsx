@@ -79,7 +79,9 @@ const TitleWrapper = styled.div`
   font-family: 'IMHyeMin', sans-serif;
   font-weight: bold;
   display: flex;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
+  width: 70%;
   font-size: 16px;
   text-align: left; 
   margin-left: 20px; 
@@ -99,8 +101,9 @@ const DoughnutWrapper = styled.div`
 const CalendarHeaderMiddleWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 30px; 
+  width: 70%;
   margin-top: 10px;
   flex: 1;
 `
@@ -109,6 +112,7 @@ const Title = styled.div`
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 10px;
+    justify-content: flex-start;
 `
 
 
@@ -196,13 +200,13 @@ const Monthly = () => {
 
   return(
       <>
+          <CalendarHeaderMiddleWrapper>
+              <LeftIcon size= { 20 } onClick={ movePrevMonth }/>
+              <Title>{ format( currentMonth, 'yyyy' )}년 { format( currentMonth, 'M' )}월</Title>
+              <RightIcon size= { 20 } onClick={ moveNextMonth }/>
+          </CalendarHeaderMiddleWrapper>
            { userName && <TitleWrapper> { userName }님이 3월에 느낀 “감정 통계” 예요! </TitleWrapper>}
           <ChartBoxWrapper>
-              <CalendarHeaderMiddleWrapper>
-                  <LeftIcon size= { 20 } onClick={ movePrevMonth }/>
-                  <Title>{ format( currentMonth, 'yyyy' )}년 { format( currentMonth, 'M' )}월</Title>
-                  <RightIcon size= { 20 } onClick={ moveNextMonth }/>
-              </CalendarHeaderMiddleWrapper>
               <DoughnutWrapper>
                 <Doughnut data={chartData}></Doughnut>
               </DoughnutWrapper>
