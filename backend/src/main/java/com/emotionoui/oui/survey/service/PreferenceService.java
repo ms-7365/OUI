@@ -35,6 +35,6 @@ public class PreferenceService {
     }
 
     public boolean isExisted(Member member){
-        return preferenceRepository.existsByMemberMemberId(member.getMemberId());
+        return preferenceRepository.existsByMemberMemberIdAndIsDeleted(member.getMemberId(),0);
     }
 }
