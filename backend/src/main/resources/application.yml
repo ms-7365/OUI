@@ -11,6 +11,14 @@ spring:
       encoding:
         charset: UTF-8
         force: true
+    ssl:
+      enabled: true
+      enabled-protocols:
+        - TLSv1.1
+        - TLSv1.2
+      key-store: "classpath:env/keystore.p12"
+      key-store-password: ${SSL_KEY}
+      key-store-type: "PKCS12"
 
   servlet:
     multipart:
@@ -84,6 +92,3 @@ cloud:
       auto: false
     stack:
       auto: false
-#server:
-#  servlet:
-#    context-path: /api
