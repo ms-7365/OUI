@@ -3,14 +3,15 @@ import { useSelector } from 'react-redux';
 import useStore from 'src/store/index';
 // import './NotificationModal.css';
 import { initializeApp } from 'firebase/app';
+import { postDeviceToken } from './api';
 import { getMessaging, getToken } from 'firebase/messaging';
 
 const NotificationModal = ({ isOpen, onClose, onNotificationSelect }) => {
     
     // const user = useSelector(state => state.user.user);
-
+    const { accessToken, isLogin } = useStore()
     //요기바꿈
-    const { accessToken, isLogin } = useStore(state => ({ accessToken: state.accessToken, isLogin: state.isLogin }));
+    // const { accessToken, isLogin } = useStore(state => ({ accessToken: state.accessToken, isLogin: state.isLogin }));
 
     
     const [notificationPermission, setNotificationPermission] = useState(null);
@@ -100,18 +101,9 @@ const NotificationModal = ({ isOpen, onClose, onNotificationSelect }) => {
     };
 
     const sendTokenToServerBackend = (currentToken) => {
-        fetch(`http://localhost:8080/user/device`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                deviceToken: currentToken,
-            }),
-            credentials: 'include'
-        })
+            postDeviceToken(currentToken)
             .then(response => {
-                if (!response.ok) {
+                if (!response.data) {
                     throw new Error('서버 응답이 실패했습니다.');
                 }
                 console.log('푸시 토큰을 서버로 전송했습니다.');

@@ -15,6 +15,7 @@ import { getToken } from "firebase/messaging";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from "styled-components";
+import { NotificationModal } from "src/components/control/NotificationModal";
 
 const SliderWrapper = styled( Slider )`
   
@@ -111,41 +112,41 @@ const ProfileImage = styled.img`
   object-fit: cover;
 `;
 
-const requestPermission = async () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
-        registration.update(); // 서비스 워커 갱신 강제 실행
-        console.log('Service Worker 등록 성공:', registration);
-  Notification.requestPermission().then(permission => {
-    if (permission === 'granted') {
-      console.log('알림 권한 승인됨.');
+// const requestPermission = async () => {
+//   if ('serviceWorker' in navigator) {
+//     navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
+//         registration.update(); // 서비스 워커 갱신 강제 실행
+//         console.log('Service Worker 등록 성공:', registration);
+//   Notification.requestPermission().then(permission => {
+//     if (permission === 'granted') {
+//       console.log('알림 권한 승인됨.');
 
-      navigator.serviceWorker.ready.then((registration) => {
-        getToken(messaging, {
-          serviceWorkerRegistration: registration,
-          vapidKey: process.env.REACT_APP_VAPID_KEY
-        }).then((currentToken) => {
-          if (currentToken) {
-            console.log("디바이스 토큰:", currentToken);
-            postDeviceToken(currentToken) 
-              .then(response => {
-                console.log('Device token posted successfully:', response);
-              })
-              .catch((error) => {
-                console.error('Error posting device token:', error);
-              });
-          } else {
-            console.log('디바이스 토큰을 가져올 수 없습니다. 알림 권한을 요청해주세요.');
-          }
-        }).catch((err) => {
-          console.error('토큰 가져오기 실패:', err);
-        });
-      });
-    } else {
-      console.log('알림 권한 거부됨.');
-    }
-  });
-})}}
+//       navigator.serviceWorker.ready.then((registration) => {
+//         getToken(messaging, {
+//           serviceWorkerRegistration: registration,
+//           vapidKey: process.env.REACT_APP_VAPID_KEY
+//         }).then((currentToken) => {
+//           if (currentToken) {
+//             console.log("디바이스 토큰:", currentToken);
+//             postDeviceToken(currentToken) 
+//               .then(response => {
+//                 console.log('Device token posted successfully:', response);
+//               })
+//               .catch((error) => {
+//                 console.error('Error posting device token:', error);
+//               });
+//           } else {
+//             console.log('디바이스 토큰을 가져올 수 없습니다. 알림 권한을 요청해주세요.');
+//           }
+//         }).catch((err) => {
+//           console.error('토큰 가져오기 실패:', err);
+//         });
+//       });
+//     } else {
+//       console.log('알림 권한 거부됨.');
+//     }
+//   });
+// })}}
 
 
 const Main = () => {
@@ -248,12 +249,20 @@ const Main = () => {
   }, [ modalSubmitted, refetchDiary, refetchMember]);
 
 
-  useEffect(()=>{
-    requestPermission();
-  },[])
+  // useEffect(()=>{
+  //   requestPermission();
+  // },[])
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalClose = () => setModalOpen(false);
+  const handleNotificationSelect = ( value ) => {
+    handleModalClose(); 
+  };
 
   return (
     <>
+    <NotificationModal onNotificationSelect={ handleNotificationSelect }   isOpen={ modalOpen }
+  onClose={ handleModalClose }></NotificationModal>
     <Header>
       <ProfileImage src={ userImage || ya } alt="유저 프로필 이미지" />
       <Button btType='bell' onButtonClick={() => setAlarmModalOpen(true)} />
