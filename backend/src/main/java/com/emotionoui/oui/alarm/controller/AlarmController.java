@@ -55,11 +55,12 @@ public class AlarmController {
 
     // 기기 코드 등록하기
     @PostMapping("/device")
-    public ResponseEntity<?> createDevice(@RequestBody Map<String, String> deviceToken,
+    public ResponseEntity<?> createDevice(@RequestParam String deviceToken,
                                           @AuthenticationPrincipal Member member) throws IOException {
-        log.info("deviceToken : {}", deviceToken.get("deviceToken"));
-        alarmService.createDeviceToken(member, deviceToken.get("deviceToken"));
-        return new ResponseEntity<>(HttpStatus.OK);
+        log.info("deviceToken : {}", deviceToken);
+
+        alarmService.createDeviceToken(member, deviceToken);
+        return new ResponseEntity<>("11111",HttpStatus.OK);
     }
 
     // 초대 요청 수락
