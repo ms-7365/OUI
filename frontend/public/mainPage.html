@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getMessaging, getToken } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4rZM4zSMnMeEfwTQtwBcLMjRgkAegLqc",
+            authDomain: "project-oui.firebaseapp.com",
+            projectId: "project-oui",
+            storageBucket: "project-oui.appspot.com",
+            messagingSenderId: "564919296989",
+            appId: "1:564919296989:web:6a19bdce8eda1836af0c34",
+            measurementId: "G-QZPB4ZZJVX"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const messaging = getMessaging();
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
+                registration.update(); // 서비스 워커 갱신 강제 실행
+                console.log('Service Worker 등록 성공:', registration);
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        console.log('Notification permission granted.');
+
+                        // 서비스 워커가 준비되었고, 알림 권한이 부여되었을 때 토큰 요청
+                        navigator.serviceWorker.ready.then((registration) => {
+                            getToken(messaging, {
+                                serviceWorkerRegistration: registration,
+                                vapidKey: 'BAhoICC6z5mN9iMX03lRpoJBLWvPYvaVMcxCZNBVZ0sZczL-Uq56Nnbz8LCVelwEi6ig1fQ12CqafI7DhY-J_UU'
+                            }).then((currentToken) => {
+                                if (currentToken) {
+                                    console.log("device_token: " + currentToken);
+                                    // Send the token to your server and update the UI if necessary
+                                    fetch('http://localhost:8080/alarm/device', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({ deviceToken: currentToken })
+                                    })
+                                        .then(response => {
+                                            if (response.ok) { // HTTP 상태 코드가 200-299인 경우
+                                                console.log('Success:', response.status);
+                                            } else {
+                                                // 서버가 오류 응답을 반환한 경우 (예: 400, 401, 500 등)
+                                                console.error('Server error:', response.status);
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            console.error('Network error:', error);
+                                        });
+                                } else {
+                                    // Show permission request UI
+                                    console.log('No registration token available. Request permission to generate one.');
+                                    // ...
+                                }
+                            }).catch((err) => {
+                                console.log('An error occurred while retrieving token. ', err);
+                                // ...
+                            });
+                        });
+                    } else {
+                        console.log('Permission denied');
+                    }
+                });
+            }).catch(error => {
+                console.error('Service Worker 등록 실패:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+<br>
+<h1>메인 페이지</h1>
+<h1 id="token"></h1>
+</body>
+</html>
