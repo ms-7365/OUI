@@ -75,6 +75,7 @@ public class AlarmServiceImpl implements AlarmService{
                     .title(alarm.getTitle())
                     .content(alarm.getContent())
                     .diaryId(memberAlarm.getDiary().getId())
+                    .link(alarm.getLink())
                     .build();
             searchAlarmsResList.add(searchAlarmsRes);
         }
@@ -263,8 +264,8 @@ public class AlarmServiceImpl implements AlarmService{
         String title, content, link;
         title = diaryName + " 다이어리";
         content = "'" + member.getNickname() + "' 친구가 일기를 작성했어요~";
-        // 일기쓴 곳으로 이동해야 함
-        link = "http://localhost:8080/alarm/mainPage";
+        // 일기 작성 페이지로 이동
+        link = "http://localhost:3000/diary/" + dailyId;
 
         List<String> deviceTokens = new ArrayList<>();
 
@@ -272,6 +273,7 @@ public class AlarmServiceImpl implements AlarmService{
                 .type(AlarmContentType.FriendDiary)
                 .title(title)
                 .content(content)
+                .link(link)
                 .build();
 
         alarmRepository.save(alarm);

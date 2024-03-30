@@ -46,6 +46,7 @@ public class DailyDiary {
         this.diary = diary;
         this.mongoId = mongoId;
         this.dailyDate = dailyDate;
+        this.isDeleted = 0;
         diary.getDailyDiaryList().add(this);
     }
 
