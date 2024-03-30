@@ -7,6 +7,7 @@ import joy from 'src/asset/images/emotion/joy.png'
 import nervous from 'src/asset/images/emotion/nervous.png'
 import relax from 'src/asset/images/emotion/relax.png'
 import sad from 'src/asset/images/emotion/sad.png'
+import ya from 'src/asset/images/ya.jpg'
 import staticStore from 'src/store'
 import { useNavigate } from 'react-router-dom'
 
@@ -121,14 +122,14 @@ const Day = ( props: DayProps ) =>{
     
     }
 
-
     const emotionImg = {
-        angry: angry,
-        embarrass: embarrass,
-        joy: joy,
-        nervous: nervous,
-        relax: relax,
-        sad: sad,
+        'angry': angry,
+        'embarrass': embarrass,
+        'joy': joy,
+        'nervous': nervous,
+        'comfortable': relax,
+        'sad': sad,
+        'happy': ya
     }
 
     function listTodo (e, date): void{
@@ -157,12 +158,12 @@ const Day = ( props: DayProps ) =>{
             { format( day, 'd' ) }
             </DayClick>
             <EmotionWrapper>
-                { diaries?.map((diary, index) => (
+                { diaries?.map(( diary, index ) => (
                     <EmotionIcon 
-                        src={emotionImg[diary?.emotion.valueOf()]} 
+                        src={ emotionImg[ diary?.emotion ]} 
                         alt='' 
                         onClick={(e) => goMyDiary({ diary }, day)} 
-                        style={{ ...emotionPositions[index] }} // 이모티콘 위치조정
+                        style={{ ...emotionPositions[ index ] }} // 이모티콘 위치조정
                         key={index}
                     />
                 ))}

@@ -1,4 +1,5 @@
 import useStore from 'src/store'
+import { useCookies } from 'react-cookie';
 import axios from 'axios'
 
 
@@ -8,11 +9,10 @@ const useAxios = axios.create({
   withCredentials: true,
 })
 
-
 useAxios.interceptors.request.use( 
   async( config ) => {
       const storedDataString = localStorage.getItem('userStorage');
-      
+            
       if (storedDataString) {
         const storedData = JSON.parse(storedDataString);
 
@@ -47,6 +47,9 @@ useAxios.interceptors.response.use(
 
     if( error?.response?.status === 401 || error === 401 || status === 401 ){
 
+      const [ cookies, setCookie ] = useCookies([ 'refreshToken' ]);
+      const { setAccessToken, setIsLogin } = useStore()
+
       // if( localStorage.getItem('refreshToken')){
       //   const refreshToken = useStore();
       //   const data = { "Authorization-refresh" : refreshToken }
@@ -61,6 +64,25 @@ useAxios.interceptors.response.use(
       //   }
        
       // }
+      if( cookies.refreshToken ){
+
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': `refreshToken=${cookies.refreshToken}`
+          }
+        }
+        
+        try{
+          const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/token`, { refreshToken : cookies.refreshToken }, config)
+          setAccessToken(response?.data?.accessToken)
+
+          error.config.headers.Authorization = response?.headers?.authorization
+          return axios.request(error.config)
+        } catch( refreshError ){
+        }
+       
+      }
     }
   }
 )

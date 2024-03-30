@@ -23,8 +23,8 @@ const Login = () => {
     
     return(
         <LoginWrapper>
-            <img src={mainlogo}/>
-            <img src={blurredlogo}/>
+            <img src={ mainlogo }/>
+            <img src={ blurredlogo }/>
             <a href={KAKAO_AUTH_URI}><img src= { kakao } style={{width:"230px", marginTop:"-50px"}}/></a>
         </LoginWrapper>
     );
