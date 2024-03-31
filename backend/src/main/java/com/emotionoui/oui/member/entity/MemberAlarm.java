@@ -3,10 +3,7 @@ package com.emotionoui.oui.member.entity;
 import com.emotionoui.oui.alarm.entity.Alarm;
 import com.emotionoui.oui.diary.entity.Diary;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -43,6 +40,7 @@ public class MemberAlarm {
     private LocalDateTime createdAt;
 
     @Column(name = "is_deleted")
+    @Setter
     private Integer isDeleted;
 
     @Builder

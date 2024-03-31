@@ -79,6 +79,13 @@ public class AlarmController {
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
+    @PostMapping("/read/{alarmId}")
+    public ResponseEntity<?> readAlarm(@AuthenticationPrincipal Member member, @PathVariable Integer alarmId){
+        alarmService.readAlarm(member, alarmId);
+        return ResponseEntity.ok().build();
+    }
+
 
     // 실험용
     @GetMapping("/mainPage")

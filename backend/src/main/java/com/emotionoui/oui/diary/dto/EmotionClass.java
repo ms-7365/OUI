@@ -6,12 +6,12 @@ import java.util.List;
 
 @Data
 public class EmotionClass {
-    private double happy;
-    private double comfortable;
-    private double embarrassed;
-    private double angry;
-    private double doubtful;
-    private double sad;
+    private Double happy;
+    private Double comfortable;
+    private Double embarrassed;
+    private Double angry;
+    private Double doubtful;
+    private Double sad;
     private List<String> emotionList;
 
 //    public String getMaxEmotion(){

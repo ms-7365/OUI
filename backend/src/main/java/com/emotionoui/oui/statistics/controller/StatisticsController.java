@@ -43,8 +43,8 @@ public class StatisticsController {
     }
 
     @GetMapping("/{diaryId}")
-    public ResponseEntity<DiaryEmotionRes> getDiaryEmotion(@AuthenticationPrincipal Member member, StatisticsReq req){
-        DiaryEmotionRes res = statisticsService.getDiaryEmotion(member,req.getDiaryId(),req.getDate());
+    public ResponseEntity<DiaryEmotionRes> getDiaryEmotion(@AuthenticationPrincipal Member member, StatisticsReq req,@PathVariable Integer diaryId){
+        DiaryEmotionRes res = statisticsService.getDiaryEmotion(member,diaryId,req.getDate());
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
 

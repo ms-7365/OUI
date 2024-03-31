@@ -115,6 +115,16 @@ public class AlarmServiceImpl implements AlarmService{
         querydslRepositoryCustom.deleteAlarmByMemberIdAndDiaryId(member, diaryId);
     }
 
+    @Override
+    public void readAlarm(Member member, Integer alarmId) {
+        Optional<MemberAlarm> getAlarm = memberAlarmRepository.findMemberAlarmByMemberAndAlarm_Id(member,alarmId);
+        if(getAlarm.isPresent()){
+            MemberAlarm alarm = getAlarm.get();
+            alarm.setIsDeleted(1);
+            memberAlarmRepository.save(alarm);
+        }
+    }
+
 //    // 알림 읽음 표시
 //    @Override
 //    public String readMessage(Long notificationId) {

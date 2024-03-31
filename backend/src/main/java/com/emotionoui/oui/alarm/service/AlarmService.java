@@ -27,6 +27,8 @@ public interface AlarmService {
     public void acceptInvite(Member member, Integer diaryId);
 
     public void refuseInvite(Member member, Integer diaryId);
+
+    public void readAlarm(Member member, Integer alarmId);
 //
 //    public String readMessage(Long notificationId);
 //

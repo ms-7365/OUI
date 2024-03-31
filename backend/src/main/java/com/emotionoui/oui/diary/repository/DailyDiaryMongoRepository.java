@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface DailyDiaryMongoRepository extends MongoRepository<DailyDiaryCollection, String> {
 
 
-    @Query(value = "{'_id': ?0}", fields = "{'emotion': 1}")
+    @Query(value = "{'_id': ?0}", fields = "{'emotion': 1, 'nickname': 1}")
     DailyDiaryCollection findEmotionByDailyId(String dailyId);
 
     @Query(value = "{'_id': ?0}", fields = "{'music': 1}")
