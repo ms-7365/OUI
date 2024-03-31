@@ -67,9 +67,9 @@ public class CalendarService {
     }
     // 일정 조회 - 공유
     @Transactional(readOnly = true)
-    public List<CalendarScheduleDto> findShareSchedulebyDate(Integer memberId, Integer year, Integer month){
+    public List<CalendarScheduleDto> findShareSchedulebyDate(Integer memberId, Integer year, Integer month, Integer diaryId){
 
-        List<Schedule> scheduleList = calendarRepository.findShareSchedulebyDate(memberId, year, month+1);
+        List<Schedule> scheduleList = calendarRepository.findShareSchedulebyDate(memberId, year, month+1, diaryId);
 
         return scheduleList.stream()
                 .map(CalendarScheduleDto::of)

@@ -2,6 +2,7 @@ package com.emotionoui.oui.diary.entity;
 
 import com.emotionoui.oui.member.entity.MemberAlarm;
 import com.emotionoui.oui.member.entity.MemberDiary;
+import com.emotionoui.oui.schedule.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -40,6 +41,9 @@ public class Diary {
 
     @OneToMany(mappedBy = "diary")
     private List<MemberAlarm> memberAlarmList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "diary")
+    private List<Schedule> scheduleList = new ArrayList<>();
 
     @Column(name="template_id")
     private Integer templateId;

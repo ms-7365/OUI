@@ -1,5 +1,7 @@
 package com.emotionoui.oui.schedule.entity;
 
+import com.emotionoui.oui.alarm.entity.Alarm;
+import com.emotionoui.oui.diary.entity.Diary;
 import com.emotionoui.oui.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -29,6 +31,10 @@ public class Schedule {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diary_id", nullable = false)
+    private Diary diary;
 
     private String title;
 
@@ -64,10 +70,12 @@ public class Schedule {
         this.isDeleted = 1;
     }
 
+
     @Builder
-    public Schedule(Integer scheduleId, Member member, String title, String content, Date date, String color, Integer isDeleted, LocalDateTime createdAt, ScheduleType type) {
+    public Schedule(Integer scheduleId, Member member, Diary diary, String title, String content, Date date, String color, Integer isDeleted, LocalDateTime createdAt, ScheduleType type) {
         this.scheduleId = scheduleId;
         this.member = member;
+        this.diary = diary;
         this.title = title;
         this.content = content;
         this.date = date;
@@ -75,5 +83,7 @@ public class Schedule {
         this.createdAt = createdAt;
         this.isDeleted = isDeleted;
         this.type = type;
+        diary.getScheduleList().add(this);
     }
+
 }

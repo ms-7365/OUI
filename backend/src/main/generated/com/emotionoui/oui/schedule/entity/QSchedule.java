@@ -30,6 +30,8 @@ public class QSchedule extends EntityPathBase<Schedule> {
 
     public final DateTimePath<java.util.Date> date = createDateTime("date", java.util.Date.class);
 
+    public final com.emotionoui.oui.diary.entity.QDiary diary;
+
     public final NumberPath<Integer> isDeleted = createNumber("isDeleted", Integer.class);
 
     public final com.emotionoui.oui.member.entity.QMember member;
@@ -58,6 +60,7 @@ public class QSchedule extends EntityPathBase<Schedule> {
 
     public QSchedule(Class<? extends Schedule> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.diary = inits.isInitialized("diary") ? new com.emotionoui.oui.diary.entity.QDiary(forProperty("diary")) : null;
         this.member = inits.isInitialized("member") ? new com.emotionoui.oui.member.entity.QMember(forProperty("member"), inits.get("member")) : null;
     }
 

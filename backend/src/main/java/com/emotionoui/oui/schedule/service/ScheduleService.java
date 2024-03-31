@@ -1,5 +1,7 @@
 package com.emotionoui.oui.schedule.service;
 
+import com.emotionoui.oui.diary.entity.Diary;
+import com.emotionoui.oui.diary.repository.DiaryRepository;
 import com.emotionoui.oui.member.entity.Member;
 import com.emotionoui.oui.schedule.dto.req.ScheduleReq;
 import com.emotionoui.oui.schedule.entity.Schedule;
@@ -11,22 +13,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
-
-//    private final MemberRepository memberRepository;
-
+    private final DiaryRepository diaryRepository;
 
     // 회원 일정 추가
     @Transactional
-    public int saveSchedules(@RequestBody ScheduleReq scheduleReq,
-                             @AuthenticationPrincipal Member member) {
+    public int saveSchedules(ScheduleReq scheduleReq,
+                             Member member) {
+
+        Diary diary = diaryRepository.findById(scheduleReq.getDiaryId()).orElseThrow();
 
         scheduleRepository.save(scheduleReq.toEntity(
-                                member, scheduleReq.getTitle(), scheduleReq.getContent(),
+                                member, diary, scheduleReq.getTitle(), scheduleReq.getContent(),
                                 scheduleReq.getDate(), scheduleReq.getColor(), scheduleReq.getType()));
         return member.getMemberId();
     }

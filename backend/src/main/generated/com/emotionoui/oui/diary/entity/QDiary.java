@@ -34,6 +34,8 @@ public class QDiary extends EntityPathBase<Diary> {
 
     public final StringPath name = createString("name");
 
+    public final ListPath<com.emotionoui.oui.schedule.entity.Schedule, com.emotionoui.oui.schedule.entity.QSchedule> scheduleList = this.<com.emotionoui.oui.schedule.entity.Schedule, com.emotionoui.oui.schedule.entity.QSchedule>createList("scheduleList", com.emotionoui.oui.schedule.entity.Schedule.class, com.emotionoui.oui.schedule.entity.QSchedule.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> templateId = createNumber("templateId", Integer.class);
 
     public final EnumPath<DiaryType> type = createEnum("type", DiaryType.class);

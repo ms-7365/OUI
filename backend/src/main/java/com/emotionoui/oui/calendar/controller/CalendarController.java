@@ -72,7 +72,7 @@ public class CalendarController {
             List<CalendarDiaryDto> myDiaries =
                     calendarService.findShareDiarybyDate(m.getMemberId(), year, month, diaryId);
             List<CalendarScheduleDto> myScehdule =
-                    calendarService.findShareSchedulebyDate(m.getMemberId(), year, month);
+                    calendarService.findShareSchedulebyDate(m.getMemberId(), year, month, diaryId);
 
             MyCalendarRes myCalendarRes = MyCalendarRes.builder()
                     .diaries(myDiaries)
