@@ -23,4 +23,6 @@ public interface DailyDiaryRepository extends JpaRepository<DailyDiary, Integer>
     @Query("SELECT d FROM DailyDiary d WHERE d.diary.id = :diaryId AND d.dailyDate= :date")
     DailyDiary findByDiaryIdAndDate(@Param("diaryId") Integer diaryId, @Param("date") Date date);
 
+    @Query("SELECT d.id FROM DailyDiary d WHERE d.mongoId = :mongoId")
+    Integer findDailyDiaryIdByMongoId(String mongoId);
 }

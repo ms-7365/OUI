@@ -22,4 +22,6 @@ public interface DailyDiaryMongoRepository extends MongoRepository<DailyDiaryCol
     @Query(value = "{'_id': ?0}", fields = "{'emotion': 1}")
     EmotionClass findEmotionClassByDailyId(String dailyId);
 
+
+
 }

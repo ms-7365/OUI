@@ -31,4 +31,5 @@ public interface DiaryService {
     void exitShareDiary(Integer diaryId, int memberId);
 
     void syncDiary(Integer memberId, Integer diaryId);
+    Integer findDailyDiaryIdByMongoId(String mongoId);
 }

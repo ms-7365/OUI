@@ -2,6 +2,7 @@ package com.emotionoui.oui.calendar.controller;
 
 
 import com.emotionoui.oui.alarm.service.AlarmService;
+import com.emotionoui.oui.calendar.dto.req.FindDailyDiaryIdReq;
 import com.emotionoui.oui.calendar.dto.res.*;
 import com.emotionoui.oui.calendar.service.CalendarService;
 import com.emotionoui.oui.diary.dto.res.SearchDailyDiaryRes;
@@ -28,6 +29,7 @@ public class CalendarController {
 
     private final CalendarService calendarService;
     private final AlarmService alarmService;
+    private final DiaryService diaryService;
 
     // 캘린더에서 한달간 내 일기와 일정 조회
     @GetMapping("/my")
@@ -108,6 +110,7 @@ public class CalendarController {
 
         for(Integer dailyId: dailyIdList){
             ShareDailyDiaryRes dailyDiary = calendarService.searchDailyDiary(dailyId);
+            if(dailyDiary.getIsDeleted()==1) continue;
             dailyDiaryList.add(dailyDiary);
         }
 
@@ -123,6 +126,14 @@ public class CalendarController {
 
         List<DiaryMemberDto> memberIdList = memberList.stream().map(DiaryMemberDto::of).collect(Collectors.toList());
 
-        return  new ResponseEntity<>(memberIdList, HttpStatus.OK);
+        return new ResponseEntity<>(memberIdList, HttpStatus.OK);
+    }
+
+    // 공유 일기 라우팅 연결
+    @GetMapping("/day")
+    public ResponseEntity<?>findDailyDiaryIdByMongoId(FindDailyDiaryIdReq findDailyDiaryIdReq){
+        Integer dailyDiaryId = diaryService.findDailyDiaryIdByMongoId(findDailyDiaryIdReq.getMongoId());
+        System.out.println("dailyDiaryId = " + dailyDiaryId);
+        return new ResponseEntity<>(dailyDiaryId, HttpStatus.OK);
     }
 }
