@@ -71,6 +71,9 @@ dependencies {
     implementation 'com.google.apis:google-api-services-youtube:v3-rev20230816-2.0.0'
     implementation 'com.google.http-client:google-http-client-jackson2:1.39.2'
 
+    //ChatGPT
+//    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'

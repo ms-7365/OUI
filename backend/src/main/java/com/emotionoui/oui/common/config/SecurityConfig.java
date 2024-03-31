@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .httpBasic((auth) -> auth.disable());
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/auth/token","/auth/login/kakao", "/ws/**").permitAll()
+                        .requestMatchers("/login", "/auth/token","/auth/login/kakao", "/ws/**","/bot/**").permitAll()
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .anyRequest().authenticated());
         http
@@ -86,7 +86,8 @@ public class SecurityConfig {
                 web
                         .ignoring()
                         .requestMatchers(
-                                "/auth/login/kakao", "/login","/auth/token", "/ws/**"
+                                "/auth/login/kakao", "/login","/auth/token", "/ws/**",
+                                "/bot/**" // gpt test위해 ..
                         );
     }
 }
