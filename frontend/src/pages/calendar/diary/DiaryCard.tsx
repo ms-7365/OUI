@@ -67,10 +67,10 @@ const DiaryCard = ( props ) =>{
 
     const { diary, member, diaryId } = props
 
-    const isExist = diary?.filter(( diary ) => diary?.dailyDate?.substring( 5, 10 ) === format( clickDate, 'MM-dd'))
-
-    console.log("IS EXIST", isExist)
-    console.log("MEMBER", member)
+    
+    const isExist = diary?.filter(( diary ) => (diary?.dailyDate?.substring( 5, 10 ) === format( clickDate, 'MM-dd')) && (diary?.writerId == member?.memberId))
+    
+    // console.log("Diary", diary, member, isExist, (isExist.length > 0))
 
     const goAlarm = useMutation( postUrge )
 
@@ -100,7 +100,7 @@ const DiaryCard = ( props ) =>{
     return(
         <div>
             {
-                isExist && 
+                isExist && isExist.length > 0 ? (
                 <>
                     <TodoWrapper onClick={ moveDailyDiary } color='black'>
                     <TodoInside>
@@ -119,10 +119,7 @@ const DiaryCard = ( props ) =>{
                     </TodoInside>
                     </TodoWrapper>
                 </>
-                }
-
-                {
-                !isExist && 
+                ):(
                 <>
                     <TodoWrapper color='gray'>
                     <TodoInside>
@@ -141,7 +138,8 @@ const DiaryCard = ( props ) =>{
                     </TodoInside>
                     </TodoWrapper>
                 </>
-                }
+                
+                )}
             </div>
     )
 }
