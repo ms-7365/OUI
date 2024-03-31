@@ -34,7 +34,7 @@ const PlusButton = styled.button`
 
 const MyModal = (props) => {
 
-  const { schedules } = props
+  const { schedules, diaryId } = props
 
   console.log(schedules)
 
@@ -61,7 +61,7 @@ const MyModal = (props) => {
       </>
       }{
         !modalContent &&
-        <Todo type='개인' />
+        <Todo type='개인' diaryId= { diaryId }/>
       }
     </MyModalWrapper>
   )

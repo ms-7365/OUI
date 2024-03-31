@@ -116,7 +116,7 @@ const ShareModal = (props) => {
         <HeaderBoxWrapper color= 'trans' onClick={ ClickDiary }>일기</HeaderBoxWrapper>
       </ModalHeaderWrapper>
         <div  style={{ width: '80%', marginLeft: '10%' }}>
-          <Todo type='공유'/>
+          <Todo type='공유' diaryId= { diaryId }/>
         </div>
         </>
       }

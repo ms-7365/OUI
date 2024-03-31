@@ -70,6 +70,7 @@ const DiaryCard = ( props ) =>{
     const isExist = diary?.filter(( diary ) => diary?.dailyDate?.substring( 5, 10 ) === format( clickDate, 'MM-dd'))
 
     console.log("IS EXIST", isExist)
+    console.log("MEMBER", member)
 
     const goAlarm = useMutation( postUrge )
 
@@ -87,10 +88,11 @@ const DiaryCard = ( props ) =>{
         navigator(`/diary/${isExist.dailyDiaryId}`)
     }
 
-    const postAlarm = async () =>{
+    const postAlarm = async (id) =>{
 
         await goAlarm.mutateAsync({ 
             diaryId: diaryId,
+            memberId: id,
             date: format( clickDate, 'yyyy-MM-dd' )
              })
     }
@@ -103,7 +105,7 @@ const DiaryCard = ( props ) =>{
                     <TodoWrapper onClick={ moveDailyDiary } color='black'>
                     <TodoInside>
                     <CardWrapper src={ joy } />
-                    <div style={{width:'100%', height: '100%'}}>
+                    <div style={{ width:'100%', height: '100%' }}>
                         <TodoCardHeader>
                             <TodoTitle color='black'>
                                 '{ member?.nickname }'의 일기
@@ -132,7 +134,7 @@ const DiaryCard = ( props ) =>{
                             </TodoTitle>
                             <div style={{ display:'flex', marginTop:'1%', gap: '2%'}}/>
                         </TodoCardHeader>
-                        <TodoBody onClick={ postAlarm } style={{cursor: 'pointer'}}>
+                        <TodoBody onClick={(e) => postAlarm(member?.memberId) } style={{cursor: 'pointer'}}>
                                <img src={ urge } alt = '' style={{ height: '20px'}}/> 재촉하기!
                         </TodoBody>
                     </div>

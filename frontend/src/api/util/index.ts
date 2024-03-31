@@ -50,6 +50,8 @@ useAxios.interceptors.response.use(
       const [ cookies, setCookie ] = useCookies([ 'refreshToken' ]);
       const { setAccessToken, setIsLogin } = useStore()
 
+      console.log("refrest START")
+
       // if( localStorage.getItem('refreshToken')){
       //   const refreshToken = useStore();
       //   const data = { "Authorization-refresh" : refreshToken }
@@ -65,17 +67,20 @@ useAxios.interceptors.response.use(
        
       // }
       if( cookies.refreshToken ){
+        console.log("refrest Exist",cookies.refreshToken  )
 
         const config = {
           headers: {
             'Content-Type': 'application/json',
-            'Cookie': `refreshToken=${cookies.refreshToken}`
+            'Cookie': `refreshToken=${cookies.refreshToken}`,
+            withCredentials: true,
           }
         }
         
         try{
           const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/token`, { refreshToken : cookies.refreshToken }, config)
           setAccessToken(response?.data?.accessToken)
+          setIsLogin(true)
 
           error.config.headers.Authorization = response?.headers?.authorization
           return axios.request(error.config)

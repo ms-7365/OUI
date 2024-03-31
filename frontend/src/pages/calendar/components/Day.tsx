@@ -54,14 +54,14 @@ const TodoWrapper = styled.div`
 
 const TodoItemWrapperContainer = styled.div`
     width: 100%;
-    height: 20px;
+    height: 12px;
     display: flex;
     margin: 2px;
 `
 
 const TodoItemWrapper = styled.div<{ color: string }>`
     flex: 1;
-    height: 16px;
+    height: 10px;
     display: flex;
     justify-content: center;
     margin-top:2px;
@@ -88,7 +88,6 @@ const Day = ( props: DayProps ) =>{
     const emotionPositions = [
         { top: '0', left: '20%' }, // 첫 번째 이모티콘 위치
         { top: '10%', left: '30%' }, // 두 번째 이모티콘 위치
-        { top: '20%', left: '40%' }
     ]
     
 

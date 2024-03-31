@@ -230,7 +230,7 @@ const Calendar = () =>{
           isModalOpened && type==='개인'
           && 
             <ModalPortal onClose={ closeModal }>
-              <Modal><MyModal schedules= { calendars?.data?.schedules }></MyModal></Modal>
+              <Modal><MyModal schedules= { calendars?.data?.schedules } diaryId= { diaryId }></MyModal></Modal>
             </ModalPortal>
         }
 

@@ -52,7 +52,7 @@ const ColorBox = styled.button<{ color: string; selected: boolean }>`
 
 const Todo = (props) => {
 
-  const { type } = props;
+  const { type, diaryId } = props;
 
   const { clickDate, setModalContent } = useStore()
   const [ title, setTitle ] = useState('')
@@ -82,7 +82,7 @@ const Todo = (props) => {
 
     colors.push( todoColor )
 
-    await makeTodo.mutateAsync({ title: title, content: memo, 
+    await makeTodo.mutateAsync({ diaryId: diaryId, title: title, content: memo, 
                                 date: format( clickDate, 'yyyy-MM-dd' ), 
                                 color:todoColor, type: type });
 
