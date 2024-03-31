@@ -19,7 +19,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import useStore from 'src/store'
 import styled from 'styled-components';
 
-const BottomWrapper = styled(Bottom)`
+const BottomWrapper = styled( Bottom )`
     max-width: 1024px;
     width: 100%;
     display: flex;
@@ -39,7 +39,7 @@ const TitleWrapper = styled.div`
 `;
 
 const Drawer = () => {
-    const [ open, setOpen ] = React.useState(false);
+    const [ open, setOpen ] = React.useState( false );
     const navigator = useNavigate()
     const { diaryId, dailyDiaryId, type } = useStore()
     const toggleDrawer = ( newOpen: boolean ) => () => {
@@ -58,7 +58,10 @@ const Drawer = () => {
     }
 
     const goAnalysis = () => {
-      navigator('/analysis')
+      type === '개인' &&
+      navigator('/analysis') 
+      type === '공유' && 
+      navigator(`/shareanalysis`)
     }
   
     const DrawerList = (

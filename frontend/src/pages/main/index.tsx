@@ -15,14 +15,20 @@ import { getToken } from "firebase/messaging";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from "styled-components";
-import { NotificationModal } from "src/components/control/NotificationModal";
+
+
+const CarouselContainer = styled.div`
+  max-width: 100%;
+  margin: auto;
+  overflow: hidden; 
+  padding: 20px 0; 
+`;
 
 const SliderWrapper = styled( Slider )`
   
   .slick-track{
     display: flex;
-    margin: 0 -10px;
-
+    margin: 0 -30px;
   }
 
   .slick-slide {
@@ -112,41 +118,46 @@ const ProfileImage = styled.img`
   object-fit: cover;
 `;
 
-// const requestPermission = async () => {
-//   if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
-//         registration.update(); // 서비스 워커 갱신 강제 실행
-//         console.log('Service Worker 등록 성공:', registration);
-//   Notification.requestPermission().then(permission => {
-//     if (permission === 'granted') {
-//       console.log('알림 권한 승인됨.');
+const requestPermission = async () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
+        registration.update(); // 서비스 워커 갱신 강제 실행
+        console.log('Service Worker 등록 성공:', registration);
+  Notification.requestPermission().then(permission => {
+    if (permission === 'granted') {
+      console.log('알림 권한 승인됨.');
 
-//       navigator.serviceWorker.ready.then((registration) => {
-//         getToken(messaging, {
-//           serviceWorkerRegistration: registration,
-//           vapidKey: process.env.REACT_APP_VAPID_KEY
-//         }).then((currentToken) => {
-//           if (currentToken) {
-//             console.log("디바이스 토큰:", currentToken);
-//             postDeviceToken(currentToken) 
-//               .then(response => {
-//                 console.log('Device token posted successfully:', response);
-//               })
-//               .catch((error) => {
-//                 console.error('Error posting device token:', error);
-//               });
-//           } else {
-//             console.log('디바이스 토큰을 가져올 수 없습니다. 알림 권한을 요청해주세요.');
-//           }
-//         }).catch((err) => {
-//           console.error('토큰 가져오기 실패:', err);
-//         });
-//       });
-//     } else {
-//       console.log('알림 권한 거부됨.');
-//     }
-//   });
-// })}}
+      navigator.serviceWorker.ready.then((registration) => {
+        getToken(messaging, {
+          serviceWorkerRegistration: registration,
+          vapidKey: process.env.REACT_APP_VAPID_KEY
+        }).then((currentToken) => {
+          if (currentToken) {
+            console.log("디바이스 토큰:", currentToken);
+            postDeviceToken(currentToken) 
+              .then(response => {
+                console.log('Device token posted successfully:', response);
+              })
+              .catch((error) => {
+                console.error('Error posting device token:', error);
+              });
+          } else {
+            console.log('디바이스 토큰을 가져올 수 없습니다. 알림 권한을 요청해주세요.');
+          }
+        }).catch((err) => {
+          console.error('토큰 가져오기 실패:', err);
+        });
+      });
+    } else {
+      console.log('알림 권한 거부됨.');
+      showAlertToChangePermission();
+    }
+  });
+})}}
+
+function showAlertToChangePermission() {
+  alert('알림을 받기 위해서는 브라우저 설정에서 알림 권한을 허용해주세요.');
+}
 
 
 const Main = () => {
@@ -158,6 +169,7 @@ const Main = () => {
     focusOnSelect: true,
     slidesToShow: 3,
     speed: 500,
+    accessibility: true,
   };
 
   const navigator = useNavigate()
@@ -203,12 +215,14 @@ const Main = () => {
     buttonText: diary.createdAt,
     isDiary: "diary",
     template: diary.templateId,
+    title: diary.diaryName,
     type: diary.type,
   })).concat({
     id: diaryList.length,
-    buttonText: "카드 추가",
+    buttonText: "",
     isDiary: "addButton",
     template: -1,
+    title: "",
     type: "",
   });
 
@@ -247,22 +261,20 @@ const Main = () => {
       setModalSubmitted( false );
     }
   }, [ modalSubmitted, refetchDiary, refetchMember]);
+  
+  useEffect(() => {
+    if (!alarmModalOpen) {
+      refetchDiary();
+    }
+  }, [alarmModalOpen, refetchDiary]);
 
+  useEffect(()=>{
+    requestPermission();
+  },[])
 
-  // useEffect(()=>{
-  //   requestPermission();
-  // },[])
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleModalClose = () => setModalOpen(false);
-  const handleNotificationSelect = ( value ) => {
-    handleModalClose(); 
-  };
 
   return (
     <>
-    <NotificationModal onNotificationSelect={ handleNotificationSelect }   isOpen={ modalOpen }
-  onClose={ handleModalClose }></NotificationModal>
     <Header>
       <ProfileImage src={ userImage || ya } alt="유저 프로필 이미지" />
       <Button btType='bell' onButtonClick={() => setAlarmModalOpen(true)} />
@@ -271,18 +283,20 @@ const Main = () => {
         {userName && <UserRecord style={{ fontWeight: 'bold' }}>{ userName }님의 감정기록 :)</UserRecord>}
     </YellowBox>
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <div className="slider-container" style={{ minHeight: '100%', minWidth: '100%' }}>      
+      <CarouselContainer>
+      {/* <div className="slider-container" style={{ minHeight: '100%', minWidth: '100%' }}>       */}
         <SliderWrapper { ...settings }>
         {cards.map(( card, index ) => (
           <div key={index}>
-            <Card buttonText={ card.buttonText } templateId={ card.template } 
+            <Card buttonText={ card.buttonText } templateId={ card.template } title={ card.title }
               onClick={ card.isDiary === "addButton" ? openModal : () => moveDiary( card?.type, card.id ) } />
           </div> 
         ))}
           <Card/>
           <Card/>
         </SliderWrapper>
-      </div>
+        </CarouselContainer>
+      {/* </div> */}
     </div>
     <AlarmModal isOpen={ alarmModalOpen } closeModal={() => setAlarmModalOpen(false)} />
     <CustomModal isOpen={ isModalOpen } closeModal={ closeModal } isFinish={ addCard } />

@@ -5,14 +5,16 @@ const HeaderWrapper = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 80px;
+  padding: 0px;
   background-color: transparent;
-  padding: 1rem;
 `;
 
 const HeaderItem = styled.div`
   display: flex;
   justify-content: center;
   flex-grow: 1;
+  padding-left: 20px;
   &:first-child {
     justify-content: flex-start;
   }

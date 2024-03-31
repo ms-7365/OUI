@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import { Drawer } from "src/components/control/Drawer";
 import { addDays, addMonths, format, subMonths } from 'date-fns'
 import { DateList, DayList, MyModal, ShareModal }  from './components'
 import writeDiary from 'src/asset/images/image-icon/write-btn.png'
-import { LeftIcon, RightIcon } from 'src/components'
+import { Button, LeftIcon, RightIcon } from 'src/components'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import useStore from './store';
@@ -13,6 +14,8 @@ import { createPortal } from 'react-dom'
 import useDate from 'src/util/date'
 import styled from 'styled-components'
 import { getCalendar, getShareCalendar } from './api';
+import { Header } from 'src/components/control/Header';
+import { BottomNavi } from 'src/components/control/BottomNavi';
 
 const Title = styled.div`
     font-size: 35px;
@@ -24,16 +27,17 @@ const CalendarWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   width: 100%;
-  height: 100vh;
+  height: calc(100% - 150px);
   align-items: center;
   flex-direction: column;
+  padding-bottom: 50px; 
 `
 
 const CalendarHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top:8%;
+  margin-top:4%;
 `
 
 const CalendarHeaderRightWrapper =styled.button `
@@ -213,9 +217,14 @@ const Calendar = () =>{
   console.log("Calendar", calendars)
   
   return(
+    <>
+          <Header>
+            <Drawer></Drawer>
+            <Button></Button>
+            <Button></Button>
+          </Header>
           <CalendarWrapper>
             <CalendarHeaderWrapper>
-              <></>
             <CalendarHeaderMiddleWrapper>
               <LeftIcon size= { 31 } onClick={ movePrevMonth }/>
               <Title>{ format( currentMonth, 'yyyy' )}년 { format( currentMonth, 'M' )}월</Title>
@@ -249,7 +258,9 @@ const Calendar = () =>{
 
             <DateList/>
             <DayList list = { days } calendars = { calendars?.data } type = { type }/>
-          </CalendarWrapper>
+            </CalendarWrapper>
+            <BottomNavi/>
+          </>
   )
 }
 

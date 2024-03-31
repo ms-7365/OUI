@@ -8,8 +8,6 @@ import styled from 'styled-components'
 import { NotificationModal } from 'src/components/control/NotificationModal';
 
 const MyPage = () => {
-    console.log(axios.defaults.headers.common["Authorization"])
-
     return(
         <>
             <Drawer/>

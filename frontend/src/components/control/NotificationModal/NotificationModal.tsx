@@ -76,7 +76,7 @@ const NotificationModal = ({ isOpen, onClose, onNotificationSelect }) => {
         }
     };
 
-    const requestNotificationPermission = (messaging) => {
+    const requestNotificationPermission = ( messaging ) => {
         // 사용자에게 알림 권한 요청
         Notification.requestPermission().then(permission => {
             if (permission === 'granted') {

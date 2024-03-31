@@ -2,7 +2,7 @@ import { postAxios } from "src/api/util"
 
 export const postAccept = async ( data: dataType  ) => {
     try{
-        return await postAxios( `/alarm/${ data.diaryId }` )
+        return await postAxios( `/alarm/accept/${ data.diaryId }` )
     }catch( err ){
         console.log( err )
     }
@@ -10,6 +10,5 @@ export const postAccept = async ( data: dataType  ) => {
 
 interface dataType{
     diaryId: number,
-
 }
 

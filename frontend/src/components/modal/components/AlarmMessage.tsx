@@ -4,7 +4,6 @@ import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'; 
-import { postAccept, postRefuse } from '../api/'
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import styled from "styled-components";
@@ -81,11 +80,9 @@ const RejectButton = styled(Button)`
     padding: 6px 12px; 
   }
 `;
-    // const Accept = () => {
-    //     postAccept
-    // }
 
-    const AlarmMessage = ( { Type, Title, Content ,onClick }: AlarmProps  ) => {
+
+    const AlarmMessage = ( { Type, Title, Content ,onClick, diaryId, Accept, Refuse, link, alarmId }: AlarmProps  ) => {
     
     const SelectedIcon = IconType[ Type ];
 
@@ -104,11 +101,11 @@ const RejectButton = styled(Button)`
                     <ActionsWrapper>
                         { Type === "Invite" ? (
                             <>
-                                <AcceptButton variant="contained" onClick={() => console.log('수락')}>수락</AcceptButton>
-                                <RejectButton variant="outlined" onClick={() => console.log('거절')}>거절</RejectButton>
+                                <AcceptButton variant="contained" onClick={() => Accept(diaryId)}>수락</AcceptButton>
+                                <RejectButton variant="outlined" onClick={() => Refuse(diaryId)}>거절</RejectButton>
                             </>
                         ) : (
-                            <IconButton onClick={onClick}>
+                            <IconButton onClick={()=>{ onClick( link, alarmId ) }}>
                                 <ArrowForwardIosIcon />
                             </IconButton>
                         )}
@@ -125,7 +122,12 @@ type AlarmProps = {
     Type: string,
     Title?: string,
     Content?: string,
-    onClick?: () => void,
+    onClick?: (link: string, alarmId: number) => void,
+    diaryId?: number,
+    Accept?: ( diaryId: number ) => void,
+    Refuse?: ( diaryId: number ) => void,
+    link?: string,
+    alarmId?: number,
 }
 
 export default AlarmMessage;
