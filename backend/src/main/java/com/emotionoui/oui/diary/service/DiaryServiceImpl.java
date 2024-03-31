@@ -27,6 +27,7 @@ import com.emotionoui.oui.member.entity.Member;
 import com.emotionoui.oui.member.entity.MemberDiary;
 import com.emotionoui.oui.member.repository.MemberDiaryRepository;
 import com.emotionoui.oui.music.service.MusicService;
+import com.emotionoui.oui.openai.service.CustomBotService;
 import com.emotionoui.oui.querydsl.QuerydslRepositoryCustom;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,6 +42,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -62,6 +65,7 @@ public class DiaryServiceImpl implements DiaryService{
     private final MemberDiaryRepository memberDiaryRepository;
     private final MusicService musicService;
     private final AlarmService alarmService;
+    private final CustomBotService customBotService;
     private final QuerydslRepositoryCustom querydslRepositoryCustom;
 
 
@@ -95,17 +99,6 @@ public class DiaryServiceImpl implements DiaryService{
         DailyDiary newDailyDiary = dailyDiaryRepository.save(dailyDiary);
         Date dailyDate = req.getDailyDate();
 
-//        // 추후 삭제
-//        // MariaDB에 대표감정(Emotion) 정보 저장
-//        Emotion emotion = Emotion.builder()
-//                .dailyDiary(dailyDiary)
-//                .emotion("joy")
-//                .date(req.getDailyDate())
-//                .member(member)
-//                .build();
-//
-//        emotionRepository.save(emotion);
-
         String text = null;
 
         try {
@@ -116,11 +109,24 @@ public class DiaryServiceImpl implements DiaryService{
             text = jsonNode.get("objects").get(0).get("text").asText();
             // 텍스트 내용이 존재하면 AI 서버로 분석 요청하기
             if(!Objects.equals(text, "")){
-                // MongoDB에 Spotify URI 리스트 넣기
-                
-                // 테스트용
-                String a = sendDataToAI(text, dailyDate, document, dailyDiary, member);
-                log.info("되라되라되라되라");
+                // 비동기 처리
+                String finalText = text;
+
+                // 1) ChatGPT로 코멘트 기능
+                CompletableFuture<Void> future1 = CompletableFuture.runAsync(() ->
+                        gptComment(finalText, document));
+
+                // 2) 감정분석 후 노래 추천 기능
+                CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
+                    try {
+                        sendDataToAI(finalText, dailyDate, document, dailyDiary, member);
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
 //                String musicString = sendDataToAI(text, dailyDate, document, dailyDiary, member);
 //                List<String> spotifyUriList = findSpotifyUri(musicString);
 //                document.setMusic(spotifyUriList);
@@ -134,8 +140,14 @@ public class DiaryServiceImpl implements DiaryService{
 
         // 공유 다이어리일 시 친구들에게 본인 일기 알람 전송
         alarmService.sendFriendDiary(diary, newDailyDiary.getId(), member);
-
         return document.getId().toString();
+    }
+
+    // ChatGPT 코멘트 값 받아서 몽고디비에 저장하기
+    private void gptComment(String text, DailyDiaryCollection document){
+        String gptResponse = customBotService.chat(text);
+        document.setComment(gptResponse);
+        dailyDiaryMongoRepository.save(document);
     }
 
     // musicIdList를 가지고 spotifyUriList를 만들기
@@ -174,7 +186,7 @@ public class DiaryServiceImpl implements DiaryService{
     }
 
     // AI를 통한 감정분석 및 음악추천 결과값 받기
-    public String sendDataToAI(String text, Date dailyDate, DailyDiaryCollection document, DailyDiary dailyDiary, Member member) throws ExecutionException, InterruptedException {
+    public void sendDataToAI(String text, Date dailyDate, DailyDiaryCollection document, DailyDiary dailyDiary, Member member) throws ExecutionException, InterruptedException {
         // 감정분석 AI Url
         String aiServerUrl = "http://j10a506.p.ssafy.io:8008/analysis/openvino";
         String aiServerUrl2 = "http://ai-server-2/process-data";
@@ -218,7 +230,6 @@ public class DiaryServiceImpl implements DiaryService{
             // return sendEmotionData(s, aiServerUrl2);
         });
 
-        return null;
 //        return future.get();
     }
 
@@ -312,28 +323,27 @@ public class DiaryServiceImpl implements DiaryService{
     }
 
     // 일기 날짜로 조회하기
-    public Boolean searchDailyDiaryByDate(Integer diaryId, String date, Integer memberId){
-        LocalDate localDate = LocalDate.parse(date);
+    public Boolean searchDailyDiaryByDate(Integer diaryId, String strDate, Integer memberId){
 
-        // LocalTime 생성 (원하는 시간으로 설정)
-        LocalTime localTime = LocalTime.of(9, 0, 0);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = formatter.parse(strDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
 
-        // LocalDateTime 생성
-        LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
+        DailyDiary dailyDiary = dailyDiaryRepository.findByDiaryIdAndDate(diaryId, date);
+        if(dailyDiary==null){
+            return false;
+        }
 
-
-            DailyDiary dailyDiary = dailyDiaryRepository.findByDiaryIdAndDate(diaryId, localDateTime);
-            if(dailyDiary==null){
-                return false;
-            }
-
-            System.out.println("dailyDiary Id : " + dailyDiary.getId());
+        System.out.println("dailyDiary Id : " + dailyDiary.getId());
 
 //            DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
 //                    .orElseThrow(IllegalArgumentException::new);
 
-            return true;
-
+        return true;
     }
 
 

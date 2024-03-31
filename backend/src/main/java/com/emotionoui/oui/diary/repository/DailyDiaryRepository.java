@@ -21,6 +21,6 @@ public interface DailyDiaryRepository extends JpaRepository<DailyDiary, Integer>
     List<WeeklyMongoDto> getMongoIdByDiaryId(Integer diaryId, Date start, Date end);
 
     @Query("SELECT d FROM DailyDiary d WHERE d.diary.id = :diaryId AND d.dailyDate= :date")
-    DailyDiary findByDiaryIdAndDate(@Param("diaryId") Integer diaryId, @Param("date") LocalDateTime date);
+    DailyDiary findByDiaryIdAndDate(@Param("diaryId") Integer diaryId, @Param("date") Date date);
 
 }
