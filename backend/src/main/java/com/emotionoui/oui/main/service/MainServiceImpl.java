@@ -5,6 +5,7 @@ import com.emotionoui.oui.diary.entity.DiaryType;
 import com.emotionoui.oui.diary.repository.DiaryRepository;
 import com.emotionoui.oui.main.dto.req.ChangeOrderReq;
 import com.emotionoui.oui.main.dto.req.CreateShareDiaryReq;
+import com.emotionoui.oui.member.entity.AlarmType;
 import com.emotionoui.oui.member.entity.Member;
 import com.emotionoui.oui.member.entity.MemberDiary;
 import com.emotionoui.oui.member.exception.NotFoundMemberException;
@@ -46,6 +47,7 @@ public class MainServiceImpl implements MainService {
                 .member(member)
                 .diary(newDiary)
                 .orders(memberDiaryRepository.countByMemberId(member.getMemberId())+1)
+                .alarm(AlarmType.ON)
                 .build();
         memberDiaryRepository.save(newMemberDiary);
 

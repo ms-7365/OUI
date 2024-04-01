@@ -3,6 +3,7 @@ package com.emotionoui.oui.diary.config;
 import com.emotionoui.oui.diary.interceptor.DiaryInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.Message;
@@ -13,8 +14,10 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
 
 @Slf4j
@@ -32,6 +35,24 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         config.enableSimpleBroker("/sub"); // 채널 만들기
         // pub로 들어오는 요청을 처리해주기 위해
         config.setApplicationDestinationPrefixes("/pub"); // 구독한 사람들에게 보내주기
+    }
+
+    // 메시지 크기 제한 설정하기
+    @Bean
+    public ServletServerContainerFactoryBean createWebSocketContainer() {
+        ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
+
+        container.setMaxTextMessageBufferSize(50*1024*1024);
+        container.setMaxBinaryMessageBufferSize(50*1024*1024);
+        container.setMaxSessionIdleTimeout(15*60000L);
+
+        return container;
+    }
+
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration){
+        registration.setMessageSizeLimit(50*1024*1024); // 메시지 크기 제한 오류 방지
+        registration.setSendBufferSizeLimit(50*1024*1024);
     }
 
     @Override

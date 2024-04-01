@@ -180,12 +180,12 @@ public class DiaryServiceImpl implements DiaryService{
             log.info("텍스트 파일 위치를 찾을 수 없습니다.");
         }
 
-        // 1) 일기 수정이 아닌 작성일 때
-        // 2) 공유 다이어리일 때
-        // 친구들에게 본인 일기 알람 전송
-        String diaryType = dailyDiary.getDiary().getType().toString();
-        if(type==1 && diaryType.equals("공유"))
-            alarmService.sendFriendDiary(diary, dailyDiary.getId(), member);
+//        // 1) 일기 수정이 아닌 작성일 때
+//        // 2) 공유 다이어리일 때
+//        // 친구들에게 본인 일기 알람 전송
+//        String diaryType = dailyDiary.getDiary().getType().toString();
+//        if(type==1 && diaryType.equals("공유"))
+//            alarmService.sendFriendDiary(diary, dailyDiary.getId(), member);
     }
 
     // ChatGPT 코멘트 값 받아서 몽고디비에 저장하기

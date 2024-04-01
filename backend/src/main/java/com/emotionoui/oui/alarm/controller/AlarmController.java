@@ -37,7 +37,7 @@ public class AlarmController {
     }
 
     // 전체 알림 삭제하기
-    @PutMapping
+    @PutMapping("/deleteAll")
     public ResponseEntity<?> deleteAlarms(@AuthenticationPrincipal Member member){
         int memberId = member.getMemberId();
         alarmService.deleteAlarms(memberId);

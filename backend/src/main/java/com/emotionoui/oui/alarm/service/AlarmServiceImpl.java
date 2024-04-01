@@ -11,6 +11,7 @@ import com.emotionoui.oui.alarm.repository.AlarmRepository;
 import com.emotionoui.oui.alarm.repository.FcmInfoRepository;
 import com.emotionoui.oui.diary.entity.Diary;
 import com.emotionoui.oui.diary.repository.DiaryRepository;
+import com.emotionoui.oui.member.entity.AlarmType;
 import com.emotionoui.oui.member.entity.Member;
 import com.emotionoui.oui.member.entity.MemberAlarm;
 import com.emotionoui.oui.member.entity.MemberDiary;
@@ -93,7 +94,7 @@ public class AlarmServiceImpl implements AlarmService{
 
     @Override
     public void acceptInvite(Member member, Integer diaryId) {
-        // memberDiary DB 에 추가해주기(orders, memberId, diaryId)
+        // memberDiary DB에 추가해주기(orders, memberId, diaryId)
         // memberDiary DB에서 memberId이고, isDeleted=0인 것을 찾아서 orders를 구하자
         Long order = querydslRepositoryCustom.findDiaryOrder(member)+1;
         // memberDiary DB에 추가하자
@@ -109,6 +110,7 @@ public class AlarmServiceImpl implements AlarmService{
                 .member(member)
                 .diary(newDiary)
                 .orders(order.intValue())
+                .alarm(AlarmType.ON)
                 .build();
 
         memberDiaryRepository.save(newMemberDiary);
@@ -119,7 +121,7 @@ public class AlarmServiceImpl implements AlarmService{
 
     @Override
     public void refuseInvite(Member member, Integer diaryId) {
-        // memberAlarm DB 에서 삭제
+        // memberAlarm DB에서 삭제
         querydslRepositoryCustom.deleteAlarmByMemberIdAndDiaryId(member, diaryId);
     }
 
@@ -132,49 +134,6 @@ public class AlarmServiceImpl implements AlarmService{
             memberAlarmRepository.save(alarm);
         }
     }
-
-//    // 알림 읽음 표시
-//    @Override
-//    public String readMessage(Long notificationId) {
-//        // 해당 알림 SELECT
-//        Optional<NotificationEntity> notificationEntityOptional = fcmNotificationRepository.findByNotificationId(notificationId);
-//        if (notificationEntityOptional.isPresent()) {
-//            NotificationEntity notificationEntity = notificationEntityOptional.get();
-//            notificationEntity.setReadStatus(true);
-//
-//            // 데이터베이스에 변경 내용 저장
-//            NotificationEntity dbNotificationEntity = fcmNotificationRepository.save(notificationEntity);
-//
-//            String URL = "";
-//            // 알림 타입 확인
-//            if(dbNotificationEntity.getNotificationType() == NotificationType.Chatting){
-//                URL =  "/chatRoom";
-//            }
-//            else{
-//                URL =  "/barter/" + notificationEntity.getArticleId();
-//            }
-//            return URL;
-//        }
-//        return "";
-//    }
-//
-//    // 알림 제거
-//    @Override
-//    public Boolean deleteMessage(Long notificationId) {
-//        // 알림 유무 확인
-//        Optional<NotificationEntity> notificationEntityOptional = fcmNotificationRepository.findByNotificationId(notificationId);
-//        if (notificationEntityOptional.isPresent()) {
-//            NotificationEntity notificationEntity = notificationEntityOptional.get();
-//            notificationEntity.setDeleteStatus(true);
-//
-//            // 데이터베이스에 변경 내용 저장
-//            fcmNotificationRepository.save(notificationEntity);
-//            return true;
-//        }
-//        return false;
-//    }
-//
-
 
     // Invite: 공유다이어리 초대 알림 보내기
     public void inviteDiary(List<String> emails, Integer diaryId, String createrNickname){
@@ -279,6 +238,12 @@ public class AlarmServiceImpl implements AlarmService{
         }
     }
 
+    // SystemForcing: 오후 10시에 오늘 일기를 아예 안 쓴 사람에게 메시지 보내기
+    public void sendSystemForcing(Member member, String date){
+
+    }
+
+    
     // FriendDiary: 친구가 일기 작성하면 알려주기
     public void sendFriendDiary(Diary diary, Integer dailyId, Member member){
         String diaryName = diary.getName();
@@ -383,131 +348,6 @@ public class AlarmServiceImpl implements AlarmService{
         }
     }
 
-    //    // 갈망포카 메세지 전송
-//    @Override
-//    public Boolean sendBiasMessage(List<String> ids, Long articleId) {
-//
-//        String title = "갈망포카 출현!";
-//        String content = "새로운 갈망포카가 올라 왔어요!! 확인해보세요!!";
-//        String link = domain + "/post/" + articleId;
-//
-//        List<String> deviceTokens = new ArrayList<>();
-//        List<String> sendFail = new ArrayList<>();
-//        List<Integer> requestError = new ArrayList<>();
-//
-//        int total = ids.size();
-//        for (int i = 0; i < ids.size(); i++){
-//            // 유저 정보 가져오기
-//            Optional<UserEntity> userEntityOptional = userRepository.findByUserId(ids.get(i));
-//            if (userEntityOptional.isPresent()) {
-//                UserEntity userEntity = userEntityOptional.get();
-//                log.info("user_id : {}", userEntity.getUserId());
-//
-//                NotificationEntity notificationEntity = NotificationEntity.builder()
-//                        .userEntity(userEntity)
-//                        .title(title)
-//                        .content(content) // 알림 내용
-//                        .readStatus(false) // 읽지 않은 상태로 초기화
-//                        .notificationType(NotificationType.Article) // 알림 유형 설정, 실제 유형으로 교체 필요
-//                        .articleId(articleId) // 관련 글 ID, 필요한 경우 설정
-//                        .deleteStatus(false)
-//                        .build();
-//                // 데이터베이스에 저장
-//                fcmNotificationRepository.save(notificationEntity);
-//            } else {
-//                log.info("User with id {} not found", ids.get(i));
-//                continue;
-//            }
-//
-//            // 유저들의 디바이스 정보 가져오기
-//            deviceTokens = customFCMNotificationRepository.findDeviceTokensByIds(ids);
-//        }
-//
-//        if(!deviceTokens.isEmpty()) {
-//            // 500개 단위로 나누기 - 한번에 처리할 수 있는 메세지 개수는 500개
-//            int fullBatches = total / 500;
-//            int remaining = total % 500;
-//
-//            for (int i = 0; i <= fullBatches; i++) {
-//                int start = i * 500;
-//                int end = Math.min((i + 1) * 500, total);
-//
-//                List<String> batchTokens = deviceTokens.subList(start, end);
-//                log.info("{}번 실행", i);
-//                try {
-//                    // 메세지 보내기
-//                    MulticastMessage message = MulticastMessage.builder()
-//                            .addAllTokens(batchTokens)
-//                            .putData("title", title)
-//                            .putData("content", content)
-//                            .putData("link", link)
-//                            .build();
-//                    BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
-//                    log.info(response.getSuccessCount() + " messages were sent successfully.");
-//
-//                    // 실패한 토큰 수
-//                    if (response.getFailureCount() > 0) {
-//                        List<SendResponse> responses = response.getResponses();
-//                        for (SendResponse respons : responses) {
-//                            if (!respons.isSuccessful()) {
-//                                // The order of responses corresponds to the order of the registration tokens.
-//                                sendFail.add(batchTokens.get(i));
-//                            }
-//                        }
-//                    }
-//                } catch (Exception e) {
-//                    log.info("request error");
-//                    requestError.add(i);
-//                }
-//            }
-//            // 실패한 요청에 대한 재요청
-//            if (!sendFail.isEmpty()) {
-//                fullBatches = sendFail.size() / 500;
-//                for(int i = 0; i <= fullBatches; i++) {
-//                    int start = i * 500;
-//                    int end = Math.min((i + 1) * 500, total);
-//
-//                    List<String> batchTokens = sendFail.subList(start, end);
-//                    try {
-//                        // 메세지 보내기
-//                        MulticastMessage message = MulticastMessage.builder()
-//                                .addAllTokens(batchTokens)
-//                                .putData("title", title)
-//                                .putData("content", content)
-//                                .putData("link", link)
-//                                .build();
-//
-//                        BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
-//                        log.info(response.getSuccessCount() + " messages were sent successfully.");
-//
-//                        // 실패한 토큰 수
-//                        if (response.getFailureCount() > 0) {
-//                            List<SendResponse> responses = response.getResponses();
-//                            for (int j = 0; j < responses.size(); j++) {
-//                                if (!responses.get(j).isSuccessful()) {
-//                                    // The order of responses corresponds to the order of the registration tokens.
-//                                    sendFail.add(batchTokens.get(i));
-//                                }
-//                            }
-//                        }
-//                    } catch (Exception e) {
-//                        log.info("request error");
-//                        requestError.add(i);
-//                    }
-//                }
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
-//
-////    public List<String> findDeviceTokensByIds(List<String> ids) {
-////        TypedQuery<String> query = entityManager.createQuery(
-////                "SELECT ud.deviceToken FROM UserDeviceEntity ud WHERE ud.userId IN :ids", String.class);
-////        query.setParameter("ids", ids);
-////        return query.getResultList();
-////    }
-//
     public void createDeviceToken(Member member, String deviceToken){
         FcmInfo fcmInfo = fcmInfoRepository.findByMember(member);
 
