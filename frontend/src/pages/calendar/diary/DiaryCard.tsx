@@ -69,7 +69,7 @@ const DiaryCard = ( props ) =>{
     
     const isExist = diary?.filter(( diary ) => (diary?.dailyDate?.substring( 5, 10 ) === format( clickDate, 'MM-dd')) && (diary?.writerId == member?.memberId))
     
-    console.log("Diary", diary, member, isExist, (isExist.length > 0))
+    // console.log("Diary", diary, member, isExist, (isExist.length > 0))
 
     const goAlarm = useMutation( postUrge )
     const getDiary = useMutation( getDailyDiary )
@@ -105,7 +105,7 @@ const DiaryCard = ( props ) =>{
                 <>
                     <TodoWrapper onClick={ () => moveDailyDiary( isExist[0]?.dailyDiaryId ) } color='black'>
                     <TodoInside>
-                    <CardWrapper src={ isExist[0]?.emotionList[0] } alt={ relax } /> 
+                    <CardWrapper src={ emotionImg[isExist[0].emotionList[0]] } alt={ relax } />
                     <div style={{ width:'100%', height: '100%' }}>
                         <TodoCardHeader>
                             <TodoTitle color='black'>

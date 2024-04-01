@@ -1,10 +1,10 @@
 import { postAxios } from 'src/api/util'
 
-
-
 export const postUrge = async ( data:dataType ) => {
+
     try{
-        return await postAxios(`/calender/push/${data.diaryId}`, { date: data.date, memberId: data.memberId });
+        console.log(data.date)
+        return await postAxios(`/calendar/push/${data.diaryId}`, { dailyDate: data.date, memberId: data.memberId });
     }catch(err){
         throw err
     }
