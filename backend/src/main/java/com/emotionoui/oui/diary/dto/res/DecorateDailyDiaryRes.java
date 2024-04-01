@@ -10,8 +10,8 @@ public class DecorateDailyDiaryRes {
     // 꾸민 멤버
     private Integer memberId;
     private String nickname;
-    // 꾸미기 내용
-    private String decoration;
+    // 꾸미기 하나 내용
+    private String oneDecoration;
 }
 
 

@@ -403,13 +403,14 @@ public class DiaryServiceImpl implements DiaryService{
         DecorateDailyDiaryRes res = DecorateDailyDiaryRes.builder()
                 .memberId(member.getMemberId())
                 .nickname(member.getNickname())
-                .decoration(req.getDecoration())
+                .oneDecoration(req.getOneDecoration())
                 .build();
 
         return res;
     }
 
 
+    // 꾸민 내용을 DB에 저장하기
     public String decorateSaveDailyDiary(DecorateDailyDiaryReq req, Integer dailyId){
 
         DailyDiary dailyDiary = dailyDiaryRepository.findById(dailyId)
@@ -418,7 +419,7 @@ public class DiaryServiceImpl implements DiaryService{
         DailyDiaryCollection dailyDiaryCollection = dailyDiaryMongoRepository.findById(dailyDiary.getMongoId())
                 .orElseThrow(IllegalArgumentException::new);
 
-        dailyDiaryCollection.setDecoration(req.getDecoration());
+        dailyDiaryCollection.setDecoration(req.getAllDecoration());
         dailyDiaryMongoRepository.save(dailyDiaryCollection);
 
         return dailyDiaryCollection.getId().toString();

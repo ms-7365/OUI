@@ -9,6 +9,8 @@ import java.util.Date;
 public class DecorateDailyDiaryReq {
     // 다이어리 ID
     private Integer diaryId;
-    // 꾸미기 내용
-    private String decoration;
+    // 꾸미기 하나 내용
+    private String oneDecoration;
+    // 꾸미기 전체 내용
+    private String allDecoration;
 }

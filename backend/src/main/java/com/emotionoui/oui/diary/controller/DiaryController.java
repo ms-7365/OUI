@@ -117,8 +117,12 @@ public class DiaryController {
     public ResponseEntity<?> decorateDailyDiary(@DestinationVariable Integer dailyId, Principal principal,
                                                 @Payload DecorateDailyDiaryReq req) throws IOException, ExecutionException, InterruptedException {
         Member member = (Member)((Authentication) principal).getPrincipal();
-        System.out.println(member.getMemberId());
-        System.out.println(diaryService.decorateDailyDiary(req, member));
+//        System.out.println(member.getMemberId());
+//        System.out.println(diaryService.decorateDailyDiary(req, member));
+
+        // DB에 저장
+        diaryService.decorateSaveDailyDiary(req, dailyId);
+
         return new ResponseEntity<DecorateDailyDiaryRes>(diaryService.decorateDailyDiary(req, member), HttpStatus.OK);
     }
 
