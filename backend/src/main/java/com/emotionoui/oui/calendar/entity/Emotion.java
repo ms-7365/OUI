@@ -51,4 +51,8 @@ public class Emotion {
                 ", emotion='" + emotion + '\'' +
                 '}';
     }
+
+    public void updateEmotion(String emotion){
+        this.emotion = emotion;
+    }
 }

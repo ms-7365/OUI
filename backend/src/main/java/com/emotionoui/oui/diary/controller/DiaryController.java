@@ -3,13 +3,10 @@ package com.emotionoui.oui.diary.controller;
 import com.emotionoui.oui.diary.dto.EmotionClass;
 import com.emotionoui.oui.diary.dto.req.CreateDailyDiaryReq;
 import com.emotionoui.oui.diary.dto.req.DecorateDailyDiaryReq;
-import com.emotionoui.oui.diary.dto.req.UpdateDailyDiaryReq;
 import com.emotionoui.oui.diary.dto.req.UpdateDiarySettingReq;
 import com.emotionoui.oui.diary.dto.res.DecorateDailyDiaryRes;
 import com.emotionoui.oui.diary.dto.res.SearchDailyDiaryRes;
 import com.emotionoui.oui.diary.dto.res.SearchDiarySettingRes;
-import com.emotionoui.oui.diary.entity.Diary;
-import com.emotionoui.oui.diary.exception.NotExitPrivateDiaryException;
 import com.emotionoui.oui.diary.repository.DiaryRepository;
 import com.emotionoui.oui.diary.service.DiaryService;
 import com.emotionoui.oui.member.entity.Member;
@@ -30,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -52,7 +48,7 @@ public class DiaryController {
 
     // 일기 게시글 수정하기
     @PutMapping("/{dailyId}")
-    public ResponseEntity<?> updateDailyDiary(@RequestBody UpdateDailyDiaryReq req, @PathVariable("dailyId") Integer dailyId){
+    public ResponseEntity<?> updateDailyDiary(@RequestBody CreateDailyDiaryReq req, @PathVariable("dailyId") Integer dailyId){
         return new ResponseEntity<Integer>(diaryService.updateDailyDiary(req, dailyId), HttpStatus.OK);
     }
 

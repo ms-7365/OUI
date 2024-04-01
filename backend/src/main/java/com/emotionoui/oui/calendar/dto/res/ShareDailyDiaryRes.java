@@ -39,7 +39,7 @@ public class ShareDailyDiaryRes {
                 .diaryId(collection.getDiaryId())
                 .dailyContent(collection.getContent())
                 .decoration(collection.getDecoration())
-                .isDeleted(collection.getIsDeleted())
+                .isDeleted(dailyDiary.getIsDeleted())
                 .dailyDate(dailyDiary.getDailyDate().toString())
                 .emotionList(collection.getEmotion().getEmotionList())
                 .build();
