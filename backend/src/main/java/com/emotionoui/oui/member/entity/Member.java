@@ -2,8 +2,6 @@ package com.emotionoui.oui.member.entity;
 
 import com.emotionoui.oui.alarm.entity.FcmInfo;
 import com.emotionoui.oui.calendar.entity.Emotion;
-import com.emotionoui.oui.member.entity.MemberAlarm;
-import com.emotionoui.oui.member.entity.MemberDiary;
 import com.emotionoui.oui.schedule.entity.Schedule;
 import com.emotionoui.oui.survey.entity.Preference;
 import jakarta.persistence.*;
@@ -38,9 +36,6 @@ public class Member implements UserDetails {
     @Column(name="nickname")
     private String nickname;
 
-    @Column(name="password")
-    private String password;
-
     @Column(name="img")
     private String img;
 
@@ -59,7 +54,7 @@ public class Member implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return null;
     }
 
     @Override

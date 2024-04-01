@@ -40,8 +40,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath nickname = createString("nickname");
 
-    public final StringPath password = createString("password");
-
     public final ListPath<com.emotionoui.oui.survey.entity.Preference, com.emotionoui.oui.survey.entity.QPreference> preferenceList = this.<com.emotionoui.oui.survey.entity.Preference, com.emotionoui.oui.survey.entity.QPreference>createList("preferenceList", com.emotionoui.oui.survey.entity.Preference.class, com.emotionoui.oui.survey.entity.QPreference.class, PathInits.DIRECT2);
 
     public final DateTimePath<java.time.LocalDateTime> regdate = createDateTime("regdate", java.time.LocalDateTime.class);
