@@ -1,13 +1,14 @@
 import logging
-from fastapi import APIRouter, HTTPException
-from ai.model import oui
+from fastapi import Depends, APIRouter, HTTPException
+from ai.model import OuiInference
+#from ai.model import oui
 
 from models.analysis import DailyDiary
 
 router = APIRouter()
 
 @router.post("/analysis/openvino")
-def analysis(body: DailyDiary):
+def analysis(body: DailyDiary, oui: OuiInference = Depends()):
     body_dict = body.dict()
     text = body_dict["text"]
     logging.info(f"main:analysis {text}")
@@ -20,7 +21,7 @@ def analysis(body: DailyDiary):
     return result
 
 @router.post("/analysis/onnx")
-def analysis(body: DailyDiary):
+def analysis(body: DailyDiary, oui: OuiInference = Depends()):
     body_dict = body.dict()
     text = body_dict["text"]
     logging.info(f"main:analysis {text}")
@@ -33,7 +34,7 @@ def analysis(body: DailyDiary):
     return result
 
 @router.post("/analysis/pytorch")
-def analysis(body: DailyDiary):
+def analysis(body: DailyDiary, oui: OuiInference = Depends()):
     body_dict = body.dict()
     text = body_dict["text"]
     logging.info(f"main:analysis {text}")

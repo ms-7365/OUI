@@ -9,9 +9,9 @@ import numpy as np
 from openvino.runtime import Core
 from .KoBERT.kobert import get_tokenizer
 from .KoBERT.kobert import get_pytorch_kobert_model
-import os
+from utils import singleton
 
-
+@singleton
 class OuiInference(object):
     def __init__(self, threshold=0.5, max_len=100, batch_size=128, device="cpu"):
         self.model_pytorch = torch.jit.load('./ai/pytorch/oui_240329_acc57_torchscript.pt')
@@ -137,5 +137,3 @@ class BERTDataset(Dataset):
 
     def __len__(self):
         return (len(self.labels))
-    
-oui = OuiInference()

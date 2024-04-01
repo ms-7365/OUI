@@ -8,6 +8,7 @@ class SongScore(BaseModel):
     angry: float
     doubtful: float
     sad: float
+    user_type: str
 
 # song meta
 class Song(BaseModel):
