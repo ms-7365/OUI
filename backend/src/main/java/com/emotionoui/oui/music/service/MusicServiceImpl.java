@@ -140,7 +140,7 @@ public class MusicServiceImpl implements MusicService{
     }
 
     // CSV 파일 읽기 메서드
-    private List<String[]> readCsv(String csvFilePath) throws IOException {
+    public List<String[]> readCsv(String csvFilePath) throws IOException {
         List<String[]> data = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
             String line;

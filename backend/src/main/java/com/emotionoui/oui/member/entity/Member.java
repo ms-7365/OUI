@@ -83,7 +83,7 @@ public class Member implements UserDetails {
     }
 
 //    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private List<MemberAlarm> memberAlarmList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")

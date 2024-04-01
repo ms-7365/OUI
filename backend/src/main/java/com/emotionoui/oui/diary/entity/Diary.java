@@ -55,7 +55,7 @@ public class Diary {
     @Column(name = "name")
     private String name;
 
-    @CreationTimestamp(source = SourceType.DB)
+    @CreatedDate
     @LastModifiedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -74,7 +74,6 @@ public class Diary {
     public void updateDiary(String name, Integer templateId){
         this.name = name;
         this.templateId = templateId;
-        this.createdAt = LocalDateTime.now();
     }
 
 //    @PrePersist

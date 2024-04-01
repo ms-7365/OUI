@@ -11,4 +11,5 @@ public interface MusicService {
 //    String searchMusicURI(String artistName, String songName);
     void uploadSong() throws IOException;
     String searchYoutube(String songName, String artistName) throws IOException;
+    List<String[]> readCsv(String csvFilePath) throws IOException;
 }

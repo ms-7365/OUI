@@ -98,4 +98,11 @@ public class AlarmController {
     public String mainPage(){
         return "mainPage";
     }
+
+    // 랜덤질문csv 파일을 몽고디비에 넣기
+    @PostMapping("/random")
+    public ResponseEntity<?> uploadQuestion() throws IOException {
+        alarmService.uploadRandom();
+        return ResponseEntity.ok().build();
+    }
 }

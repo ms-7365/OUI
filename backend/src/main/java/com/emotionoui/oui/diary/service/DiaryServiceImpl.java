@@ -387,8 +387,7 @@ public class DiaryServiceImpl implements DiaryService{
         diary.updateDiary(req.getName(), req.getTemplateId());
 
         int memberId = member.getMemberId();
-        MemberDiary memberDiary = memberDiaryRepository.findById(memberId)
-                .orElseThrow(IllegalArgumentException::new);
+        MemberDiary memberDiary = memberDiaryRepository.findByMemberIdAndDiaryId(memberId, diaryId);
         // 알람 ON/OFF 상태 수정
         memberDiary.updateAlarm(req.getAlarm());
 
