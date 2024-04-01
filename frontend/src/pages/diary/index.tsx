@@ -1,5 +1,5 @@
 import { fabric } from 'fabric';
-import { Drawer, MusicPlayer2, EditIcon, DecoIcon, DeleteIcon, BottomNavi } from 'src/components';
+import { Drawer, MusicPlayer3, EditIcon, DecoIcon, DeleteIcon, BottomNavi } from 'src/components';
 import { Canvas } from './components';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import { useState, useEffect, useRef } from 'react';
@@ -39,7 +39,7 @@ const Tab = styled.button<{ $isDeco: boolean }>`
 const ResultSection = styled.div`
     width: 90%;
     text-align: left; 
-    margin-top: 70px; 
+    margin-top: 50px; 
     margin-bottom: 40px;
 `
 
@@ -110,8 +110,8 @@ const Diary = () => {
 
     useEffect(() => {
         if(!canvas) return;
-        console.log('emotions', emotions);
-        console.log('comment', comment);
+        // console.log('emotions', emotions);
+        // console.log('comment', comment);
 
         canvas.loadFromJSON(dailyDiary?.data?.dailyContent, () => {
             canvas.renderAll();
@@ -142,7 +142,6 @@ const Diary = () => {
     return (
         <Container>
             <Header>
-                {/* <BackIcon size={ 40 } onClick={() => { navigator(`/calendar`, {state: { diaryId: diaryId , type: type}}) }} /> */}
                 <Drawer/>
                 <span style={{ fontSize: "30px" }}>{ dailyDiary?.data?.dailyDate.substring(0, 10) }</span>
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -185,7 +184,7 @@ const Diary = () => {
                     </>
                 )}
                 <Title>추천 음악</Title>
-                <MusicPlayer2 />
+                <MusicPlayer3 />
             </ResultSection>
             <BottomNavi />
         </Container>

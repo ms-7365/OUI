@@ -1,5 +1,6 @@
 import { fabric } from 'fabric';
 import { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import WebFont from 'webfontloader';
 
 const Canvas = ( props: CanvasProps ) => {

@@ -7,6 +7,7 @@ import PanicIcon from 'src/asset/images/emotion-icon/panicIcon.png';
 import AngryIcon from 'src/asset/images/emotion-icon/angryIcon.png';
 import UnrestIcon from 'src/asset/images/emotion-icon/unrestIcon.png';
 import SadIcon from 'src/asset/images/emotion-icon/sadnessIcon.png';
+import { v4 as uuidv4 } from 'uuid';
 import styled from 'styled-components';
 
 const ContentWrapper = styled.div`
@@ -57,13 +58,16 @@ const ImageContent = ( props: ContentProps ) => {
               const scaleFactor = maxWidth / imgElement.width; 
 
               const imgInstance = new fabric.Image(imgElement, {
-                  left: 300,
-                  top: 300,
-                  scaleX: scaleFactor,
-                  scaleY: scaleFactor,
-                  angle: 0,
-                  opacity: 1.0,
+                left: 300,
+                top: 300,
+                scaleX: scaleFactor,
+                scaleY: scaleFactor,
+                angle: 0,
+                opacity: 1.0,
               });
+
+              imgInstance.set('id', uuidv4());
+              
               canvas.add(imgInstance);
               canvas.setActiveObject(imgInstance);
           };
@@ -72,26 +76,27 @@ const ImageContent = ( props: ContentProps ) => {
       }
   };
 
-// 스티커 추가
-const handleSticker = (value: string) => {
-    const imgElement = document.createElement('img');
-    imgElement.src = value;
-    imgElement.onload = () => {
-        const maxWidth = 150;
-        const scaleFactor = maxWidth / imgElement.width; 
+  // 스티커 추가
+  const handleSticker = (value: string) => {
+      const imgElement = document.createElement('img');
+      imgElement.src = value;
+      imgElement.onload = () => {
+          const maxWidth = 150;
+          const scaleFactor = maxWidth / imgElement.width; 
 
-        const imgInstance = new fabric.Image(imgElement, {
-            left: 300,
-            top: 300,
-            scaleX: scaleFactor,
-            scaleY: scaleFactor,
-            angle: 0,
-            opacity: 1.0,
-        });
-        canvas.add(imgInstance);
-        canvas.setActiveObject(imgInstance);
-    };
-}
+          const imgInstance = new fabric.Image(imgElement, {
+              left: 300,
+              top: 300,
+              scaleX: scaleFactor,
+              scaleY: scaleFactor,
+              angle: 0,
+              opacity: 1.0,
+          });
+
+          imgInstance.set('id', uuidv4());
+          canvas.add(imgInstance);
+      };
+  }
       
   const stickerList = [ JoyIcon, ComfortIcon, PanicIcon, AngryIcon, UnrestIcon, SadIcon ];
 
@@ -114,4 +119,12 @@ export default ImageContent;
 
 type ContentProps = {
   canvas: fabric.Canvas,
+}
+
+declare module 'fabric' {
+  namespace fabric {
+    interface Image {
+      id?: string;
+    }
+  }
 }
