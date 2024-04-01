@@ -5,10 +5,9 @@ import joy from 'src/asset/images/emotion/joy.png'
 import nervous from 'src/asset/images/emotion/nervous.png'
 import relax from 'src/asset/images/emotion/relax.png'
 import sad from 'src/asset/images/emotion/sad.png'
-import ya from 'src/asset/images/ya.jpg'
 import urge from 'src/asset/images/calendar/urge.png'
 import useStore from '../store'
-import { postUrge } from '../api'
+import { postUrge, getDailyDiary } from '../api'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -70,22 +69,24 @@ const DiaryCard = ( props ) =>{
     
     const isExist = diary?.filter(( diary ) => (diary?.dailyDate?.substring( 5, 10 ) === format( clickDate, 'MM-dd')) && (diary?.writerId == member?.memberId))
     
-    // console.log("Diary", diary, member, isExist, (isExist.length > 0))
+    console.log("Diary", diary, member, isExist, (isExist.length > 0))
 
     const goAlarm = useMutation( postUrge )
+    const getDiary = useMutation( getDailyDiary )
 
     const emotionImg = {
         'angry': angry,
-        'embarrass': embarrass,
-        'joy': joy,
-        'nervous': nervous,
+        'embarrassed': embarrass,
+        'happy': joy,
+        'doubtful': nervous,
         'comfortable': relax,
-        'sad': sad,
-        'happy': ya
+        'sad': sad
     }
 
-    const moveDailyDiary = () =>{
-        navigator(`/diary/${isExist.dailyDiaryId}`)
+    const moveDailyDiary = async( id ) =>{
+        console.log("ID", id)
+        const dailyDiaryId = await getDiary.mutateAsync( id )
+        navigator(`/diary/${ dailyDiaryId }`)
     }
 
     const postAlarm = async (id) =>{
@@ -102,9 +103,9 @@ const DiaryCard = ( props ) =>{
             {
                 isExist && isExist.length > 0 ? (
                 <>
-                    <TodoWrapper onClick={ moveDailyDiary } color='black'>
+                    <TodoWrapper onClick={ () => moveDailyDiary( isExist[0]?.dailyDiaryId ) } color='black'>
                     <TodoInside>
-                    <CardWrapper src={ joy } />
+                    <CardWrapper src={ isExist[0]?.emotionList[0] } alt={ relax } /> 
                     <div style={{ width:'100%', height: '100%' }}>
                         <TodoCardHeader>
                             <TodoTitle color='black'>
