@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -96,11 +97,10 @@ public class CalendarController {
     // 친구에게 재촉하기 알림 보내기
     @PostMapping("/push/{diaryId}")
     public ResponseEntity<?> pushFriend(@PathVariable("diaryId") Integer diaryId, @AuthenticationPrincipal Member member, @RequestBody PushFriendRes res){
-//        alarmService.sendFriendForcing(diaryId, member.getNickname(), res.getMemberId(), res.getDailyDate());
-        alarmService.sendFriendForcing(diaryId, "선영이", res.getMemberId(), res.getDailyDate());
+
+        alarmService.sendFriendForcing(diaryId, member.getNickname(), res.getMemberId(), res.getDailyDate());
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
     // 공유일기 오늘 일기 리스트 보기
     @GetMapping("/{diaryId}/day")

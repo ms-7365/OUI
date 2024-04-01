@@ -83,6 +83,14 @@ public class AlarmServiceImpl implements AlarmService{
         return searchAlarmsResList;
     }
 
+    // 알림 전체 삭제하기
+    public void deleteAlarms(Integer memberId){
+        List<MemberAlarm> memberAlarms = memberAlarmRepository.findByMemberId(memberId);
+
+        for (MemberAlarm memberAlarm : memberAlarms)
+            memberAlarm.updateIsDeleted(1);
+    }
+
     @Override
     public void acceptInvite(Member member, Integer diaryId) {
         // memberDiary DB 에 추가해주기(orders, memberId, diaryId)
@@ -182,8 +190,8 @@ public class AlarmServiceImpl implements AlarmService{
         String title, content, link;
         title = "공유 다이어리 초대";
         content = "'" + createrNickname + "'님이 '" + diaryName + "' 다이어리에 초대했어요.";
-        // 알림창으로 이동해야 함
-        link = "http://localhost:8080/alarm/mainPage";
+        // 알림창이 있는 메인페이지로 이동
+        link = "http://localhost:3000/main";
 
         List<String> deviceTokens = new ArrayList<>();
 
@@ -191,6 +199,7 @@ public class AlarmServiceImpl implements AlarmService{
                 .type(AlarmContentType.Invite)
                 .title(title)
                 .content(content)
+                .link(link)
                 .build();
 
         alarmRepository.save(alarm);
@@ -217,18 +226,21 @@ public class AlarmServiceImpl implements AlarmService{
     }
 
     // FriendForcing: 친구가 일기 작성 요청하기(재촉하기)
-    public void sendFriendForcing(Integer diaryId, String pusherNickname, Integer memberId, Date date){
+    public void sendFriendForcing(Integer diaryId, String pusherNickname, Integer memberId, String date){
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(IllegalArgumentException::new);
         String diaryName = diary.getName();
-        String day = date.toString();
+        String[] dateSplit = date.split("-");
+        // 월과 일에 어색하게 0이 들어가는 부분 삭제
+        dateSplit[1] = dateSplit[1].replace("0", "");
+        if(dateSplit[2].charAt(0)=='0')
+            dateSplit[2] = dateSplit[2].replace("0", "");
 
         String title, content, link;
         title = "너 오늘 일기 안 써?!";
-//        content = "'" + diaryName + "' 다이어리에서 '" + pusherNickname + "'님이 " + day + " 일기 쓰기를 재촉했어요!";
-        content = "'" + diaryName + "' 다이어리에서 '" + pusherNickname + "'님이 일기 쓰기를 재촉했어요!";
-        // 캘린더로 이동해야 함
-        link = "http://localhost:8080/alarm/mainPage";
+        content = "'" + diaryName + "' 다이어리에서 '" + pusherNickname + "'님이 " + dateSplit[1] + "월 " + dateSplit[2] + "일 일기 쓰기를 재촉했어요!";
+        // 캘린더로 이동
+        link = "http://localhost:3000/calendar/" + diaryId;
 
         Alarm alarm = Alarm.builder()
                 .type(AlarmContentType.FriendForcing)

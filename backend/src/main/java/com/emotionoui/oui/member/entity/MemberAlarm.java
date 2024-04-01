@@ -53,4 +53,8 @@ public class MemberAlarm {
         member.getMemberAlarmList().add(this);
         diary.getMemberAlarmList().add(this);
     }
+
+    public void updateIsDeleted(Integer isDeleted){
+        this.isDeleted = isDeleted;
+    }
 }

@@ -10,6 +10,5 @@ import java.util.Date;
 @Data
 public class PushFriendRes {
     private Integer memberId;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dailyDate;
+    private String dailyDate;
 }
