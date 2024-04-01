@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +26,7 @@ import java.util.Map;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class AuthController {
 
     private final MemberRepository memberRepository;
@@ -43,6 +45,7 @@ public class AuthController {
     @GetMapping("/login/kakao")
     public ResponseEntity<?> kakaoLogin(@RequestParam("code") String code, HttpServletResponse response) {
         try {
+            log.info("들어옴");
             // 카카오에서 사용자 email 받아오기
             KakaoLoginRes kakaoLoginRes = authServiceImpl.kakaoLogin(code, response);
             // 받아온 email로 jwt access, refresh 토큰 만들기

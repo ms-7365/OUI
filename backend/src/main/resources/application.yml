@@ -4,21 +4,6 @@ spring:
     import:
       - optional:env/env.yml
       - optional:env/firebase_service_key.json
-  server:
-    port: 8080
-    servlet:
-      context-path: /
-      encoding:
-        charset: UTF-8
-        force: true
-    ssl:
-      enabled: true
-      enabled-protocols:
-        - TLSv1.1
-        - TLSv1.2
-      key-store: env/keystore.p12
-      key-store-password: ${SSL_KEY}
-      key-store-type: "PKCS12"
 
   servlet:
     multipart:
@@ -96,6 +81,23 @@ cloud:
 #server:
 #  servlet:
 #    context-path: /api
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  port: 8080
+  ssl:
+    enabled: true
+    enabled-protocols:
+      - TLSv1.1
+      - TLSv1.2
+    key-store: "classpath:env/keystore.p12"
+    key-store-password: ${SSL_KEY}
+    key-store-type: "PKCS12"
+
 
 openai:
   model: gpt-3.5-turbo
