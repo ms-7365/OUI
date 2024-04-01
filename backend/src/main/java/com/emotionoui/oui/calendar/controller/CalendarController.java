@@ -132,6 +132,7 @@ public class CalendarController {
     // 공유 일기 라우팅 연결
     @GetMapping("/day")
     public ResponseEntity<?>findDailyDiaryIdByMongoId(FindDailyDiaryIdReq findDailyDiaryIdReq){
+        System.out.println("findDailyDiaryIdReq = " + findDailyDiaryIdReq);
         Integer dailyDiaryId = diaryService.findDailyDiaryIdByMongoId(findDailyDiaryIdReq.getMongoId());
         System.out.println("dailyDiaryId = " + dailyDiaryId);
         return new ResponseEntity<>(dailyDiaryId, HttpStatus.OK);
