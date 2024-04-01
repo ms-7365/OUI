@@ -16,7 +16,7 @@ import java.util.List;
 public class MusicCollection {
 
     @Id
-    @Field("id")
+    @Field("_id")
     private ObjectId objectId;
 
     private List<String> song_gn_dtl_gnr_basket;
