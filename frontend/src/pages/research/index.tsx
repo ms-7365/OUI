@@ -33,8 +33,8 @@ const Research = () => {
         <div style={{fontSize:'31px', marginBottom:'10px'}}>
         비도 오고 유독 기분이 우중충한 하루.. 어떤 음악을 듣고 싶나요?
         </div>
-          <img src={research1} style={{width:'78%', marginBottom:'-40px'}} onClick={()=>{Preference('표현')}}/>
-          <img src={research2} style={{width:'78%'}} onClick={()=>{Preference('자유')}}/>
+          <img src={research1} style={{width:'78%', marginBottom:'-40px', cursor:'pointer'}} onClick={()=>{Preference('표현')}}/>
+          <img src={research2} style={{width:'78%', cursor:'pointer'}} onClick={()=>{Preference('자유')}}/>
       </QuestionWrapper>
     </>
   );

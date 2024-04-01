@@ -22,15 +22,15 @@ const PaperWrapper = styled( Paper )`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: auto; 
+  width: 80%; 
   max-width: 90%; 
-  height: 80%; 
+  height: 70%; 
   max-height: 90vh; 
   overflow-y: auto; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: space-around;
   padding: 20px;
   border-radius: 20px;
   background-color: #FFFEFC;
@@ -254,9 +254,13 @@ const CustomModal = ( props:ModalProps ) => {
       </div>
 
             </div>
-            <button 
+            
+
+
+        </ModalContentWrapper>
+        <button 
               style={{
-                width: '91%', 
+                width: '95%', 
                 height: '60px', 
                 backgroundColor: '#88B3E2',
                 color: 'white', // 텍스트 색상을 하얀색으로 지정
@@ -264,9 +268,7 @@ const CustomModal = ( props:ModalProps ) => {
                 borderRadius: '10px', // 둥근 모서리
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)', // 그림자 효과
                 fontSize:'22px',
-                marginTop:'100px',
-                position: 'absolute',
-                bottom: '4%',
+                // marginTop:'100px',
               }} 
               onClick={() => {
                 if ( title !== '' && keyImage !== -1 ) {
@@ -283,9 +285,6 @@ const CustomModal = ( props:ModalProps ) => {
             >
               완  료
             </button>
-
-
-        </ModalContentWrapper>
       </PaperWrapper>
     </Modal>
   );

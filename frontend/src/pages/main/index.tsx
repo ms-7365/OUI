@@ -5,7 +5,9 @@ import { Button } from "src/components";
 import { CustomModal } from "./components/Modal";
 import { AlarmModal } from "src/components/modal";
 import { getDiary, getMember, postCreateDiary, postDeviceToken, getLogout } from './api';
-import ya from 'src/asset/images/ya.jpg';
+import profile from 'src/asset/images/profile.png'
+import logoutBtn from 'src/asset/images/image-icon/logout.png'
+import alarmIcon from 'src/asset/images/icon/alarm-icon.svg'
 import { useQuery } from 'react-query'
 import Slider from "react-slick";
 import useStore from 'src/store'
@@ -19,7 +21,7 @@ import styled from "styled-components";
 
 const CarouselContainer = styled.div`
   max-width: 100%;
-  margin: auto;
+  // margin: auto;
   overflow: hidden; 
   padding: 20px 0; 
 `;
@@ -28,7 +30,7 @@ const SliderWrapper = styled( Slider )`
   
   .slick-track{
     display: flex;
-    margin: 0 -30px;
+    margin: 0 -125px;
   }
 
   .slick-slide {
@@ -65,18 +67,16 @@ const SliderWrapper = styled( Slider )`
 
 
 const YellowBox = styled.div`
-
-  width: 500px;
-  height: 8vh;
-  background-color: #FFE17D;
-  border-radius: 10px;
+  width: 750px;
+  height: 5.5vh;
+  background-color: rgba(255, 225, 125, 0.6);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
-  margin-top: 4vh;
-  margin-bottom: 4vh;
+  margin-top: 12vh;
+  margin-bottom: 1vh;
   align-items: center;
-  margin-left: 5%;
+  margin-left: 6%;
   @media (max-width: 768px) {
     margin-left: 2%; 
     width: 50vw;
@@ -91,12 +91,14 @@ const YellowBox = styled.div`
 `;
 
 const UserRecord = styled.div`
-  position: absolute;
-  top: -40px; 
+  width: 750px;
+  margin-bottom: 8%;
+  margin-left: 8%
   background: transparent;
   padding: 5px 10px;
   border: 0px;
-  font-size: 60px;
+  font-size: 59px;
+  font-weight: bold;
   font-family: "Dovemayo",
   @media (max-width: 768px) {
     font-size: 35px;
@@ -110,12 +112,13 @@ const UserRecord = styled.div`
 `;
 
 const ProfileImage = styled.img`
-  width: 30%;
-  max-width: 150px;
-  max-height: 150px;
-  height: 30%;
+  width: 50%;
+  max-width: 190px;
+  max-height: 190px;
   border-radius: 50%;
   object-fit: cover;
+  margin-top: 25%;
+  margin-left: 8%;
 `;
 
 const requestPermission = async () => {
@@ -254,6 +257,13 @@ const Main = () => {
     }
   });
 
+
+  function isHangul(str) {
+    const pattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    return pattern.test(str);
+  }
+  
+
   const Logout = () =>{
     getLogout().then(( res )=>{
       setAccessToken('')
@@ -264,6 +274,7 @@ const Main = () => {
       navigator('/login')
     })
   }
+
   
   useEffect(() => {
     if ( modalSubmitted ) {
@@ -286,16 +297,25 @@ const Main = () => {
 
   return (
     <>
-    <Header>
-      <ProfileImage src={ userImage || ya } alt="유저 프로필 이미지" />
-      <div>
-        <Button btType='logout' onButtonClick={() => Logout()} />
-        <Button btType='bell' onButtonClick={() => setAlarmModalOpen(true)} />
-      </div>
-    </Header>
+    <div style={{paddingRight:'4%', paddingTop:'4%'}}>
+      <Header>
+        <ProfileImage src={ userImage || profile } alt="유저 프로필 이미지" />
+        <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+          <button style={{backgroundColor:'transparent', border:'none', marginRight:'10px'}} onClick={() => Logout()}>
+          <img style={{height:'4em'}} src={logoutBtn} alt="Logout" />
+          </button>
+          <button style={{backgroundColor:'transparent', border:'none', marginRight:'10px'}} onClick={() => setAlarmModalOpen(true)}>
+          <img style={{height:'4.3em'}} src={alarmIcon} alt="Logout" />
+          </button>
+        </div>
+      </Header>
+    </div>
     <YellowBox>
-        {userName && <UserRecord style={{ fontWeight: 'bold' }}>{ userName }님의 감정기록 :)</UserRecord>}
+      <UserRecord>
+      {isHangul(userName) ? (userName.length > 6 ? `${userName.slice(0, 6)}...` : userName) : (userName.length > 10 ? `${userName.slice(0, 10)}...` : userName)} 님의 감정기록 :)
+      </UserRecord>
     </YellowBox>
+
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <CarouselContainer>
       {/* <div className="slider-container" style={{ minHeight: '100%', minWidth: '100%' }}>       */}
@@ -304,12 +324,11 @@ const Main = () => {
           <div key={index}>
             <Card buttonText={ card.buttonText } templateId={ card.template } title={ card.title }
               onClick={ card.isDiary === "addButton" ? openModal : () => moveDiary( card?.type, card.id ) } />
-          </div> 
-        ))}
-          <Card/>
-          <Card/>
+                </div> 
+               ))}
+            <Card/>
         </SliderWrapper>
-        </CarouselContainer>
+      </CarouselContainer>
       {/* </div> */}
     </div>
     <AlarmModal isOpen={ alarmModalOpen } closeModal={() => setAlarmModalOpen(false)} />
