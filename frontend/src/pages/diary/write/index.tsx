@@ -3,9 +3,9 @@ import { SaveIcon, BackIcon } from 'src/components';
 import { DateSelect, BottomSheet, Canvas } from '../components';
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react';
-import { useMutation } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import useStore from 'src/store';
-import { postDiary } from '../api';
+import { postDiary, getDiaryByDate } from '../api';
 import styled from 'styled-components';
 
 const Header = styled.div`
@@ -27,11 +27,7 @@ const DiaryWrite = () => {
 
     const navigator = useNavigate();
 
-    // const { state } = useLocation();
-    // const { diaryId, type } = state;
-    const { diaryId, type } = useStore()
-    // const diaryId = 39;
-    // const type = '공유';
+    const { diaryId, type } = useStore();
 
     const canvasRef = useRef(null);
     const textboxRef = useRef<fabric.Textbox>(null);
@@ -70,7 +66,6 @@ const DiaryWrite = () => {
     const writeDiary = useMutation( postDiary );
     
     const goCalendar = () => {
-        console.log(type)
         if(type === '개인') {
             // navigator(`/calendar`, {state: {diaryId: diaryId, type: type}});
             navigator(`/calendar`);
@@ -91,8 +86,13 @@ const DiaryWrite = () => {
             dailyContent: diaryToString,
         };
 
-        await writeDiary.mutateAsync(data);
-        goCalendar();
+        const diary = await getDiaryByDate({diaryId: diaryId, date: selectedDate});
+        if(!diary.data) {
+            await writeDiary.mutateAsync(data);
+            goCalendar();
+        } else {
+            alert('이미 일기가 작성된 날짜입니다.');
+        }
     }
 
     return (

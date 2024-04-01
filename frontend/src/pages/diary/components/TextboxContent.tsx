@@ -157,7 +157,7 @@ const TextboxContent = ( props: ContentProps ) => {
         <ContentWrapper>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start"}}>
                 <SelectWrapper>
-                    <InputLabel style={{ fontWeight: "bold", margin: "20px" }}>글씨체</InputLabel>
+                    <InputLabel style={{ fontWeight: "bold", fontSize: "20px", fontFamily: "Dovemayo", margin: "20px" }}>글씨체</InputLabel>
                     <Select
                         value={ selectedFont }
                         onChange={ handleFontChange }

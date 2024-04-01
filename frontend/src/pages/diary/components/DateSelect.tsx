@@ -89,7 +89,7 @@ const DateSelect = (props: DateSelectProps) => {
     <div>
       <Select 
         value={ year } 
-        style={{ fontSize: "20px" }} 
+        style={{ fontSize: "20px", fontFamily: "Dovemayo" }} 
         onChange={ handleYearChange }
         MenuProps={{
           PaperProps: {
@@ -108,7 +108,7 @@ const DateSelect = (props: DateSelectProps) => {
       <SelectLabel>년</SelectLabel>
       <Select 
         value={ month } 
-        style={{ fontSize: "20px" }} 
+        style={{ fontSize: "20px", fontFamily: "Dovemayo" }} 
         onChange={ handleMonthChange }
         MenuProps={{
           PaperProps: {
@@ -127,7 +127,7 @@ const DateSelect = (props: DateSelectProps) => {
       <SelectLabel>월</SelectLabel>
       <Select 
         value={ day } 
-        style={{ fontSize: "20px" }} 
+        style={{ fontSize: "20px", fontFamily: "Dovemayo" }}  
         onChange={ handleDayChange }
         MenuProps={{
           PaperProps: {

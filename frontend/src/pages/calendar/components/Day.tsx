@@ -148,6 +148,8 @@ const Day = ( props: DayProps ) =>{
             updateModal()
             }
         }
+
+
     
     return(
         <DayWrapper>

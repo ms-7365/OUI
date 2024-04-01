@@ -1,11 +1,11 @@
 import { fabric } from 'fabric';
-import { Drawer, MusicPlayer2, Button, EditIcon, DecoIcon, DeleteIcon, BackIcon } from 'src/components';
+import { Drawer, MusicPlayer2, EditIcon, DecoIcon, DeleteIcon, BottomNavi } from 'src/components';
 import { Canvas } from './components';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation } from 'react-query';
 import { useNavigate } from "react-router-dom";
-import { getDiary, deleteDiary } from './api';
+import { getDiary, deleteDiary, getEmotions, getComment } from './api';
 import useStore from 'src/store'
 import styled from 'styled-components';
 
@@ -49,14 +49,15 @@ const Title = styled.span`
     margin: 10px;
 `;
 
-const Emotion = styled.div`
-    width: 160px; 
-    height: 80px;
+const Emotion = styled.div<{ color: string }>`
+    width: 120px; 
+    height: 70px;
     border: 5px solid white;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 30px;
-    background-color: #FFC814;
-    font-size: 30px;
+    border-radius: 25px;
+    background-color: ${( props ) => props.color };
+    color: white;
+    font-size: 28px;
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -72,15 +73,23 @@ const Comment = styled.div`
     background-color: white;
     border-radius: 20px;
     font-size: 24px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    line-height: 40px;
 `
 
 const Diary = () => {
     const navigator = useNavigate();
-
-    // const { state } = useLocation();
-    // const { dailyDiaryId, type, diaryId } = state;
     
     const { diaryId, dailyDiaryId, type  } = useStore(); 
+
+    const emotionTag = {
+        'angry': {name: '분노', color: '#F09690'},
+        'embarrassed': {name: '당황', color: '#BBDED6'},
+        'happy': {name: '기쁨', color: '#FFE17D'},
+        'doubtful': {name: '불안', color: '#BDB5FF'},
+        'comfortable': {name: '느긋', color: '#FFC814'},
+        'sad': {name: '슬픔', color: '#C0DEFF'},
+    }
 
     const canvasRef = useRef(null);
     const [ canvas, setCanvas ] = useState<fabric.Canvas>(null);
@@ -91,9 +100,18 @@ const Diary = () => {
         enabled: isFontLoaded
     });
 
+    const { data: emotions } = useQuery('emotions', () => getEmotions(dailyDiaryId), {
+        enabled: isFontLoaded
+    });
+
+    const { data: comment } = useQuery('comment', () => getComment(dailyDiaryId), {
+        enabled: isFontLoaded
+    });
+
     useEffect(() => {
         if(!canvas) return;
-        console.log(dailyDiary)
+        console.log('emotions', emotions);
+        console.log('comment', comment);
 
         canvas.loadFromJSON(dailyDiary?.data?.dailyContent, () => {
             canvas.renderAll();
@@ -119,15 +137,14 @@ const Diary = () => {
 
     const onClick = async () => {
         await removeDiary.mutateAsync(dailyDiaryId);
-        navigator(`/main`);
-        // navigator(`/calendar/${diaryId}`, {state: {diaryId: diaryId}});
+        navigator(`/calendar/${diaryId}`, {state: {diaryId: diaryId}});
     }
     return (
         <Container>
             <Header>
-                <BackIcon size={ 40 } onClick={() => { navigator(`/calendar`, {state: { diaryId: diaryId , type: type}}) }} />
-                {/* <Button btType='back'/> */}
-                {/* <Drawer/> */}
+                {/* <BackIcon size={ 40 } onClick={() => { navigator(`/calendar`, {state: { diaryId: diaryId , type: type}}) }} /> */}
+                <Drawer/>
+                <span style={{ fontSize: "30px" }}>{ dailyDiary?.data?.dailyDate.substring(0, 10) }</span>
                 <div style={{ display: "flex", alignItems: "center" }}>
                     {(type === '공유' && isDeco) && (
                         <DecoIcon size={ 55 } onClick={() => navigator(`/diary/deco/${ dailyDiaryId }`, {state: {dailyDiaryId: dailyDiaryId, type: type}})} />
@@ -148,25 +165,29 @@ const Diary = () => {
                 </div>
             )}
             <Canvas canvasRef={ canvasRef } canvas={ canvas } setCanvas={ setCanvas } setIsFontLoaded={ setIsFontLoaded } />
-            <ArrowDownwardRoundedIcon sx={{ fontSize: 40 }} style={{ paddingTop: "30px", marginBottom: "20px" }} />
-            <div style={{ fontSize: "24px" }}>분석 결과 보러 가기</div>
+            <ArrowDownwardRoundedIcon sx={{ fontSize: 40 }} style={{ paddingTop: "30px", marginBottom: "10px" }} />
+            <div style={{ fontSize: "24px", fontWeight: "bold" }}>분석 결과 보러 가기</div>
             <ResultSection>
                 <Title>나의 감정은?</Title>
                 <div style={{ marginTop: "20px", marginBottom: "60px", display: "flex" }}>
-                    <Emotion># 느긋</Emotion>
-                    <Emotion># 기쁨</Emotion>
+                    {emotions && emotions?.data?.emotionList?.map((emotion, index) => (
+                        <Emotion key={index} color={ emotionTag[emotion].color }>
+                            #{ emotionTag[emotion].name }
+                        </Emotion>
+                    ))}
                 </div>
                 {(type === '개인') && (
                     <>
                         <Title>AI 코멘트</Title>
                         <Comment>
-                            코멘트 ...
+                            { comment &&  comment?.data}
                         </Comment>
                     </>
                 )}
                 <Title>추천 음악</Title>
                 <MusicPlayer2 />
             </ResultSection>
+            <BottomNavi />
         </Container>
     )
 };

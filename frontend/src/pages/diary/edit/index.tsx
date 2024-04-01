@@ -1,8 +1,9 @@
 import { SaveIcon, BackIcon } from 'src/components';
-import { DateSelect, BottomSheet, Canvas } from '../components';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { BottomSheet, Canvas } from '../components';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import { useMutation, useQuery } from 'react-query';
+import useStore from 'src/store';
 import { getDiary, putDiary } from '../api';
 import styled from 'styled-components';
 
@@ -24,8 +25,7 @@ const Container = styled.div`
 const DiaryEdit = () => {
     const navigator = useNavigate();
 
-    const { state } = useLocation();
-    const { dailyDiaryId, type } = state;
+    const { dailyDiaryId } = useStore();
 
     const canvasRef = useRef(null);
     const textboxRef = useRef(null);
@@ -87,14 +87,15 @@ const DiaryEdit = () => {
         };
 
         await editDiary.mutateAsync(data);
-        navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId, type: type}});
+        // navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId, type: type}});
+        navigator(`/diary/${dailyDiaryId}`);
     }
 
     return (
         <Container>
             <Header>
-                <BackIcon size={ 40 } onClick={() => { navigator(`/diary/${dailyDiaryId}`, {state: {dailyDiaryId: dailyDiaryId, type: type}}) }} />
-                <DateSelect selectedDate={ selectedDate } setSelectedDate={ setSelectedDate }/>
+                <BackIcon size={ 40 } onClick={() => { navigator(`/diary/${dailyDiaryId}`)}} />
+                <span style={{ fontSize: "30px" }}>{ dailyDiary?.data?.dailyDate.substring(0, 10) }</span>
                 <SaveIcon size={ 70 } onClick={ saveDiary }/>
             </Header>
             <Canvas canvasRef={ canvasRef } textboxRef={ textboxRef } canvas={ canvas } setCanvas={ setCanvas } activeTool={ activeTool } setIsFontLoaded={ setIsFontLoaded } />

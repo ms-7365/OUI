@@ -123,6 +123,7 @@ const Calendar = () =>{
   const { isModalOpened, updateModal } = useStore() // Day 컴포넌트에서 업데이트 된 상태 가져오기
   const { diaryId, type } = staticStore();
   const html = document.querySelector( 'html' )
+  console.log(diaryId);
 
   const closeModal = () => { 
       updateModal()

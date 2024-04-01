@@ -139,7 +139,7 @@ const DrawingContent = ( props: ContentProps ) => {
   return (
     <ContentWrapper>
       <PenWidth>
-        <Typography gutterBottom>펜 굵기</Typography>
+        <Typography gutterBottom style={{ fontSize: "20px", fontFamily: "Dovemayo" }}>펜 굵기</Typography>
         <PrettoSlider
           valueLabelDisplay="auto"
           aria-label="pretto slider"
@@ -150,7 +150,7 @@ const DrawingContent = ( props: ContentProps ) => {
         />
       </PenWidth>
       <ColorPalette>
-        <Typography gutterBottom style={{ marginRight: "30px" }}>펜 색깔</Typography>
+        <Typography gutterBottom style={{ marginRight: "30px", fontSize: "20px", fontFamily: "Dovemayo" }}>펜 색깔</Typography>
         { colorPalette.map((color, index) => (
           <ColorButton
               key={index}

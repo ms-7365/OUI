@@ -42,7 +42,7 @@ const Content = styled.div`
 `;
 
 const BottomSheet = ( props: BottomSheetProps ) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [ isOpen, setIsOpen ] = useState(true);
   const [ penColor, setPenColor ] = useState('#262626');
   const [ penWidth, setPenWidth ] = useState(10);
 
