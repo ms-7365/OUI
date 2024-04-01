@@ -4,7 +4,7 @@ import { Header } from "src/components/control/Header";
 import { Button } from "src/components";
 import { CustomModal } from "./components/Modal";
 import { AlarmModal } from "src/components/modal";
-import { getDiary, getMember, postCreateDiary, postDeviceToken } from './api';
+import { getDiary, getMember, postCreateDiary, postDeviceToken, getLogout } from './api';
 import ya from 'src/asset/images/ya.jpg';
 import { useQuery } from 'react-query'
 import Slider from "react-slick";
@@ -174,7 +174,7 @@ const Main = () => {
 
   const navigator = useNavigate()
   
-  const { setDiaryId, setType } = useStore()
+  const { setDiaryId, setType, setAccessToken, setIsLogin, setDailyDiaryId } = useStore()
   const [ isModalOpen, setIsModalOpen ] = useState( false );
   const [ diaryList, setDiaryList ] = useState( [] );
   const [ userName, setUserName ] = useState( "" );
@@ -253,6 +253,17 @@ const Main = () => {
       console.log( res.data );
     }
   });
+
+  const Logout = () =>{
+    getLogout().then(( res )=>{
+      setAccessToken('')
+      setIsLogin(false)
+      setDiaryId(null)
+      setType('')
+      setDailyDiaryId(null)
+      navigator('/login')
+    })
+  }
   
   useEffect(() => {
     if ( modalSubmitted ) {
@@ -277,7 +288,10 @@ const Main = () => {
     <>
     <Header>
       <ProfileImage src={ userImage || ya } alt="유저 프로필 이미지" />
-      <Button btType='bell' onButtonClick={() => setAlarmModalOpen(true)} />
+      <div>
+        <Button btType='logout' onButtonClick={() => Logout()} />
+        <Button btType='bell' onButtonClick={() => setAlarmModalOpen(true)} />
+      </div>
     </Header>
     <YellowBox>
         {userName && <UserRecord style={{ fontWeight: 'bold' }}>{ userName }님의 감정기록 :)</UserRecord>}

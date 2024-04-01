@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faBars, faTrash, faUser, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faBars, faTrash, faUser, faHouse, faSignOutAlt  } from '@fortawesome/free-solid-svg-icons';
 import { faCircleCheck, faBell } from '@fortawesome/free-regular-svg-icons';
 import styled from 'styled-components';
 
@@ -12,6 +12,8 @@ const ButtonWrapper = styled.button`
         background-color: #e0e0e0;
     }
     font-size: 40px;
+    margin-top: 20px;
+    margin-right: 20px;
 `;
 
 const iconPaths = {
@@ -22,6 +24,7 @@ const iconPaths = {
     bell: faBell, 
     user: faUser,
     home: faHouse,
+    logout: faSignOutAlt,
 }
 
 
