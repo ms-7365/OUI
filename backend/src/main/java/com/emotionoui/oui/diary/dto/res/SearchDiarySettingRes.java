@@ -25,7 +25,7 @@ public class SearchDiarySettingRes {
     // 알람 ON/OFF 설정 상태
     private AlarmType alarm;
     // 공용다이어리에서의 멤버
-    private List<Member> memberList;
+    private List<String> memberList;
 
 
     public static SearchDiarySettingRes privateRes(Diary diary, AlarmType alarmStatus) {
@@ -36,7 +36,7 @@ public class SearchDiarySettingRes {
                 .build();
     }
 
-    public static SearchDiarySettingRes SharingRes(Diary diary, AlarmType alarmStatus, List<Member> memberList) {
+    public static SearchDiarySettingRes SharingRes(Diary diary, AlarmType alarmStatus, List<String> memberList) {
         return SearchDiarySettingRes.builder()
                 .name(diary.getName())
                 .templateId(diary.getTemplateId())

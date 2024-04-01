@@ -15,6 +15,6 @@ public class UpdateDiarySettingReq {
     private Integer templateId;
     // 알람 ON/OFF 설정 상태
     private AlarmType alarm;
-    // 공용다이어리에서의 멤버
-    private List<Member> memberList;
+    // 공용다이어리에서의 새로운 멤버
+    private List<String> memberList;
 }

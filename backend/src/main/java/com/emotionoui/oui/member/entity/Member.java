@@ -82,19 +82,20 @@ public class Member implements UserDetails {
         return isDeleted == 0;
     }
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+//    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member")
     private List<MemberAlarm> memberAlarmList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member")
     private List<Preference> preferenceList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member")
     private List<Schedule> scheduleList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member")
     private List<Emotion> emotionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member")
     private List<MemberDiary> memberDiaryList = new ArrayList<>();
 
     @Setter

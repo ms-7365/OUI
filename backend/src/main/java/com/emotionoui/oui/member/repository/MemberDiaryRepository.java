@@ -21,6 +21,9 @@ public interface MemberDiaryRepository extends JpaRepository<MemberDiary, Intege
     @Query("SELECT m.member FROM MemberDiary m WHERE m.diary.id = :diaryId")
     List<Member> findMemberByDiaryId(@Param("diaryId") Integer diaryId);
 
+    @Query("SELECT m.member.email FROM MemberDiary m WHERE m.diary.id = :diaryId")
+    List<String> findEmailByDiaryId(@Param("diaryId") Integer diaryId);
+
     @Query("SELECT m FROM MemberDiary m WHERE m.member.memberId= :newMemberId")
     MemberDiary findByMemberId(@Param("newMemberId") Integer newMemberId);
 

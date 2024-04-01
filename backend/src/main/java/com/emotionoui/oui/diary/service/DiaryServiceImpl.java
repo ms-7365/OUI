@@ -374,50 +374,27 @@ public class DiaryServiceImpl implements DiaryService{
         if(diary.getType().toString().equals("개인")){
             return SearchDiarySettingRes.privateRes(diary, alarmStatus);
         }else{
-            List<Member> memberList = memberDiaryRepository.findMemberByDiaryId(diaryId);
+            List<String> memberList = memberDiaryRepository.findEmailByDiaryId(diaryId);
             return SearchDiarySettingRes.SharingRes(diary, alarmStatus, memberList);
         }
     }
     
      // 다이어리 설정 수정하기
-    public void updateDiarySetting(UpdateDiarySettingReq req, Integer diaryId, Integer memberId){
+    public void updateDiarySetting(UpdateDiarySettingReq req, Integer diaryId, Member member){
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(IllegalArgumentException::new);
+        // 일기 이름, 템플릿 종류 수정
         diary.updateDiary(req.getName(), req.getTemplateId());
 
+        int memberId = member.getMemberId();
         MemberDiary memberDiary = memberDiaryRepository.findById(memberId)
                 .orElseThrow(IllegalArgumentException::new);
+        // 알람 ON/OFF 상태 수정
         memberDiary.updateAlarm(req.getAlarm());
 
+        // 새로운 멤버들에게 일기 초대 알림 보내기
         if(diary.getType().toString().equals("공유")){
-            List<Member> newMemberList = req.getMemberList();
-            List<MemberDiary> oldMemberDiaryList = diary.getMemberDiaryList();
-
-            top:
-            for(MemberDiary oldMemberDiary : oldMemberDiaryList){
-                Member member = oldMemberDiary.getMember();
-                for (Member newMember : newMemberList) {
-                    if (Objects.equals(member.getMemberId(), newMember.getMemberId())) {
-                        continue top;
-                    }
-                }
-                oldMemberDiary.updateIsDeleted();
-            }
-
-            for(Member member : newMemberList){
-                MemberDiary rep = memberDiaryRepository.findByMemberId(member.getMemberId());
-                if(rep==null){
-                    MemberDiary newMemberDiary = MemberDiary.builder()
-                            .alarm(AlarmType.ON)
-                            .orders(memberDiaryRepository.countByMemberId(member.getMemberId())+1)
-                            .isDeleted(0)
-                            .diary(diary)
-                            .member(member)
-                            .build();
-
-                    memberDiaryRepository.save(memberDiary);
-                }
-            }
+            alarmService.inviteDiary(req.getMemberList(), diaryId, member.getNickname());
         }
     }
 

@@ -99,8 +99,7 @@ public class DiaryController {
     // 다이어리 설정 수정하기
     @PutMapping("/setting/{diaryId}")
     public ResponseEntity<?> updateDiarySetting(@RequestBody UpdateDiarySettingReq req, @PathVariable("diaryId") Integer diaryId, @AuthenticationPrincipal Member member){
-        Integer memberId = member.getMemberId();
-        diaryService.updateDiarySetting(req, diaryId, memberId);
+        diaryService.updateDiarySetting(req, diaryId, member);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

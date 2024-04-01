@@ -23,7 +23,7 @@ public interface DiaryService {
     List<String> searchMusic(Integer dailyId);
     String searchComment(Integer dailyId);
     SearchDiarySettingRes searchDiarySetting(Integer diaryId, Integer memberId);
-    void updateDiarySetting(UpdateDiarySettingReq req, Integer diaryId, Integer memberId);
+    void updateDiarySetting(UpdateDiarySettingReq req, Integer diaryId, Member member);
     String decorateSaveDailyDiary(DecorateDailyDiaryReq req, Integer dailyId);
     DecorateDailyDiaryRes decorateDailyDiary(DecorateDailyDiaryReq req, Member member);
     void exitShareDiary(Integer diaryId, int memberId);
