@@ -339,6 +339,12 @@ public class DiaryServiceImpl implements DiaryService{
 
         return true;
     }
+
+    // 일기 타이틀 아이디로 조회하기
+    public String searchDiaryTitleById(Integer diaryId){
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow(IllegalArgumentException::new);
+        return diary.getName();
+    }
     
     // 감정 분석 결과 조회하기
     public EmotionClass searchEmotion(Integer dailyId){

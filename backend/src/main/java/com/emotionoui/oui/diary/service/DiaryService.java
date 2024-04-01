@@ -19,6 +19,7 @@ public interface DiaryService {
     void deleteDailyDiary(Integer dailyId);
     SearchDailyDiaryRes searchDailyDiary(Integer dailyId, Integer memberId);
     Boolean searchDailyDiaryByDate(Integer diaryId, String date, Integer memberId);
+    String searchDiaryTitleById(Integer diaryId);
     EmotionClass searchEmotion(Integer dailyId);
     List<String> searchMusic(Integer dailyId);
     String searchComment(Integer dailyId);

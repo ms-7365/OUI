@@ -71,6 +71,12 @@ public class DiaryController {
         return new ResponseEntity<Boolean>(diaryService.searchDailyDiaryByDate(diaryId, date, member.getMemberId()), HttpStatus.OK);
     }
 
+    // 일기 제목 아이디로 조회하기
+    @GetMapping("/title/{diaryId}")
+    public ResponseEntity<?> searchDiaryTitle(@PathVariable("diaryId") Integer diaryId){
+        return new ResponseEntity<String>(diaryService.searchDiaryTitleById(diaryId), HttpStatus.OK);
+    }
+
     // 감정분석 결과 보여주기
     @GetMapping("/emotion/{dailyId}")
     public ResponseEntity<?> searchEmotion(@PathVariable("dailyId") Integer dailyId){

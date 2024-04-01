@@ -37,4 +37,8 @@ public class PreferenceService {
     public boolean isExisted(Member member){
         return preferenceRepository.existsByMemberMemberIdAndIsDeleted(member.getMemberId(),0);
     }
+
+    public String getTypeByMemberId(Member member){
+        return preferenceRepository.getTypeByMemberId(member.getMemberId());
+    }
 }
