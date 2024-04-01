@@ -20,7 +20,7 @@ import styled from "styled-components";
 
 
 const CarouselContainer = styled.div`
-  max-width: 100%;
+  width: 100%;
   // margin: auto;
   overflow: hidden; 
   padding: 20px 0; 
@@ -30,7 +30,7 @@ const SliderWrapper = styled( Slider )`
   
   .slick-track{
     display: flex;
-    margin: 0 -125px;
+    margin: 0 -34%;
   }
 
   .slick-slide {
@@ -39,7 +39,7 @@ const SliderWrapper = styled( Slider )`
     align-items: center;
     justify-content: center;
     transform: scale(0.8); 
-    opacity: 0.5;
+    // opacity: 0.5;
     transition: transform 0.5s ease, opacity 0.5s ease;
   }
 
@@ -48,6 +48,7 @@ const SliderWrapper = styled( Slider )`
     height: 100%;
     background-size: cover;
     background-position: center;
+    
   }
 
   .slick-center {
@@ -170,7 +171,7 @@ const Main = () => {
     infinite: false,
     centerMode: true, 
     focusOnSelect: true,
-    slidesToShow: 3,
+    slidesToShow: 2,
     speed: 500,
     accessibility: true,
   };
