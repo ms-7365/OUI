@@ -1,5 +1,5 @@
 # ✏️ OUI: 너와 나의 공유일기
-![image](/uploads/0cdb433323a2346705c12595770a0e60/image.png)
+<img src="./asset/img1.png">
 
 > #### OUI _는 **AI 감정분석을 제공하는 공유일기 웹 앱 서비스**입니다._
 
@@ -18,22 +18,22 @@
 
 # 2. 서비스 구조도
 ### 메인화면
-![image](/uploads/2a7e2d8d98f2272a7839b15fe01e907f/image.png)
+<img src="./asset/img2.png">
 
 ### 일기 생성
-![readme_생성](/uploads/efcc08ed0c9185357a435c0dc2a47bae/readme_생성.PNG)
+<img src="./asset/img3.png">
 
 ### 일기 조회
-![readme_일기](/uploads/efc75d934b265ed12e3c780a094c5d9c/readme_일기.PNG)
+<img src="./asset/img4.png">
 
 ### 일정 생성/조회
-![readme_일정](/uploads/d9563ba3999ac355a3b6044a7486abf2/readme_일정.PNG)
+<img src="./asset/img5.png">
 
 ### 개인 통계
-![readme_통계](/uploads/7fe2b6d17ece121303ccd1690b57ebe2/readme_통계.PNG)
+<img src="./asset/img6.png">
 
 ### 공유 통계
-![readme_공유통계](/uploads/9efe6fd218e97bee45b4f86fb4b52416/readme_공유통계.PNG)
+<img src="./asset/img7.png">
 
 ### 회원가입
 | <img src="./asset/회원가입.gif"> |
@@ -63,16 +63,16 @@
 * `KoBERT`를 전이학습시켜 감정분석을 진행했어요!
     * 사용한 데이터: AI hub의 '감성대화 말뭉치', '한국어 감정 정보가 포함된 단발성 대화 데이터 셋', '감정 분류를 위한 대화 음성 데이터 셋'
     * 전처리  
-        ![image](/uploads/5d053819fef40563815a3df506eacd3b/image.png)
+        <img src="./asset/img8.png">
     * 결과  
-        ![image](/uploads/61fe9f065fbc1855d7ae4525898105a3/image.png)
+        <img src="./asset/img9.png">
 
 # 4. 설계
 ### 아키텍처
-![image](/uploads/d90f53ee0a218036db97b7a64132d359/image.png)
+<img src="./asset/img10.png">
 
 ### ERD
-![OUI_erd](/uploads/e7ba639b6634c0157a2b86e751a8103a/OUI_erd.png)
+<img src="./asset/img11.png">
 
 ### 와이어 프레임
 <img src="./asset/와이어프레임.png">
