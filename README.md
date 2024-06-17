@@ -21,19 +21,19 @@
 <img src="./asset/img2.png">
 
 ### 일기 생성
-<img src="./asset/img3.png">
+<img src="./asset/img3.PNG">
 
 ### 일기 조회
-<img src="./asset/img4.png">
+<img src="./asset/img4.PNG">
 
 ### 일정 생성/조회
-<img src="./asset/img5.png">
+<img src="./asset/img5.PNG">
 
 ### 개인 통계
-<img src="./asset/img6.png">
+<img src="./asset/img6.PNG">
 
 ### 공유 통계
-<img src="./asset/img7.png">
+<img src="./asset/img7.PNG">
 
 ### 회원가입
 | <img src="./asset/회원가입.gif"> |
